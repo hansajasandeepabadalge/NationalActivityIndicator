@@ -27,7 +27,7 @@ class IndicatorDefinition(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     updated_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)
 
     # Relationships
     keywords = relationship("IndicatorKeyword", back_populates="indicator", cascade="all, delete-orphan")
@@ -59,7 +59,7 @@ class IndicatorValue(Base):
     sentiment_score = Column(Float)
     confidence = Column(Float, default=1.0)
     source_count = Column(Integer, default=1)
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)
 
     # Relationships
     indicator = relationship("IndicatorDefinition", back_populates="values")
@@ -79,7 +79,7 @@ class IndicatorEvent(Base):
     value_before = Column(Float)
     value_after = Column(Float)
     description = Column(Text)
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)
     acknowledged = Column(Boolean, default=False)
     acknowledged_at = Column(TIMESTAMP(timezone=True))
 

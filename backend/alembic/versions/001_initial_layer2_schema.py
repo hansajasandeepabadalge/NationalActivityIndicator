@@ -17,6 +17,17 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    # Create update_updated_at_column function for triggers
+    op.execute("""
+        CREATE OR REPLACE FUNCTION update_updated_at_column()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW.updated_at = NOW();
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
+    """)
+
     # Create ENUM types if they don't exist
     op.execute("""
         DO $$ BEGIN
@@ -127,9 +138,10 @@ def upgrade() -> None:
     # Create indicator_events table (will be converted to hypertable)
     op.create_table(
         'indicator_events',
-        sa.Column('event_id', sa.Integer, primary_key=True, autoincrement=True),
+        sa.Column('event_id', sa.Integer, autoincrement=True),
         sa.Column('indicator_id', sa.String(50), nullable=False),
         sa.Column('timestamp', sa.TIMESTAMP(timezone=True), nullable=False),
+        sa.PrimaryKeyConstraint('event_id', 'timestamp'),
         sa.Column('event_type', postgresql.ENUM(
             'threshold_breach', 'anomaly_detected', 'rapid_change',
             'correlation_break', 'data_quality_issue',

@@ -1,1 +1,2 @@
 - always follow the instructions given by SYSTEM_BLUEPRINT.md ,Layer2_National_activity_indicators_blueprint part 1 and part 2 and LAYER2_TASK_DISTRIBUTION.md when doing tings in Layer 2
+- I m developer A

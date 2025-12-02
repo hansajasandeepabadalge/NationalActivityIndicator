@@ -15,4 +15,4 @@ class MLClassificationResult(Base):
     classification_method = Column(String(50), default='hybrid')
     processing_time_ms = Column(Integer)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)

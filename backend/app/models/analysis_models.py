@@ -23,4 +23,4 @@ class TrendAnalysis(Base):
     forecast_30d = Column(Float)
     confidence = Column(Float, default=0.5)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)
