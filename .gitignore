@@ -50,3 +50,4 @@ env/
 .pytest_cache/
 *.log
 *.sqlite3
+package-lock.json
