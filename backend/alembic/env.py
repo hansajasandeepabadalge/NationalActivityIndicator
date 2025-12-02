@@ -8,7 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import settings
-from app.db.session import Base
+from app.db.base_class import Base
 
 # Import all models to register them with Base.metadata
 try:
