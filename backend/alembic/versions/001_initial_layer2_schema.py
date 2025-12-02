@@ -127,7 +127,7 @@ def upgrade() -> None:
     # Create indicator_events table (will be converted to hypertable)
     op.create_table(
         'indicator_events',
-        sa.Column('event_id', sa.Integer, primary_key=True, autoincrement=True),
+        sa.Column('event_id', sa.Integer, autoincrement=True),
         sa.Column('indicator_id', sa.String(50), nullable=False),
         sa.Column('timestamp', sa.TIMESTAMP(timezone=True), nullable=False),
         sa.Column('event_type', postgresql.ENUM(
@@ -142,7 +142,8 @@ def upgrade() -> None:
         sa.Column('metadata', postgresql.JSONB, nullable=True),
         sa.Column('acknowledged', sa.Boolean, default=False),
         sa.Column('acknowledged_at', sa.TIMESTAMP(timezone=True), nullable=True),
-        sa.ForeignKeyConstraint(['indicator_id'], ['indicator_definitions.indicator_id'], ondelete='CASCADE')
+        sa.ForeignKeyConstraint(['indicator_id'], ['indicator_definitions.indicator_id'], ondelete='CASCADE'),
+        sa.PrimaryKeyConstraint('event_id', 'timestamp')
     )
 
     # Convert indicator_events to TimescaleDB hypertable

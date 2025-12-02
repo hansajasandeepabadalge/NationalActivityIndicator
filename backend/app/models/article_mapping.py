@@ -7,7 +7,7 @@ class ArticleIndicatorMapping(Base):
 
     mapping_id = Column(Integer, primary_key=True, index=True)
     article_id = Column(String, nullable=False, index=True) # References MongoDB or external ID
-    indicator_id = Column(Integer, ForeignKey("indicator_definitions.indicator_id"), nullable=False)
+    indicator_id = Column(String, ForeignKey("indicator_definitions.indicator_id"), nullable=False)
     match_confidence = Column(Float, nullable=False)
     match_type = Column(String) # keyword, ml, rule_based
     created_at = Column(TIMESTAMP, server_default=func.now())

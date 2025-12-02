@@ -320,14 +320,29 @@ def populate_indicators():
         print(f"🚀 Populating {len(indicators)} indicators...")
         
         for ind_data in indicators:
+            # Transform data to match new model structure
+            meta = {
+                "display_name": ind_data.pop("display_name", None),
+                "subcategory": ind_data.pop("subcategory", None),
+                "value_type": ind_data.pop("value_type", None),
+                "min_value": ind_data.pop("min_value", None),
+                "max_value": ind_data.pop("max_value", None)
+            }
+            
+            # Map code to ID
+            if "indicator_code" in ind_data:
+                ind_data["indicator_id"] = ind_data.pop("indicator_code")
+            
+            ind_data["metadata_"] = meta
+
             # Check if exists
-            existing = session.query(IndicatorDefinition).filter_by(indicator_code=ind_data['indicator_code']).first()
+            existing = session.query(IndicatorDefinition).filter_by(indicator_id=ind_data['indicator_id']).first()
             if not existing:
                 indicator = IndicatorDefinition(**ind_data)
                 session.add(indicator)
-                print(f"   ✅ Added {ind_data['indicator_code']}")
+                print(f"   ✅ Added {ind_data['indicator_id']}")
             else:
-                print(f"   ⚠️ Skipped {ind_data['indicator_code']} (Already exists)")
+                print(f"   ⚠️ Skipped {ind_data['indicator_id']} (Already exists)")
         
         session.commit()
         print("🎉 Indicator population complete!")
