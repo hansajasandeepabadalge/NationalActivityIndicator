@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = get_database_url()
     TIMESCALEDB_URL: str = get_database_url()
     MONGODB_URL: str = "mongodb://admin:mongo_secure_2024@127.0.0.1:27017/national_indicator?authSource=admin"
+    MONGODB_DB_NAME: str = "national_indicator"
     REDIS_URL: str = "redis://127.0.0.1:6379/0"
 
     # Performance Settings
@@ -46,9 +47,47 @@ class Settings(BaseSettings):
     REDIS_MAX_CONNECTIONS: int = 50
     REDIS_DEFAULT_TTL: int = 300
 
-    # ML Model Settings
-    ML_MODEL_PATH: str = "ml_models/indicator_classifier_v1.pkl"
+    # ML Model Settings (Day 3)
+    ML_MODEL_DIR: str = "backend/models/ml_classifier"
+    ML_MODEL_PATH: str = "backend/models/ml_classifier/ml_models.pkl"
+    FEATURE_EXTRACTOR_PATH: str = "backend/models/ml_classifier/feature_extractor.pkl"
+    ML_MODEL_MIN_F1: float = 0.60
     BATCH_SIZE: int = 32
+
+    # Adaptive Model Selection (Scaling Strategy)
+    ML_MODEL_TYPE: str = "auto"  # "auto", "logistic", or "xgboost"
+    ML_AUTO_THRESHOLD: int = 100  # Use XGBoost if n_samples >= threshold
+
+    # Hybrid Classification Settings
+    RULE_WEIGHT: float = 0.7  # Conservative: trust rule-based more initially
+    ML_WEIGHT: float = 0.3
+    HYBRID_MIN_CONFIDENCE: float = 0.3
+    USE_HYBRID_CLASSIFICATION: bool = False  # Enable after training
+
+    # Training Data Settings
+    TRAINING_DATA_PATH: str = "backend/data/training/"
+    TRAINING_SIZE: int = 100
+    VALIDATION_SPLIT: float = 0.2
+
+    # Entity Extraction Settings (Day 4)
+    SPACY_MODEL: str = "en_core_web_sm"
+    ENTITY_EXTRACTION_MAX_CHARS: int = 1_000_000
+    ENTITY_MIN_CONFIDENCE: float = 0.3
+
+    # MongoDB Entity Storage
+    MONGODB_ENTITY_COLLECTION: str = "entity_extractions"
+    MONGODB_INDICATOR_COLLECTION: str = "indicator_calculations"
+
+    # Narrative Generation (Day 6)
+    NARRATIVE_EMOJI_ENABLED: bool = True
+    NARRATIVE_MIN_SUMMARY_LENGTH: int = 50
+
+    # API Settings (Day 6)
+    API_RESPONSE_CACHE_TTL: int = 300  # 5 minutes
+    API_MAX_HISTORY_DAYS: int = 90
+
+    # Data Source Toggle
+    USE_MOCK_DATA: bool = True  # Set to False for production/real data
 
     class Config:
         env_file = ".env"

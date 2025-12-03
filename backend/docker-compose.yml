@@ -19,6 +19,7 @@ services:
     volumes:
       - timescaledb_data:/var/lib/postgresql/data
       - ./app/db/init_timescale.sql:/docker-entrypoint-initdb.d/01_init_timescale.sql
+      - ./app/db/02_configure_pg_hba.sh:/docker-entrypoint-initdb.d/02_configure_pg_hba.sh
     command:
       - "postgres"
       - "-c"

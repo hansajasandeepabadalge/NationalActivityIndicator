@@ -1,0 +1,1418 @@
+[
+  {
+    "indicator_id": 1,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.04051598410969365,
+      "slope": 0.036362438697745976,
+      "r_squared": 0.04051598410969365,
+      "rate_of_change": -0.04042491452630396
+    },
+    "moving_averages": {
+      "ma_7day": 46.14295210859722,
+      "ma_30day": 45.59248184403371,
+      "ma_90day": 46.08213731155483
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 46.15609964384876,
+        "lower_bound": 43.09288170526833,
+        "upper_bound": 49.21931758242919
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 46.19246208254651,
+        "lower_bound": 43.12924414396608,
+        "upper_bound": 49.25568002112694
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 46.228824521244256,
+        "lower_bound": 43.16560658266383,
+        "upper_bound": 49.292042459824685
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 46.265186959942,
+        "lower_bound": 43.20196902136157,
+        "upper_bound": 49.32840489852243
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 46.30154939863974,
+        "lower_bound": 43.238331460059314,
+        "upper_bound": 49.36476733722017
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 46.33791183733749,
+        "lower_bound": 43.27469389875706,
+        "upper_bound": 49.401129775917916
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 46.37427427603523,
+        "lower_bound": 43.3110563374548,
+        "upper_bound": 49.43749221461566
+      }
+    ]
+  },
+  {
+    "indicator_id": 2,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.2989448541491346,
+      "slope": -0.7109273494367533,
+      "r_squared": 0.2989448541491346,
+      "rate_of_change": -1.0746934230184195
+    },
+    "moving_averages": {
+      "ma_7day": 8.33388325131521,
+      "ma_30day": 16.010448940613095,
+      "ma_90day": 26.87027296809252
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 4.991075024343413,
+        "lower_bound": -13.855176807419081,
+        "upper_bound": 23.837326856105907
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 4.280147674906662,
+        "lower_bound": -14.566104156855832,
+        "upper_bound": 23.126399506669156
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 3.5692203254699066,
+        "lower_bound": -15.277031506292587,
+        "upper_bound": 22.4154721572324
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 2.8582929760331517,
+        "lower_bound": -15.987958855729342,
+        "upper_bound": 21.704544807795646
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 2.1473656265964003,
+        "lower_bound": -16.698886205166094,
+        "upper_bound": 20.993617458358894
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 1.4364382771596453,
+        "lower_bound": -17.40981355460285,
+        "upper_bound": 20.28269010892214
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 0.7255109277228939,
+        "lower_bound": -18.1207409040396,
+        "upper_bound": 19.571762759485388
+      }
+    ]
+  },
+  {
+    "indicator_id": 3,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.10156536814561383,
+      "slope": -0.3397047964544856,
+      "r_squared": 0.10156536814561383,
+      "rate_of_change": -0.03102055340871246
+    },
+    "moving_averages": {
+      "ma_7day": 21.721680981101077,
+      "ma_30day": 25.23820334353843,
+      "ma_90day": 34.37812639913906
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 19.972778998493887,
+        "lower_bound": 2.4827183256767213,
+        "upper_bound": 37.46283967131105
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 19.633074202039396,
+        "lower_bound": 2.1430135292222303,
+        "upper_bound": 37.12313487485656
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 19.29336940558491,
+        "lower_bound": 1.8033087327677464,
+        "upper_bound": 36.78343007840208
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 18.953664609130428,
+        "lower_bound": 1.4636039363132625,
+        "upper_bound": 36.44372528194759
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 18.613959812675937,
+        "lower_bound": 1.1238991398587714,
+        "upper_bound": 36.1040204854931
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 18.274255016221453,
+        "lower_bound": 0.7841943434042875,
+        "upper_bound": 35.76431568903862
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 17.93455021976697,
+        "lower_bound": 0.4444895469498036,
+        "upper_bound": 35.424610892584134
+      }
+    ]
+  },
+  {
+    "indicator_id": 4,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.1253159794572119,
+      "slope": -0.07129592088761501,
+      "r_squared": 0.1253159794572119,
+      "rate_of_change": -0.04486475407747197
+    },
+    "moving_averages": {
+      "ma_7day": 45.08477229674457,
+      "ma_30day": 46.49491586253683,
+      "ma_90day": 46.06556122110635
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 45.38982908877879,
+        "lower_bound": 42.12916341693351,
+        "upper_bound": 48.65049476062407
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 45.31853316789117,
+        "lower_bound": 42.05786749604589,
+        "upper_bound": 48.57919883973645
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 45.247237247003554,
+        "lower_bound": 41.98657157515828,
+        "upper_bound": 48.50790291884883
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 45.17594132611594,
+        "lower_bound": 41.91527565427066,
+        "upper_bound": 48.43660699796122
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 45.104645405228325,
+        "lower_bound": 41.84397973338305,
+        "upper_bound": 48.3653110770736
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 45.033349484340704,
+        "lower_bound": 41.77268381249543,
+        "upper_bound": 48.29401515618598
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 44.96205356345309,
+        "lower_bound": 41.70138789160781,
+        "upper_bound": 48.22271923529837
+      }
+    ]
+  },
+  {
+    "indicator_id": 5,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.025527064429462523,
+      "slope": -0.03238909068089135,
+      "r_squared": 0.025527064429462523,
+      "rate_of_change": 0.09253974262752204
+    },
+    "moving_averages": {
+      "ma_7day": 56.300643416217326,
+      "ma_30day": 56.15667788722057,
+      "ma_90day": 56.4059200462979
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 55.654646981666716,
+        "lower_bound": 52.19045120764952,
+        "upper_bound": 59.118842755683914
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 55.62225789098582,
+        "lower_bound": 52.15806211696862,
+        "upper_bound": 59.08645366500302
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 55.58986880030493,
+        "lower_bound": 52.12567302628773,
+        "upper_bound": 59.054064574322126
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 55.55747970962403,
+        "lower_bound": 52.093283935606834,
+        "upper_bound": 59.02167548364123
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 55.52509061894314,
+        "lower_bound": 52.06089484492594,
+        "upper_bound": 58.98928639296034
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 55.492701528262245,
+        "lower_bound": 52.028505754245046,
+        "upper_bound": 58.956897302279444
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 55.46031243758135,
+        "lower_bound": 51.99611666356415,
+        "upper_bound": 58.92450821159855
+      }
+    ]
+  },
+  {
+    "indicator_id": 6,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.02374338228967009,
+      "slope": 0.15120760376078052,
+      "r_squared": 0.02374338228967009,
+      "rate_of_change": 0.4489550287096089
+    },
+    "moving_averages": {
+      "ma_7day": 61.01800058459365,
+      "ma_30day": 58.812347275390316,
+      "ma_90day": 59.728044415506204
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 61.15606513368242,
+        "lower_bound": 44.37175280607485,
+        "upper_bound": 77.94037746128998
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 61.3072727374432,
+        "lower_bound": 44.52296040983563,
+        "upper_bound": 78.09158506505077
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 61.45848034120397,
+        "lower_bound": 44.6741680135964,
+        "upper_bound": 78.24279266881155
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 61.609687944964755,
+        "lower_bound": 44.82537561735718,
+        "upper_bound": 78.39400027257233
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 61.760895548725536,
+        "lower_bound": 44.97658322111796,
+        "upper_bound": 78.54520787633311
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 61.91210315248632,
+        "lower_bound": 45.127790824878744,
+        "upper_bound": 78.69641548009389
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 62.0633107562471,
+        "lower_bound": 45.278998428639525,
+        "upper_bound": 78.84762308385467
+      }
+    ]
+  },
+  {
+    "indicator_id": 7,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.002205743188208047,
+      "slope": 0.009557230105213147,
+      "r_squared": 0.002205743188208047,
+      "rate_of_change": 0.0973888761990023
+    },
+    "moving_averages": {
+      "ma_7day": 43.91862567617564,
+      "ma_30day": 44.4643494778824,
+      "ma_90day": 44.36958495373478
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 44.612486544513196,
+        "lower_bound": 41.09368894089683,
+        "upper_bound": 48.13128414812956
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 44.622043774618405,
+        "lower_bound": 41.10324617100204,
+        "upper_bound": 48.14084137823477
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 44.63160100472362,
+        "lower_bound": 41.11280340110726,
+        "upper_bound": 48.150398608339984
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 44.64115823482883,
+        "lower_bound": 41.122360631212466,
+        "upper_bound": 48.15995583844519
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 44.650715464934045,
+        "lower_bound": 41.13191786131768,
+        "upper_bound": 48.16951306855041
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 44.660272695039254,
+        "lower_bound": 41.14147509142289,
+        "upper_bound": 48.17907029865562
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 44.66982992514447,
+        "lower_bound": 41.151032321528106,
+        "upper_bound": 48.18862752876083
+      }
+    ]
+  },
+  {
+    "indicator_id": 8,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.0011831045557541787,
+      "slope": 0.009966173612198231,
+      "r_squared": 0.0011831045557541787,
+      "rate_of_change": -0.09836200263410101
+    },
+    "moving_averages": {
+      "ma_7day": 49.70024016483528,
+      "ma_30day": 48.57339950619975,
+      "ma_90day": 48.576375055292324
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 48.727875197188816,
+        "lower_bound": 43.71509059457054,
+        "upper_bound": 53.74065979980709
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 48.737841370801014,
+        "lower_bound": 43.72505676818274,
+        "upper_bound": 53.75062597341929
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 48.747807544413206,
+        "lower_bound": 43.735022941794924,
+        "upper_bound": 53.76059214703149
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 48.757773718025405,
+        "lower_bound": 43.74498911540712,
+        "upper_bound": 53.77055832064369
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 48.7677398916376,
+        "lower_bound": 43.75495528901932,
+        "upper_bound": 53.780524494255886
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 48.7777060652498,
+        "lower_bound": 43.76492146263152,
+        "upper_bound": 53.790490667868085
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 48.787672238862,
+        "lower_bound": 43.77488763624372,
+        "upper_bound": 53.80045684148028
+      }
+    ]
+  },
+  {
+    "indicator_id": 9,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.015045504060861766,
+      "slope": -0.024764410990468045,
+      "r_squared": 0.015045504060861766,
+      "rate_of_change": -0.014373469728831623
+    },
+    "moving_averages": {
+      "ma_7day": 51.37081444218698,
+      "ma_30day": 50.740123732090005,
+      "ma_90day": 50.40163894304494
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 50.35627536173774,
+        "lower_bound": 46.88769361900274,
+        "upper_bound": 53.824857104472734
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 50.33151095074727,
+        "lower_bound": 46.862929208012275,
+        "upper_bound": 53.80009269348227
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 50.3067465397568,
+        "lower_bound": 46.838164797021804,
+        "upper_bound": 53.7753282824918
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 50.28198212876633,
+        "lower_bound": 46.81340038603133,
+        "upper_bound": 53.75056387150133
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 50.257217717775866,
+        "lower_bound": 46.78863597504087,
+        "upper_bound": 53.72579946051086
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 50.232453306785395,
+        "lower_bound": 46.7638715640504,
+        "upper_bound": 53.70103504952039
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 50.207688895794924,
+        "lower_bound": 46.739107153059926,
+        "upper_bound": 53.67627063852992
+      }
+    ]
+  },
+  {
+    "indicator_id": 10,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.005886246474204846,
+      "slope": -0.07657151180136203,
+      "r_squared": 0.005886246474204846,
+      "rate_of_change": -0.3888887801428806
+    },
+    "moving_averages": {
+      "ma_7day": 52.72318282853746,
+      "ma_30day": 54.46628234824697,
+      "ma_90day": 54.57830205222493
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 53.279423915325836,
+        "lower_bound": 36.053391515431045,
+        "upper_bound": 70.50545631522063
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 53.202852403524474,
+        "lower_bound": 35.97682000362968,
+        "upper_bound": 70.42888480341927
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 53.12628089172311,
+        "lower_bound": 35.90024849182832,
+        "upper_bound": 70.3523132916179
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 53.04970937992175,
+        "lower_bound": 35.82367698002696,
+        "upper_bound": 70.27574177981654
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 52.97313786812039,
+        "lower_bound": 35.7471054682256,
+        "upper_bound": 70.19917026801518
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 52.89656635631902,
+        "lower_bound": 35.67053395642423,
+        "upper_bound": 70.12259875621382
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 52.81999484451766,
+        "lower_bound": 35.59396244462287,
+        "upper_bound": 70.04602724441244
+      }
+    ]
+  },
+  {
+    "indicator_id": 11,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.001137463055143869,
+      "slope": -0.00717610058303755,
+      "r_squared": 0.001137463055143869,
+      "rate_of_change": -0.10615632188938283
+    },
+    "moving_averages": {
+      "ma_7day": 46.49402392005728,
+      "ma_30day": 46.550730931022095,
+      "ma_90day": 46.44018562125128
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 46.43950137198501,
+        "lower_bound": 42.75827988370689,
+        "upper_bound": 50.12072286026313
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 46.43232527140197,
+        "lower_bound": 42.75110378312385,
+        "upper_bound": 50.11354675968009
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 46.42514917081893,
+        "lower_bound": 42.743927682540814,
+        "upper_bound": 50.10637065909705
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 46.417973070235895,
+        "lower_bound": 42.736751581957776,
+        "upper_bound": 50.099194558514014
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 46.41079696965286,
+        "lower_bound": 42.72957548137474,
+        "upper_bound": 50.092018457930976
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 46.40362086906982,
+        "lower_bound": 42.7223993807917,
+        "upper_bound": 50.08484235734794
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 46.39644476848678,
+        "lower_bound": 42.71522328020866,
+        "upper_bound": 50.0776662567649
+      }
+    ]
+  },
+  {
+    "indicator_id": 12,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.08025919379950076,
+      "slope": -0.31739820449950307,
+      "r_squared": 0.08025919379950076,
+      "rate_of_change": 0.2920695611766259
+    },
+    "moving_averages": {
+      "ma_7day": 20.977918298992027,
+      "ma_30day": 23.698304935679957,
+      "ma_90day": 32.54752029730515
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 18.77863276593765,
+        "lower_bound": 0.17880103211127008,
+        "upper_bound": 37.378464499764036
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 18.461234561438147,
+        "lower_bound": -0.1385971723882342,
+        "upper_bound": 37.061066295264524
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 18.143836356938642,
+        "lower_bound": -0.4559953768877385,
+        "upper_bound": 36.74366809076503
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 17.82643815243914,
+        "lower_bound": -0.7733935813872392,
+        "upper_bound": 36.42626988626552
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 17.509039947939637,
+        "lower_bound": -1.0907917858867435,
+        "upper_bound": 36.10887168176602
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 17.191641743440137,
+        "lower_bound": -1.4081899903862443,
+        "upper_bound": 35.79147347726652
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 16.874243538940632,
+        "lower_bound": -1.7255881948857485,
+        "upper_bound": 35.47407527276701
+      }
+    ]
+  },
+  {
+    "indicator_id": 13,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.01301589709110343,
+      "slope": 0.028379880821349325,
+      "r_squared": 0.01301589709110343,
+      "rate_of_change": -0.05367462890501476
+    },
+    "moving_averages": {
+      "ma_7day": 41.439437239139885,
+      "ma_30day": 41.68241381091405,
+      "ma_90day": 41.490076569643975
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 42.12230196364496,
+        "lower_bound": 37.8442327012617,
+        "upper_bound": 46.40037122602821
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 42.150681844466305,
+        "lower_bound": 37.87261258208305,
+        "upper_bound": 46.42875110684956
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 42.17906172528765,
+        "lower_bound": 37.9009924629044,
+        "upper_bound": 46.45713098767091
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 42.207441606109,
+        "lower_bound": 37.929372343725746,
+        "upper_bound": 46.485510868492256
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 42.235821486930355,
+        "lower_bound": 37.9577522245471,
+        "upper_bound": 46.51389074931361
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 42.2642013677517,
+        "lower_bound": 37.98613210536845,
+        "upper_bound": 46.54227063013496
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 42.29258124857305,
+        "lower_bound": 38.014511986189795,
+        "upper_bound": 46.570650510956305
+      }
+    ]
+  },
+  {
+    "indicator_id": 14,
+    "trend": {
+      "direction": "rising",
+      "strength": 0.05274200021760034,
+      "slope": 0.25770017162139547,
+      "r_squared": 0.05274200021760034,
+      "rate_of_change": 0.37197315486570376
+    },
+    "moving_averages": {
+      "ma_7day": 80.46366151376999,
+      "ma_30day": 79.75210166252414,
+      "ma_90day": 70.87100141410721
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 83.74645432265574,
+        "lower_bound": 64.84088461815921,
+        "upper_bound": 102.65202402715227
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 84.00415449427713,
+        "lower_bound": 65.0985847897806,
+        "upper_bound": 102.90972419877366
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 84.26185466589853,
+        "lower_bound": 65.356284961402,
+        "upper_bound": 103.16742437039505
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 84.51955483751992,
+        "lower_bound": 65.61398513302339,
+        "upper_bound": 103.42512454201645
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 84.77725500914131,
+        "lower_bound": 65.87168530464479,
+        "upper_bound": 103.68282471363784
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 85.0349551807627,
+        "lower_bound": 66.12938547626617,
+        "upper_bound": 103.94052488525922
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 85.29265535238409,
+        "lower_bound": 66.38708564788756,
+        "upper_bound": 104.19822505688062
+      }
+    ]
+  },
+  {
+    "indicator_id": 15,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.0005068519992844671,
+      "slope": 0.006777662113182707,
+      "r_squared": 0.0005068519992844671,
+      "rate_of_change": 0.1977007539640816
+    },
+    "moving_averages": {
+      "ma_7day": 43.605659361958146,
+      "ma_30day": 44.7793291513775,
+      "ma_90day": 45.20200005661831
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 44.88438291413182,
+        "lower_bound": 39.67425409456517,
+        "upper_bound": 50.09451173369847
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 44.891160576245,
+        "lower_bound": 39.68103175667835,
+        "upper_bound": 50.10128939581165
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 44.89793823835818,
+        "lower_bound": 39.68780941879153,
+        "upper_bound": 50.10806705792483
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 44.904715900471366,
+        "lower_bound": 39.69458708090472,
+        "upper_bound": 50.114844720038015
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 44.911493562584546,
+        "lower_bound": 39.7013647430179,
+        "upper_bound": 50.121622382151195
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 44.918271224697726,
+        "lower_bound": 39.70814240513108,
+        "upper_bound": 50.128400044264374
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 44.92504888681091,
+        "lower_bound": 39.714920067244265,
+        "upper_bound": 50.13517770637756
+      }
+    ]
+  },
+  {
+    "indicator_id": 16,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.17017389232562966,
+      "slope": -0.4481986489097786,
+      "r_squared": 0.17017389232562966,
+      "rate_of_change": -0.8226753968589043
+    },
+    "moving_averages": {
+      "ma_7day": 24.139253613037248,
+      "ma_30day": 29.685252604080723,
+      "ma_90day": 39.659378644414886
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 22.73817354597914,
+        "lower_bound": 5.605038326381056,
+        "upper_bound": 39.871308765577226
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 22.289974897069364,
+        "lower_bound": 5.156839677471279,
+        "upper_bound": 39.423110116667445
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 21.841776248159583,
+        "lower_bound": 4.708641028561498,
+        "upper_bound": 38.974911467757664
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 21.393577599249802,
+        "lower_bound": 4.2604423796517175,
+        "upper_bound": 38.526712818847884
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 20.945378950340025,
+        "lower_bound": 3.8122437307419403,
+        "upper_bound": 38.07851416993811
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 20.497180301430248,
+        "lower_bound": 3.364045081832163,
+        "upper_bound": 37.630315521028336
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 20.048981652520467,
+        "lower_bound": 2.9158464329223825,
+        "upper_bound": 37.182116872118556
+      }
+    ]
+  },
+  {
+    "indicator_id": 17,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.05945531484581996,
+      "slope": -0.25514653044573554,
+      "r_squared": 0.05945531484581996,
+      "rate_of_change": -0.44584889883078666
+    },
+    "moving_averages": {
+      "ma_7day": 29.602868548603976,
+      "ma_30day": 30.392921503759105,
+      "ma_90day": 38.41324111550904
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 26.438150281850184,
+        "lower_bound": 8.870921358190522,
+        "upper_bound": 44.00537920550985
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 26.18300375140445,
+        "lower_bound": 8.615774827744787,
+        "upper_bound": 43.75023267506411
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 25.927857220958714,
+        "lower_bound": 8.360628297299051,
+        "upper_bound": 43.49508614461838
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 25.672710690512975,
+        "lower_bound": 8.105481766853313,
+        "upper_bound": 43.23993961417264
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 25.417564160067236,
+        "lower_bound": 7.850335236407574,
+        "upper_bound": 42.9847930837269
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 25.1624176296215,
+        "lower_bound": 7.595188705961839,
+        "upper_bound": 42.729646553281164
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 24.907271099175766,
+        "lower_bound": 7.340042175516103,
+        "upper_bound": 42.47450002283543
+      }
+    ]
+  },
+  {
+    "indicator_id": 18,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.030238896204465248,
+      "slope": -0.18938591319696477,
+      "r_squared": 0.030238896204465248,
+      "rate_of_change": -0.5190690825880397
+    },
+    "moving_averages": {
+      "ma_7day": 52.186443584226254,
+      "ma_30day": 53.5216673229104,
+      "ma_90day": 52.94699016854048
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 50.586185668357444,
+        "lower_bound": 32.02027295691516,
+        "upper_bound": 69.15209837979972
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 50.39679975516047,
+        "lower_bound": 31.830887043718185,
+        "upper_bound": 68.96271246660277
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 50.20741384196351,
+        "lower_bound": 31.64150113052122,
+        "upper_bound": 68.7733265534058
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 50.01802792876654,
+        "lower_bound": 31.452115217324256,
+        "upper_bound": 68.58394064020882
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 49.82864201556958,
+        "lower_bound": 31.26272930412729,
+        "upper_bound": 68.39455472701187
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 49.63925610237261,
+        "lower_bound": 31.073343390930326,
+        "upper_bound": 68.20516881381491
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 49.44987018917565,
+        "lower_bound": 30.88395747773336,
+        "upper_bound": 68.01578290061794
+      }
+    ]
+  },
+  {
+    "indicator_id": 19,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.0017795434816654453,
+      "slope": 0.04249322940642062,
+      "r_squared": 0.0017795434816654453,
+      "rate_of_change": -0.46307076156736476
+    },
+    "moving_averages": {
+      "ma_7day": 34.70917188448775,
+      "ma_30day": 34.12659776835902,
+      "ma_90day": 42.22855255318656
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 34.78524282415853,
+        "lower_bound": 17.363247727116807,
+        "upper_bound": 52.20723792120025
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 34.82773605356495,
+        "lower_bound": 17.405740956523225,
+        "upper_bound": 52.24973115060667
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 34.870229282971366,
+        "lower_bound": 17.448234185929643,
+        "upper_bound": 52.29222438001309
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 34.91272251237779,
+        "lower_bound": 17.490727415336067,
+        "upper_bound": 52.33471760941951
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 34.95521574178421,
+        "lower_bound": 17.533220644742485,
+        "upper_bound": 52.37721083882593
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 34.997708971190626,
+        "lower_bound": 17.575713874148903,
+        "upper_bound": 52.41970406823235
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 35.04020220059705,
+        "lower_bound": 17.618207103555328,
+        "upper_bound": 52.462197297638774
+      }
+    ]
+  },
+  {
+    "indicator_id": 20,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.005053551519019719,
+      "slope": 0.06487569067989378,
+      "r_squared": 0.005053551519019719,
+      "rate_of_change": 0.13555222800397643
+    },
+    "moving_averages": {
+      "ma_7day": 71.4385172516162,
+      "ma_30day": 69.40125672997628,
+      "ma_90day": 58.52424232354145
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 70.4068299355146,
+        "lower_bound": 54.648771114143685,
+        "upper_bound": 86.1648887568855
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 70.47170562619449,
+        "lower_bound": 54.71364680482358,
+        "upper_bound": 86.2297644475654
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 70.53658131687438,
+        "lower_bound": 54.778522495503466,
+        "upper_bound": 86.29464013824528
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 70.60145700755427,
+        "lower_bound": 54.843398186183364,
+        "upper_bound": 86.35951582892518
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 70.66633269823416,
+        "lower_bound": 54.90827387686325,
+        "upper_bound": 86.42439151960507
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 70.73120838891406,
+        "lower_bound": 54.973149567543146,
+        "upper_bound": 86.48926721028496
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 70.79608407959395,
+        "lower_bound": 55.038025258223044,
+        "upper_bound": 86.55414290096486
+      }
+    ]
+  },
+  {
+    "indicator_id": 21,
+    "trend": {
+      "direction": "rising",
+      "strength": 0.11845220564933655,
+      "slope": 0.42533102126930133,
+      "r_squared": 0.11845220564933655,
+      "rate_of_change": 1.0114300803355325
+    },
+    "moving_averages": {
+      "ma_7day": 84.26918078507586,
+      "ma_30day": 78.34750323733874,
+      "ma_90day": 68.24166411223561
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 84.9401340670129,
+        "lower_bound": 64.85394099027201,
+        "upper_bound": 105.0263271437538
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 85.3654650882822,
+        "lower_bound": 65.27927201154131,
+        "upper_bound": 105.4516581650231
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 85.79079610955151,
+        "lower_bound": 65.70460303281061,
+        "upper_bound": 105.8769891862924
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 86.21612713082081,
+        "lower_bound": 66.12993405407991,
+        "upper_bound": 106.3023202075617
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 86.64145815209011,
+        "lower_bound": 66.55526507534921,
+        "upper_bound": 106.72765122883101
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 87.06678917335941,
+        "lower_bound": 66.98059609661851,
+        "upper_bound": 107.15298225010031
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 87.49212019462871,
+        "lower_bound": 67.40592711788781,
+        "upper_bound": 107.57831327136961
+      }
+    ]
+  },
+  {
+    "indicator_id": 22,
+    "trend": {
+      "direction": "falling",
+      "strength": 0.12265177259349282,
+      "slope": -0.3603194921405827,
+      "r_squared": 0.12265177259349282,
+      "rate_of_change": -0.3174107463730902
+    },
+    "moving_averages": {
+      "ma_7day": 22.379257188290733,
+      "ma_30day": 26.150642795137898,
+      "ma_90day": 35.70705695323039
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 20.565690666958858,
+        "lower_bound": 3.8833854720526837,
+        "upper_bound": 37.247995861865036
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 20.205371174818275,
+        "lower_bound": 3.5230659799121007,
+        "upper_bound": 36.887676369724446
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 19.845051682677692,
+        "lower_bound": 3.1627464877715177,
+        "upper_bound": 36.52735687758387
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 19.48473219053711,
+        "lower_bound": 2.8024269956309347,
+        "upper_bound": 36.16703738544328
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 19.124412698396526,
+        "lower_bound": 2.4421075034903517,
+        "upper_bound": 35.806717893302704
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 18.764093206255943,
+        "lower_bound": 2.0817880113497687,
+        "upper_bound": 35.446398401162114
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 18.40377371411536,
+        "lower_bound": 1.7214685192091856,
+        "upper_bound": 35.08607890902154
+      }
+    ]
+  },
+  {
+    "indicator_id": 23,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.007175907101499342,
+      "slope": 0.06950652179394452,
+      "r_squared": 0.007175907101499342,
+      "rate_of_change": -0.003875033922226834
+    },
+    "moving_averages": {
+      "ma_7day": 51.13880856652195,
+      "ma_30day": 50.27220474288421,
+      "ma_90day": 47.87730695148282
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 51.34955583069034,
+        "lower_bound": 37.19675076946978,
+        "upper_bound": 65.50236089191091
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 51.41906235248428,
+        "lower_bound": 37.26625729126372,
+        "upper_bound": 65.57186741370485
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 51.48856887427823,
+        "lower_bound": 37.33576381305767,
+        "upper_bound": 65.64137393549879
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 51.55807539607217,
+        "lower_bound": 37.40527033485161,
+        "upper_bound": 65.71088045729273
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 51.62758191786612,
+        "lower_bound": 37.474776856645555,
+        "upper_bound": 65.78038697908669
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 51.69708843966006,
+        "lower_bound": 37.544283378439495,
+        "upper_bound": 65.84989350088063
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 51.766594961454004,
+        "lower_bound": 37.61378990023344,
+        "upper_bound": 65.91940002267457
+      }
+    ]
+  },
+  {
+    "indicator_id": 24,
+    "trend": {
+      "direction": "stable",
+      "strength": 0.00930831928821928,
+      "slope": 0.11193313929872441,
+      "r_squared": 0.00930831928821928,
+      "rate_of_change": -0.33609754194810837
+    },
+    "moving_averages": {
+      "ma_7day": 74.22947551935938,
+      "ma_30day": 74.26991019957958,
+      "ma_90day": 64.6804135721872
+    },
+    "forecast": [
+      {
+        "days_ahead": 1,
+        "forecast_value": 76.00487385870984,
+        "lower_bound": 56.01493227995946,
+        "upper_bound": 95.99481543746023
+      },
+      {
+        "days_ahead": 2,
+        "forecast_value": 76.11680699800856,
+        "lower_bound": 56.12686541925817,
+        "upper_bound": 96.10674857675895
+      },
+      {
+        "days_ahead": 3,
+        "forecast_value": 76.22874013730728,
+        "lower_bound": 56.2387985585569,
+        "upper_bound": 96.21868171605766
+      },
+      {
+        "days_ahead": 4,
+        "forecast_value": 76.34067327660601,
+        "lower_bound": 56.35073169785563,
+        "upper_bound": 96.3306148553564
+      },
+      {
+        "days_ahead": 5,
+        "forecast_value": 76.45260641590473,
+        "lower_bound": 56.46266483715434,
+        "upper_bound": 96.44254799465511
+      },
+      {
+        "days_ahead": 6,
+        "forecast_value": 76.56453955520345,
+        "lower_bound": 56.57459797645307,
+        "upper_bound": 96.55448113395383
+      },
+      {
+        "days_ahead": 7,
+        "forecast_value": 76.67647269450218,
+        "lower_bound": 56.6865311157518,
+        "upper_bound": 96.66641427325257
+      }
+    ]
+  }
+]

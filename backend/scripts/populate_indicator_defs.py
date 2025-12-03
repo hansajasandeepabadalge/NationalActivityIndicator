@@ -17,18 +17,14 @@ db = SessionLocal()
 print("Populating indicator definitions...")
 count = 0
 
-for indicator_id, config in INDICATOR_KEYWORDS.items():
-    existing = db.query(IndicatorDefinition).filter_by(indicator_code=indicator_id).first()
+for indicator_code, config in INDICATOR_KEYWORDS.items():
+    existing = db.query(IndicatorDefinition).filter_by(indicator_id=indicator_code).first()
     if not existing:
         indicator = IndicatorDefinition(
-            indicator_code=indicator_id,
+            indicator_id=indicator_code,
             indicator_name=config['name'],
-            display_name=config['name'],
-            pestel_category=config['category'],
-            calculation_type='frequency',
-            value_type='index',
-            min_value=0,
-            max_value=100,
+            pestel_category=config['pestel'],
+            calculation_type='frequency_count',
             description=f"Measures {config['name'].lower()}",
             is_active=True
         )
