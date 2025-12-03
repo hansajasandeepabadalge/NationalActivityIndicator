@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>National Activity Indicator Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 National Activity Indicator Dashboard</h1>
+            <div id="status">
+                <span id="api-status">⚪ Connecting...</span>
+                <span id="last-update">Last updated: --</span>
+            </div>
+        </header>
+
+        <section class="indicators-grid" id="indicators">
+            <p>Loading indicators...</p>
+        </section>
+
+        <section class="charts">
+            <h2>Trend Visualization</h2>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </section>
+
+        <section class="alerts">
+            <h2>Recent Narratives</h2>
+            <div id="narratives">Loading...</div>
+        </section>
+    </div>
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>
