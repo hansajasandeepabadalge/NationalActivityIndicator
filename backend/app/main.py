@@ -1,15 +1,10 @@
 from fastapi import FastAPI
-from app.core.config import settings
-from app.api.v1.router import api_router
+from app.api.v1.endpoints import layer3
 
-def create_app() -> FastAPI:
-    app = FastAPI(
-        title=settings.PROJECT_NAME,
-        openapi_url=f"{settings.API_V1_STR}/openapi.json"
-    )
+app = FastAPI(title="National Activity Indicator - Layer 3 Engine")
 
-    app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(layer3.router, prefix="/api/v1/layer3", tags=["Layer 3"])
 
-    return app
-
-app = create_app()
+@app.get("/")
+def root():
+    return {"message": "Layer 3 Operational Indicator Engine is running"}
