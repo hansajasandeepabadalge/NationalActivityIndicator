@@ -22,11 +22,14 @@ from app.layer4.schemas import (
     ActionPlanStep,
     NarrativeContent,
     InsightWithRecommendations,
+    InsightPriority,
+    TopPriorities,
 )
 from app.layer4.risk_detection import RuleBasedRiskDetector, PatternBasedRiskDetector
 from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
 from app.layer4.recommendation import RecommendationEngine
 from app.layer4.scoring import RiskScorer
+from app.layer4.prioritization import InsightPrioritizer
 from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 router = APIRouter()
@@ -37,6 +40,7 @@ pattern_detector = PatternBasedRiskDetector()
 opportunity_detector = RuleBasedOpportunityDetector()
 recommendation_engine = RecommendationEngine()
 risk_scorer = RiskScorer()
+insight_prioritizer = InsightPrioritizer()
 
 
 # ==============================================================================
@@ -442,6 +446,204 @@ async def list_action_plans(
     """
     # In production, query from database
     return []
+
+
+# ==============================================================================
+# Prioritization Endpoints
+# ==============================================================================
+
+@router.get("/priorities/{company_id}", response_model=List[InsightPriority])
+async def get_all_priorities(
+    company_id: str,
+    include_resolved: bool = Query(False, description="Include resolved insights"),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+):
+    """
+    Get all prioritized insights for a company.
+    
+    Returns all risks and opportunities ranked by priority score.
+    Priority score combines urgency, actionability, severity, strategic importance,
+    and time sensitivity with appropriate weights.
+    """
+    try:
+        # Get risks and opportunities
+        risks = _get_mock_detected_risks(company_id)
+        opportunities = _get_mock_detected_opportunities(company_id)
+        
+        # Filter out resolved if requested
+        if not include_resolved:
+            risks = [r for r in risks if hasattr(r, 'status') and r.status != "resolved" or not hasattr(r, 'status')]
+            opportunities = [o for o in opportunities if hasattr(o, 'status') and o.status != "captured" or not hasattr(o, 'status')]
+        
+        # Get company profile (in production, this would come from database)
+        company_profile = _get_mock_company_profile(company_id)
+        
+        # Prioritize all insights
+        all_priorities = insight_prioritizer.prioritize_all(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+        )
+        
+        # Apply pagination
+        return all_priorities[offset:offset + limit]
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prioritization failed: {str(e)}")
+
+
+@router.get("/top-priorities/{company_id}", response_model=TopPriorities)
+async def get_top_priorities(
+    company_id: str,
+    limit: int = Query(5, ge=1, le=10, description="Number of top priorities (max 10)"),
+):
+    """
+    Get the top N priorities for a company.
+    
+    Returns a structured response with the most critical insights
+    that require immediate attention, combining both risks and opportunities.
+    
+    The prioritization algorithm considers:
+    - Urgency (30%): How soon action is needed
+    - Actionability (25%): How easily the insight can be acted upon
+    - Severity/Impact (25%): Potential business impact
+    - Strategic Importance (15%): Alignment with company strategy
+    - Time Sensitivity (5%): Escalation over time
+    """
+    try:
+        # Get risks and opportunities
+        risks = _get_mock_detected_risks(company_id)
+        opportunities = _get_mock_detected_opportunities(company_id)
+        
+        # Get company profile
+        company_profile = _get_mock_company_profile(company_id)
+        
+        # Get top priorities
+        top_priorities = insight_prioritizer.get_top_priorities(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+            limit=limit,
+        )
+        
+        return top_priorities
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Top priorities calculation failed: {str(e)}")
+
+
+@router.get("/priorities/{company_id}/urgent", response_model=List[InsightPriority])
+async def get_urgent_priorities(
+    company_id: str,
+):
+    """
+    Get only urgent priorities that require immediate action.
+    
+    Returns insights where is_urgent=True or requires_immediate_action=True.
+    """
+    try:
+        # Get all priorities
+        risks = _get_mock_detected_risks(company_id)
+        opportunities = _get_mock_detected_opportunities(company_id)
+        company_profile = _get_mock_company_profile(company_id)
+        
+        all_priorities = insight_prioritizer.prioritize_all(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+        )
+        
+        # Filter for urgent only
+        urgent = [p for p in all_priorities if p.is_urgent or p.requires_immediate_action]
+        
+        return urgent
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Urgent priorities calculation failed: {str(e)}")
+
+
+@router.get("/priorities/{company_id}/by-category")
+async def get_priorities_by_category(
+    company_id: str,
+):
+    """
+    Get priorities grouped by category.
+    
+    Returns a dictionary with categories as keys and lists of priorities as values.
+    """
+    try:
+        # Get all priorities
+        risks = _get_mock_detected_risks(company_id)
+        opportunities = _get_mock_detected_opportunities(company_id)
+        company_profile = _get_mock_company_profile(company_id)
+        
+        all_priorities = insight_prioritizer.prioritize_all(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+        )
+        
+        # Group by category
+        by_category: Dict[str, List[Dict[str, Any]]] = {}
+        for priority in all_priorities:
+            cat = priority.category
+            if cat not in by_category:
+                by_category[cat] = []
+            by_category[cat].append(priority.model_dump())
+        
+        return {
+            "company_id": company_id,
+            "categories": by_category,
+            "total_priorities": len(all_priorities),
+            "category_count": len(by_category),
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Priorities by category failed: {str(e)}")
+
+
+@router.post("/priorities/{company_id}/recalculate", response_model=TopPriorities)
+async def recalculate_priorities(
+    company_id: str,
+    urgency_weight: float = Query(0.30, ge=0, le=1),
+    actionability_weight: float = Query(0.25, ge=0, le=1),
+    severity_weight: float = Query(0.25, ge=0, le=1),
+    strategic_weight: float = Query(0.15, ge=0, le=1),
+    time_sensitivity_weight: float = Query(0.05, ge=0, le=1),
+):
+    """
+    Recalculate priorities with custom weights.
+    
+    Allows adjusting the weight of different factors in priority calculation.
+    Weights should sum to approximately 1.0.
+    """
+    try:
+        # Create a custom prioritizer with adjusted weights
+        custom_prioritizer = InsightPrioritizer()
+        custom_prioritizer.urgency_weight = urgency_weight
+        custom_prioritizer.actionability_weight = actionability_weight
+        custom_prioritizer.severity_weight = severity_weight
+        custom_prioritizer.strategic_weight = strategic_weight
+        custom_prioritizer.time_sensitivity_weight = time_sensitivity_weight
+        
+        # Get risks and opportunities
+        risks = _get_mock_detected_risks(company_id)
+        opportunities = _get_mock_detected_opportunities(company_id)
+        company_profile = _get_mock_company_profile(company_id)
+        
+        # Get top priorities with custom weights
+        top_priorities = custom_prioritizer.get_top_priorities(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+            limit=5,
+        )
+        
+        return top_priorities
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Priority recalculation failed: {str(e)}")
 
 
 # ==============================================================================
@@ -962,3 +1164,147 @@ def _opportunity_with_score_to_detected(opp: OpportunityWithScore) -> DetectedOp
         triggering_indicators=opp.triggering_indicators,
         detection_method="gap_analysis",
     )
+
+
+def _get_mock_detected_risks(company_id: Optional[str] = None) -> List[DetectedRisk]:
+    """Generate mock DetectedRisk objects for prioritization testing."""
+    now = datetime.now()
+    
+    risks = [
+        DetectedRisk(
+            risk_code="RISK_POWER_001",
+            company_id=company_id or "COMP001",
+            title="Power Supply Reliability Risk",
+            description="Power reliability has dropped below 70%, indicating potential operational disruptions.",
+            category="infrastructure",
+            probability=Decimal("0.75"),
+            impact=Decimal("8.0"),
+            urgency=4,  # High urgency
+            confidence=Decimal("0.85"),
+            final_score=Decimal("7.2"),
+            severity_level="high",
+            triggering_indicators={"OPS_POWER_RELIABILITY": 0.65},
+            detection_method="rule_based",
+        ),
+        DetectedRisk(
+            risk_code="RISK_LOGISTICS_001",
+            company_id=company_id or "COMP001",
+            title="Logistics Efficiency Degradation",
+            description="Transportation and logistics efficiency below acceptable threshold.",
+            category="operational",
+            probability=Decimal("0.60"),
+            impact=Decimal("6.5"),
+            urgency=3,  # Medium urgency
+            confidence=Decimal("0.80"),
+            final_score=Decimal("5.8"),
+            severity_level="medium",
+            triggering_indicators={"OPS_LOGISTICS_EFFICIENCY": 0.55},
+            detection_method="rule_based",
+        ),
+        DetectedRisk(
+            risk_code="RISK_SUPPLIER_001",
+            company_id=company_id or "COMP001",
+            title="Supplier Reliability Concerns",
+            description="Key supplier reliability metrics showing decline.",
+            category="supply_chain",
+            probability=Decimal("0.55"),
+            impact=Decimal("7.0"),
+            urgency=3,
+            confidence=Decimal("0.75"),
+            final_score=Decimal("5.5"),
+            severity_level="medium",
+            triggering_indicators={"OPS_SUPPLIER_RELIABILITY": 0.60},
+            detection_method="rule_based",
+        ),
+        DetectedRisk(
+            risk_code="RISK_CASH_001",
+            company_id=company_id or "COMP001",
+            title="Cash Flow Pressure",
+            description="Working capital indicators showing strain.",
+            category="financial",
+            probability=Decimal("0.50"),
+            impact=Decimal("8.5"),
+            urgency=4,  # High urgency for financial
+            confidence=Decimal("0.70"),
+            final_score=Decimal("6.0"),
+            severity_level="high",
+            triggering_indicators={"OPS_CASH_FLOW": 0.45},
+            detection_method="rule_based",
+        ),
+    ]
+    
+    return risks
+
+
+def _get_mock_detected_opportunities(company_id: Optional[str] = None) -> List[DetectedOpportunity]:
+    """Generate mock DetectedOpportunity objects for prioritization testing."""
+    now = datetime.now()
+    
+    opportunities = [
+        DetectedOpportunity(
+            opportunity_code="OPP_ENERGY_001",
+            company_id=company_id or "COMP001",
+            title="Energy Efficiency Optimization",
+            description="High energy costs present opportunity for efficiency improvements.",
+            category="cost_reduction",
+            potential_value=Decimal("7.5"),
+            feasibility=Decimal("0.75"),
+            timing_score=Decimal("0.80"),
+            strategic_fit=Decimal("0.85"),
+            final_score=Decimal("7.2"),
+            priority_level="high",
+            triggering_indicators={"OPS_INPUT_COST": 0.80, "OPS_POWER_RELIABILITY": 0.65},
+            detection_method="gap_analysis",
+        ),
+        DetectedOpportunity(
+            opportunity_code="OPP_MARKET_001",
+            company_id=company_id or "COMP001",
+            title="Market Expansion Opportunity",
+            description="Strong market demand indicators suggest expansion potential.",
+            category="market_expansion",
+            potential_value=Decimal("8.0"),
+            feasibility=Decimal("0.65"),
+            timing_score=Decimal("0.70"),
+            strategic_fit=Decimal("0.80"),
+            final_score=Decimal("6.8"),
+            priority_level="high",
+            triggering_indicators={"OPS_MARKET_DEMAND": 0.70, "OPS_PRODUCTION_CAPACITY": 0.75},
+            detection_method="gap_analysis",
+        ),
+        DetectedOpportunity(
+            opportunity_code="OPP_DIGITAL_001",
+            company_id=company_id or "COMP001",
+            title="Digital Transformation Opportunity",
+            description="Low digital maturity creates opportunity for technology investment.",
+            category="technology",
+            potential_value=Decimal("6.5"),
+            feasibility=Decimal("0.60"),
+            timing_score=Decimal("0.75"),
+            strategic_fit=Decimal("0.70"),
+            final_score=Decimal("5.9"),
+            priority_level="medium",
+            triggering_indicators={"OPS_DIGITAL_MATURITY": 0.55, "OPS_TECH_ADOPTION": 0.65},
+            detection_method="gap_analysis",
+        ),
+    ]
+    
+    return opportunities
+
+
+def _get_mock_company_profile(company_id: str) -> Dict[str, Any]:
+    """Generate mock company profile for prioritization context."""
+    return {
+        "company_id": company_id,
+        "name": f"Company {company_id}",
+        "industry": "manufacturing",
+        "size": "medium",
+        "risk_tolerance": "moderate",
+        "strategic_priorities": [
+            "operational_efficiency",
+            "cost_reduction",
+            "market_expansion",
+        ],
+        "financial_health": "stable",
+        "growth_stage": "mature",
+        "regulatory_environment": "standard",
+    }

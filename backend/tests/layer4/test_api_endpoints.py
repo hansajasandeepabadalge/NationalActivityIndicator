@@ -414,6 +414,189 @@ class TestEndpointIntegration:
         assert narrative.headline is not None
 
 
+# ==============================================================================
+# Prioritization Endpoint Tests
+# ==============================================================================
+
+class TestPrioritizationEndpoints:
+    """Test prioritization API endpoints"""
+    
+    def test_get_all_priorities_endpoint_exists(self):
+        """Test that get_all_priorities endpoint is defined"""
+        from app.api.v1.endpoints.insights import get_all_priorities
+        
+        assert callable(get_all_priorities)
+    
+    def test_get_top_priorities_endpoint_exists(self):
+        """Test that get_top_priorities endpoint is defined"""
+        from app.api.v1.endpoints.insights import get_top_priorities
+        
+        assert callable(get_top_priorities)
+    
+    def test_get_urgent_priorities_endpoint_exists(self):
+        """Test that get_urgent_priorities endpoint is defined"""
+        from app.api.v1.endpoints.insights import get_urgent_priorities
+        
+        assert callable(get_urgent_priorities)
+    
+    def test_get_priorities_by_category_endpoint_exists(self):
+        """Test that get_priorities_by_category endpoint is defined"""
+        from app.api.v1.endpoints.insights import get_priorities_by_category
+        
+        assert callable(get_priorities_by_category)
+    
+    def test_recalculate_priorities_endpoint_exists(self):
+        """Test that recalculate_priorities endpoint is defined"""
+        from app.api.v1.endpoints.insights import recalculate_priorities
+        
+        assert callable(recalculate_priorities)
+    
+    def test_mock_detected_risks_returns_list(self):
+        """Test that mock detected risks helper returns data"""
+        from app.api.v1.endpoints.insights import _get_mock_detected_risks
+        
+        risks = _get_mock_detected_risks("COMP001")
+        
+        assert isinstance(risks, list)
+        assert len(risks) > 0
+        
+        # Check first risk structure
+        risk = risks[0]
+        assert hasattr(risk, 'risk_code')
+        assert hasattr(risk, 'company_id')
+        assert hasattr(risk, 'title')
+        assert hasattr(risk, 'category')
+        assert hasattr(risk, 'final_score')
+    
+    def test_mock_detected_opportunities_returns_list(self):
+        """Test that mock detected opportunities helper returns data"""
+        from app.api.v1.endpoints.insights import _get_mock_detected_opportunities
+        
+        opportunities = _get_mock_detected_opportunities("COMP001")
+        
+        assert isinstance(opportunities, list)
+        assert len(opportunities) > 0
+        
+        # Check first opportunity structure
+        opp = opportunities[0]
+        assert hasattr(opp, 'opportunity_code')
+        assert hasattr(opp, 'company_id')
+        assert hasattr(opp, 'title')
+        assert hasattr(opp, 'category')
+        assert hasattr(opp, 'final_score')
+    
+    def test_mock_company_profile_returns_dict(self):
+        """Test that mock company profile helper returns data"""
+        from app.api.v1.endpoints.insights import _get_mock_company_profile
+        
+        profile = _get_mock_company_profile("COMP001")
+        
+        assert isinstance(profile, dict)
+        assert profile["company_id"] == "COMP001"
+        assert "industry" in profile
+        assert "strategic_priorities" in profile
+    
+    def test_insight_prioritizer_is_initialized(self):
+        """Test that insight prioritizer is initialized in the module"""
+        from app.api.v1.endpoints.insights import insight_prioritizer
+        
+        assert insight_prioritizer is not None
+        assert hasattr(insight_prioritizer, 'prioritize')
+        assert hasattr(insight_prioritizer, 'prioritize_all')
+        assert hasattr(insight_prioritizer, 'get_top_priorities')
+
+
+class TestPrioritizationWorkflow:
+    """Test prioritization workflow integration"""
+    
+    def test_prioritization_integration(self):
+        """Test complete prioritization workflow"""
+        from app.api.v1.endpoints.insights import (
+            _get_mock_detected_risks,
+            _get_mock_detected_opportunities,
+            _get_mock_company_profile,
+            insight_prioritizer,
+        )
+        
+        # Get test data
+        risks = _get_mock_detected_risks("COMP001")
+        opportunities = _get_mock_detected_opportunities("COMP001")
+        company_profile = _get_mock_company_profile("COMP001")
+        
+        # Prioritize all
+        all_priorities = insight_prioritizer.prioritize_all(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+        )
+        
+        assert len(all_priorities) == len(risks) + len(opportunities)
+        
+        # Check priority structure
+        for priority in all_priorities:
+            assert hasattr(priority, 'insight_id')
+            assert hasattr(priority, 'priority_rank')
+            assert hasattr(priority, 'priority_score')
+            assert hasattr(priority, 'actionability_score')
+    
+    def test_top_priorities_returns_limited_results(self):
+        """Test top priorities returns correct number of results"""
+        from app.api.v1.endpoints.insights import (
+            _get_mock_detected_risks,
+            _get_mock_detected_opportunities,
+            _get_mock_company_profile,
+            insight_prioritizer,
+        )
+        
+        risks = _get_mock_detected_risks("COMP001")
+        opportunities = _get_mock_detected_opportunities("COMP001")
+        company_profile = _get_mock_company_profile("COMP001")
+        
+        top_priorities = insight_prioritizer.get_top_priorities(
+            risks=risks,
+            opportunities=opportunities,
+            company_profile=company_profile,
+            limit=3,
+        )
+        
+        assert len(top_priorities.priorities) == 3
+        assert top_priorities.total_active_insights == len(risks) + len(opportunities)
+    
+    def test_priorities_are_ranked_by_score(self):
+        """Test that priorities are ranked by priority score"""
+        from app.api.v1.endpoints.insights import (
+            _get_mock_detected_risks,
+            _get_mock_detected_opportunities,
+            insight_prioritizer,
+        )
+        
+        risks = _get_mock_detected_risks("COMP001")
+        opportunities = _get_mock_detected_opportunities("COMP001")
+        
+        all_priorities = insight_prioritizer.prioritize_all(risks, opportunities)
+        
+        # Check descending order
+        scores = [float(p.priority_score) for p in all_priorities]
+        assert scores == sorted(scores, reverse=True)
+    
+    def test_both_risks_and_opportunities_in_priorities(self):
+        """Test that both risks and opportunities appear in priorities"""
+        from app.api.v1.endpoints.insights import (
+            _get_mock_detected_risks,
+            _get_mock_detected_opportunities,
+            insight_prioritizer,
+        )
+        
+        risks = _get_mock_detected_risks("COMP001")
+        opportunities = _get_mock_detected_opportunities("COMP001")
+        
+        all_priorities = insight_prioritizer.prioritize_all(risks, opportunities)
+        
+        insight_types = set(p.insight_type for p in all_priorities)
+        assert "risk" in insight_types
+        assert "opportunity" in insight_types
+
+
 # Run tests if executed directly
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
