@@ -31,7 +31,8 @@ async def run_scraper():
         db = mongodb.get_database()
         collection = db['raw_articles']
         
-        count = 0
+        new_count = 0
+        updated_count = 0
         for article in articles:
             article_dict = article.model_dump(mode='json')
             result = await collection.update_one(
@@ -39,10 +40,12 @@ async def run_scraper():
                 {"$set": article_dict},
                 upsert=True
             )
-            if result.upserted_id or result.modified_count > 0:
-                count += 1
+            if result.upserted_id:
+                new_count += 1
+            elif result.modified_count > 0:
+                updated_count += 1
                 
-        print(f"Successfully saved/updated {count} articles.")
+        print(f"Summary: {new_count} new articles, {updated_count} updated articles.")
         
     except Exception as e:
         print(f"Error running scraper: {e}")
