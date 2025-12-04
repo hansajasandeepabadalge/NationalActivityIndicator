@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # Database URLs (dynamically adjusted for Docker/host)
     DATABASE_URL: str = get_database_url()
     TIMESCALEDB_URL: str = get_database_url()
-    MONGODB_URL: str = "mongodb://admin:mongo_secure_2024@127.0.0.1:27017/national_indicator?authSource=admin"
+    MONGODB_URL: str = os.getenv('MONGODB_URL', "mongodb://127.0.0.1:27017/national_indicator")
     REDIS_URL: str = "redis://127.0.0.1:6379/0"
 
     # Performance Settings
