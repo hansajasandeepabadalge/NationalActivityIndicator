@@ -1,0 +1,1352 @@
+[
+  {
+    "article_id": "econ_000",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-21T18:09:51.666730",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "tax",
+        "imf"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 202,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_001",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-11-09T18:09:51.666754",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "market",
+        "inflation",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.87,
+      "word_count": 373,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_002",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-04T18:09:51.666767",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "market",
+        "market",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 117,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_003",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-16T18:09:51.666777",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "market",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 492,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_004",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-19T18:09:51.666786",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "tax",
+        "currency",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 118,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_005",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-12-01T18:09:51.666794",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "imf",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 439,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_006",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The market situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-04T18:09:51.666802",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "market",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 479,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_007",
+    "content": {
+      "title": "Economic Outlook: Market trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-04T18:09:51.666811",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "tax",
+        "LKR",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 161,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_008",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-22T18:09:51.666819",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "market",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 273,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_009",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-30T18:09:51.666828",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "imf",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 476,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_010",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The currency situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-12T18:09:51.666836",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "price",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 201,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_011",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The currency situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.7,
+      "publish_timestamp": "2025-11-28T18:09:51.666845",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "price",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 271,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_012",
+    "content": {
+      "title": "Economic Outlook: Inflation trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-14T18:09:51.666853",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "LKR",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 419,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_013",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The currency situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-27T18:09:51.666862",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "imf",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 355,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_014",
+    "content": {
+      "title": "Economic Outlook: Market trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-08T18:09:51.666870",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "inflation",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 304,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_015",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-13T18:09:51.666878",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "market",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 135,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_016",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-24T18:09:51.666885",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "price",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.7,
+      "word_count": 238,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_017",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-11-03T18:09:51.666894",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "imf",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 146,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_018",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-12-02T18:09:51.666902",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "tax",
+        "imf",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 278,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_019",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-13T18:09:51.666911",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "currency",
+        "imf"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 164,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_020",
+    "content": {
+      "title": "Economic Outlook: Inflation trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-11-29T18:09:51.666919",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "imf",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 235,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_021",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The currency situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-18T18:09:51.666927",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "LKR",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 356,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_022",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The market situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-11T18:09:51.666935",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "market",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.89,
+      "word_count": 293,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_023",
+    "content": {
+      "title": "Economic Outlook: Market trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-03T18:09:51.666943",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "market",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 361,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_024",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-12T18:09:51.666951",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "currency",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 354,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_025",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-06T18:09:51.666959",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "tax",
+        "price",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 423,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_026",
+    "content": {
+      "title": "Economic Outlook: Inflation trends concern experts",
+      "body": "The market situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-24T18:09:51.666968",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "imf",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 426,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_027",
+    "content": {
+      "title": "Economic Outlook: Inflation trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-12-01T18:09:51.666976",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "inflation",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 373,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_028",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-15T18:09:51.666984",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "imf",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 274,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_029",
+    "content": {
+      "title": "Economic Outlook: Inflation trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.85,
+      "publish_timestamp": "2025-11-04T18:09:51.666992",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "price",
+        "LKR"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 347,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_030",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-22T18:09:51.667000",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "tax",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 196,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_031",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-17T18:09:51.667008",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "LKR",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 321,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_032",
+    "content": {
+      "title": "Economic Outlook: Market trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-17T18:09:51.667016",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "tax",
+        "currency",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 199,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_033",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The imf situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-13T18:09:51.667057",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "market",
+        "tax",
+        "imf"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.87,
+      "word_count": 262,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_034",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-04T18:09:51.667064",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "price",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 190,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_035",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The currency situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-29T18:09:51.667069",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "inflation",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 476,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_036",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-03T18:09:51.667074",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "tax",
+        "price"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 464,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_037",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-11T18:09:51.667078",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "imf",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 406,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_038",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-12-02T18:09:51.667082",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "price",
+        "imf"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 271,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_039",
+    "content": {
+      "title": "Economic Outlook: Market trends concern experts",
+      "body": "The inflation situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-11-17T18:09:51.667086",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "price",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 219,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_040",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-03T18:09:51.667091",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "price",
+        "imf"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 318,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_041",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The market situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-05T18:09:51.667095",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "LKR",
+        "currency"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 342,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_042",
+    "content": {
+      "title": "Economic Outlook: Price trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-07T18:09:51.667099",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "price",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 259,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_043",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-28T18:09:51.667104",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "LKR",
+        "price"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 319,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_044",
+    "content": {
+      "title": "Economic Outlook: Currency trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-11-02T18:09:51.667108",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "inflation",
+        "currency",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 419,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_045",
+    "content": {
+      "title": "Economic Outlook: Lkr trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-03T18:09:51.667112",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "currency",
+        "tax",
+        "tax"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 335,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_046",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The LKR situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-20T18:09:51.667116",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "LKR",
+        "LKR",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 479,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_047",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The price situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-14T18:09:51.667120",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "price",
+        "price",
+        "market"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 129,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_048",
+    "content": {
+      "title": "Economic Outlook: Tax trends concern experts",
+      "body": "The tax situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-09T18:09:51.667124",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "imf",
+        "tax",
+        "price"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 138,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "econ_049",
+    "content": {
+      "title": "Economic Outlook: Imf trends concern experts",
+      "body": "The market situation is fluctuating. Central Bank issues new guidelines. Market reacts cautiously.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-04T18:09:51.667128",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "market",
+        "inflation",
+        "inflation"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.89,
+      "word_count": 309,
+      "is_duplicate": false
+    }
+  }
+]

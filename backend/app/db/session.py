@@ -1,10 +1,10 @@
-"""Database session setup"""
+"""Database session setup - Integrated"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 from app.db.base_class import Base
 
-# Create database engine
+# Create database engine with connection pooling
 engine = create_engine(
     settings.DATABASE_URL,
     pool_size=settings.DB_POOL_SIZE,
@@ -17,5 +17,15 @@ engine = create_engine(
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
+def get_db():
+    """Dependency for getting database sessions."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 # Export Base for alembic
-__all__ = ['engine', 'SessionLocal', 'Base']
+__all__ = ['engine', 'SessionLocal', 'Base', 'get_db']

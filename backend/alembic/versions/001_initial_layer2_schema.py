@@ -154,7 +154,8 @@ def upgrade() -> None:
         sa.Column('metadata', postgresql.JSONB, nullable=True),
         sa.Column('acknowledged', sa.Boolean, default=False),
         sa.Column('acknowledged_at', sa.TIMESTAMP(timezone=True), nullable=True),
-        sa.ForeignKeyConstraint(['indicator_id'], ['indicator_definitions.indicator_id'], ondelete='CASCADE')
+        sa.ForeignKeyConstraint(['indicator_id'], ['indicator_definitions.indicator_id'], ondelete='CASCADE'),
+        sa.PrimaryKeyConstraint('event_id', 'timestamp')
     )
 
     # Convert indicator_events to TimescaleDB hypertable

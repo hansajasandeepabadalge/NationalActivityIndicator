@@ -2,6 +2,7 @@ import os
 from pydantic_settings import BaseSettings
 from typing import Optional
 
+
 def get_database_url():
     """Get database URL based on environment"""
     # Check if running inside Docker
@@ -17,14 +18,17 @@ def get_database_url():
         # Use 127.0.0.1 (for host machine - forces IPv4)
         return 'postgresql://postgres:postgres_secure_2024@127.0.0.1:5432/national_indicator'
 
+
 class Settings(BaseSettings):
     # Application Settings
     PROJECT_NAME: str = "National Activity Indicator"
     API_V1_STR: str = "/api/v1"
     DEBUG: bool = True
 
-    # Database Passwords (for Docker)
+    # Database Credentials
+    POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres_secure_2024"
+    POSTGRES_DB: str = "national_indicator"
     MONGO_PASSWORD: str = "mongo_secure_2024"
     PGADMIN_EMAIL: str = "admin@indicator.local"
     PGADMIN_PASSWORD: str = "admin_secure_2024"
@@ -32,7 +36,7 @@ class Settings(BaseSettings):
 
     # Database URLs (dynamically adjusted for Docker/host)
     DATABASE_URL: str = get_database_url()
-    TIMESCALEDB_URL: str = get_database_url()
+    TIMESCALEDB_URL: Optional[str] = None
     MONGODB_URL: str = "mongodb://admin:mongo_secure_2024@127.0.0.1:27017/national_indicator?authSource=admin"
     MONGODB_DB_NAME: str = "national_indicator"
     REDIS_URL: str = "redis://127.0.0.1:6379/0"
@@ -47,7 +51,7 @@ class Settings(BaseSettings):
     REDIS_MAX_CONNECTIONS: int = 50
     REDIS_DEFAULT_TTL: int = 300
 
-    # ML Model Settings (Day 3)
+    # ML Model Settings (Developer A - Day 3)
     ML_MODEL_DIR: str = "backend/models/ml_classifier"
     ML_MODEL_PATH: str = "backend/models/ml_classifier/ml_models.pkl"
     FEATURE_EXTRACTOR_PATH: str = "backend/models/ml_classifier/feature_extractor.pkl"
@@ -69,7 +73,7 @@ class Settings(BaseSettings):
     TRAINING_SIZE: int = 100
     VALIDATION_SPLIT: float = 0.2
 
-    # Entity Extraction Settings (Day 4)
+    # Entity Extraction Settings (Developer A - Day 4)
     SPACY_MODEL: str = "en_core_web_sm"
     ENTITY_EXTRACTION_MAX_CHARS: int = 1_000_000
     ENTITY_MIN_CONFIDENCE: float = 0.3
@@ -92,5 +96,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"
+
 
 settings = Settings()

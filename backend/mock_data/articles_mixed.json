@@ -1,0 +1,542 @@
+[
+  {
+    "article_id": "mix_000",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-02T18:09:51.674190",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 477,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_001",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-10T18:09:51.674220",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 123,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_002",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-07T18:09:51.674232",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 200,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_003",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-11-07T18:09:51.674241",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 319,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_004",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-17T18:09:51.674248",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 306,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_005",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.74,
+      "publish_timestamp": "2025-11-03T18:09:51.674255",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.7,
+      "word_count": 287,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_006",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-11-21T18:09:51.674262",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.89,
+      "word_count": 298,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_007",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-06T18:09:51.674269",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 135,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_008",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-11-04T18:09:51.674275",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 418,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_009",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-09T18:09:51.674282",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 402,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_010",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.81,
+      "publish_timestamp": "2025-11-30T18:09:51.674288",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 442,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_011",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-29T18:09:51.674295",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 200,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_012",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-13T18:09:51.674301",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 274,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_013",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-11-17T18:09:51.674308",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 322,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_014",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.81,
+      "publish_timestamp": "2025-11-24T18:09:51.674315",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 319,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_015",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.81,
+      "publish_timestamp": "2025-11-08T18:09:51.674322",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 364,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_016",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-02T18:09:51.674328",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 384,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_017",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-13T18:09:51.674335",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 500,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_018",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-11-24T18:09:51.674342",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 128,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "mix_019",
+    "content": {
+      "title": "Weekly Round-up: Multiple sectors affected",
+      "body": "A mix of political and economic events defined the week. Weather patterns also contributed to disruptions.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-05T18:09:51.674349",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "inflation",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 468,
+      "is_duplicate": false
+    }
+  }
+]
