@@ -7,8 +7,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.models.indicator_models import IndicatorDefinition
 from app.layer2.ml_classification.keyword_config import INDICATOR_KEYWORDS
+from app.core.config import settings
 
-DB_URL = "postgresql://postgres:postgres_secure_2024@national_indicator_timescaledb:5432/national_indicator"
+# Use settings from config (respects .env file)
+DB_URL = settings.DATABASE_URL
 
 engine = create_engine(DB_URL)
 SessionLocal = sessionmaker(bind=engine)
