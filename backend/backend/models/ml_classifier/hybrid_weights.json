@@ -1,0 +1,17 @@
+{
+  "default_weight_rule": 0.7,
+  "default_weight_ml": 0.3,
+  "indicator_weights": {
+    "POL_UNREST": 0.0,
+    "ECO_INFLATION": 0.0,
+    "ECO_CURRENCY": 0.7,
+    "ECO_CONSUMER_CONF": 0.0,
+    "ECO_SUPPLY_CHAIN": 0.7,
+    "ECO_TOURISM": 0.2,
+    "ENV_WEATHER": 0.2,
+    "OPS_TRANSPORT": 0.5,
+    "TEC_POWER": 0.2,
+    "SOC_HEALTHCARE": 0.0
+  },
+  "weights_tuned": true
+}

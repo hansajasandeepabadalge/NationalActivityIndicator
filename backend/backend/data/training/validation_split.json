@@ -1,0 +1,217 @@
+{
+  "articles": [
+    {
+      "article_id": "ART000033",
+      "title": "Opposition calls for no-confidence motion",
+      "content": "Opposition parties have submitted a no-confidence motion against the Minister of Finance, criticizing recent economic policies. Industry experts believe this development will have significant implications for the sector. Stakeholders are closely monitoring the situation as implementation details emerge. The announcement comes amid broader efforts to address systemic challenges. Officials indicated that consultations with affected parties would continue. Further details are expected to be released in the coming weeks.",
+      "labels": [
+        "POL_UNREST"
+      ],
+      "confidence_per_label": {
+        "POL_UNREST": 0.38
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Political",
+      "published_at": "2025-11-26 19:03:23.277837",
+      "source": "Daily News",
+      "rule_based_predictions": [
+        "POL_UNREST"
+      ],
+      "rule_based_confidences": {
+        "POL_UNREST": 0.38
+      }
+    },
+    {
+      "article_id": "ART000057",
+      "title": "Inflation rate drops to single digits",
+      "content": "Consumer price inflation moderated to 8.9% in the latest reading, down from double digits earlier this year. Observers note this development reflects evolving priorities in national policy. The announcement triggered varied reactions from different interest groups. Technical feasibility studies underpinned the decision-making process. Capacity building programs will support successful rollout. International best practices informed the design. Lessons learned from pilot projects were incorporated. Accountability frameworks ensure transparency.",
+      "labels": [
+        "ECO_INFLATION"
+      ],
+      "confidence_per_label": {
+        "ECO_INFLATION": 0.7
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Economic",
+      "published_at": "2025-11-14 23:03:23.277837",
+      "source": "Hiru News",
+      "rule_based_predictions": [
+        "ECO_INFLATION"
+      ],
+      "rule_based_confidences": {
+        "ECO_INFLATION": 0.7
+      }
+    },
+    {
+      "article_id": "ART000081",
+      "title": "Healthcare spending increases by 20%",
+      "content": "The government allocated an additional 50 billion rupees to the healthcare sector in the supplementary budget. Industry experts believe this development will have significant implications for the sector. Stakeholders are closely monitoring the situation as implementation details emerge. The announcement comes amid broader efforts to address systemic challenges. Officials indicated that consultations with affected parties would continue. Further details are expected to be released in the coming weeks.",
+      "labels": [
+        "ECO_CONSUMER_CONF",
+        "SOC_HEALTHCARE"
+      ],
+      "confidence_per_label": {
+        "ECO_CONSUMER_CONF": 0.55,
+        "SOC_HEALTHCARE": 0.38
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Social",
+      "published_at": "2025-11-02 01:03:23.277837",
+      "source": "Newsfirst",
+      "rule_based_predictions": [
+        "ECO_CONSUMER_CONF",
+        "SOC_HEALTHCARE"
+      ],
+      "rule_based_confidences": {
+        "ECO_CONSUMER_CONF": 0.55,
+        "SOC_HEALTHCARE": 0.38
+      }
+    },
+    {
+      "article_id": "ART000151",
+      "title": "National AI strategy released",
+      "content": "The government unveiled a comprehensive artificial intelligence roadmap targeting healthcare, agriculture, and public services. Industry experts believe this development will have significant implications for the sector. Stakeholders are closely monitoring the situation as implementation details emerge. The announcement comes amid broader efforts to address systemic challenges. Officials indicated that consultations with affected parties would continue. Further details are expected to be released in the coming weeks.",
+      "labels": [
+        "SOC_HEALTHCARE"
+      ],
+      "confidence_per_label": {
+        "SOC_HEALTHCARE": 0.26
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Technological",
+      "published_at": "2025-11-24 01:03:23.277837",
+      "source": "Ada Derana",
+      "rule_based_predictions": [
+        "SOC_HEALTHCARE"
+      ],
+      "rule_based_confidences": {
+        "SOC_HEALTHCARE": 0.26
+      }
+    },
+    {
+      "article_id": "ART000072",
+      "title": "Tourism revenue exceeds pre-pandemic levels",
+      "content": "The tourism sector reported record earnings this quarter, surpassing 2019 figures for the first time since the pandemic. The initiative aligns with broader national development objectives outlined in recent planning documents. Funding arrangements have been secured through a combination of domestic resources and international partnerships. Key performance indicators will track impact and outcomes. Regional variations in implementation are expected. Public feedback mechanisms have been established. Preliminary results will be reviewed in six months.",
+      "labels": [
+        "ECO_TOURISM"
+      ],
+      "confidence_per_label": {
+        "ECO_TOURISM": 0.7
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Economic",
+      "published_at": "2025-11-25 00:03:23.277837",
+      "source": "Daily News",
+      "rule_based_predictions": [
+        "ECO_TOURISM"
+      ],
+      "rule_based_confidences": {
+        "ECO_TOURISM": 0.7
+      }
+    },
+    {
+      "article_id": "ART000184",
+      "title": "Climate adaptation fund receives $200M",
+      "content": "International climate finance commitments will support coastal resilience and agriculture adaptation projects. Industry experts believe this development will have significant implications for the sector. Stakeholders are closely monitoring the situation as implementation details emerge. The announcement comes amid broader efforts to address systemic challenges. Officials indicated that consultations with affected parties would continue. Further details are expected to be released in the coming weeks.",
+      "labels": [
+        "ENV_WEATHER"
+      ],
+      "confidence_per_label": {
+        "ENV_WEATHER": 0.38
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Environmental",
+      "published_at": "2025-11-19 01:03:23.277837",
+      "source": "Ada Derana",
+      "rule_based_predictions": [
+        "ENV_WEATHER"
+      ],
+      "rule_based_confidences": {
+        "ENV_WEATHER": 0.38
+      }
+    },
+    {
+      "article_id": "ART000196",
+      "title": "Electric vehicle adoption exceeds targets",
+      "content": "Electric vehicle registrations surpassed 50,000, ahead of government projections for the year. According to official statements, this represents a major policy shift. The decision follows extensive consultations with stakeholders and technical experts. Implementation will be phased over the next 12-18 months. Independent analysts have welcomed the move, noting its potential long-term benefits. Critics, however, raised concerns about execution capacity. A monitoring committee will oversee progress.",
+      "labels": [
+        "OPS_TRANSPORT"
+      ],
+      "confidence_per_label": {
+        "OPS_TRANSPORT": 0.52
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Environmental",
+      "published_at": "2025-11-28 02:03:23.277837",
+      "source": "Daily News",
+      "rule_based_predictions": [
+        "OPS_TRANSPORT"
+      ],
+      "rule_based_confidences": {
+        "OPS_TRANSPORT": 0.52
+      }
+    },
+    {
+      "article_id": "ART000171",
+      "title": "Renewable energy capacity reaches 45%",
+      "content": "Sri Lanka achieved a milestone with 45% of electricity generation from renewable sources, mainly hydro and solar. According to official statements, this represents a major policy shift. The decision follows extensive consultations with stakeholders and technical experts. Implementation will be phased over the next 12-18 months. Independent analysts have welcomed the move, noting its potential long-term benefits. Critics, however, raised concerns about execution capacity. A monitoring committee will oversee progress.",
+      "labels": [
+        "TEC_POWER"
+      ],
+      "confidence_per_label": {
+        "TEC_POWER": 0.26
+      },
+      "labeler": "developer_a",
+      "labeling_date": "2025-12-03 05:59:05.082844",
+      "labeling_method": "manual",
+      "category": "Environmental",
+      "published_at": "2025-11-09 11:03:23.277837",
+      "source": "Ada Derana",
+      "rule_based_predictions": [
+        "TEC_POWER"
+      ],
+      "rule_based_confidences": {
+        "TEC_POWER": 0.26
+      }
+    }
+  ],
+  "dataset_version": "v1.0_val",
+  "creation_date": "2025-12-03 05:59:05.082844",
+  "total_articles": 8,
+  "indicators_covered": [
+    "POL_UNREST",
+    "ECO_INFLATION",
+    "ECO_CONSUMER_CONF",
+    "SOC_HEALTHCARE",
+    "ECO_TOURISM",
+    "ENV_WEATHER",
+    "OPS_TRANSPORT",
+    "TEC_POWER"
+  ],
+  "label_distribution": {
+    "POL_UNREST": 1,
+    "ECO_INFLATION": 1,
+    "ECO_CONSUMER_CONF": 1,
+    "SOC_HEALTHCARE": 2,
+    "ECO_TOURISM": 1,
+    "ENV_WEATHER": 1,
+    "OPS_TRANSPORT": 1,
+    "TEC_POWER": 1
+  },
+  "avg_labels_per_article": 1.125,
+  "inter_annotator_agreement": null
+}
