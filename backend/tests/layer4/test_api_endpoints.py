@@ -597,6 +597,216 @@ class TestPrioritizationWorkflow:
         assert "opportunity" in insight_types
 
 
+# ==============================================================================
+# Contextual Intelligence Endpoint Tests
+# ==============================================================================
+
+class TestContextualIntelligenceEndpoints:
+    """Tests for contextual intelligence API endpoints."""
+    
+    def test_industry_context_provider_initialized(self):
+        """Test that industry context provider is initialized."""
+        from app.api.v1.endpoints.insights import industry_context_provider
+        
+        assert industry_context_provider is not None
+    
+    def test_historical_analyzer_initialized(self):
+        """Test that historical analyzer is initialized."""
+        from app.api.v1.endpoints.insights import historical_analyzer
+        
+        assert historical_analyzer is not None
+    
+    def test_cross_industry_analyzer_initialized(self):
+        """Test that cross-industry analyzer is initialized."""
+        from app.api.v1.endpoints.insights import cross_industry_analyzer
+        
+        assert cross_industry_analyzer is not None
+    
+    def test_cascading_analyzer_initialized(self):
+        """Test that cascading impact analyzer is initialized."""
+        from app.api.v1.endpoints.insights import cascading_analyzer
+        
+        assert cascading_analyzer is not None
+    
+    def test_competitive_analyzer_initialized(self):
+        """Test that competitive intelligence analyzer is initialized."""
+        from app.api.v1.endpoints.insights import competitive_analyzer
+        
+        assert competitive_analyzer is not None
+    
+    def test_get_industry_benchmark_endpoint_exists(self):
+        """Test that industry benchmark endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_industry_benchmark
+        
+        assert callable(get_industry_benchmark)
+    
+    def test_find_historical_matches_endpoint_exists(self):
+        """Test that historical matches endpoint is defined."""
+        from app.api.v1.endpoints.insights import find_historical_matches
+        
+        assert callable(find_historical_matches)
+    
+    def test_predict_event_impact_endpoint_exists(self):
+        """Test that predict impact endpoint is defined."""
+        from app.api.v1.endpoints.insights import predict_event_impact
+        
+        assert callable(predict_event_impact)
+    
+    def test_get_leading_indicator_analysis_endpoint_exists(self):
+        """Test that leading indicator analysis endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_leading_indicator_analysis
+        
+        assert callable(get_leading_indicator_analysis)
+    
+    def test_analyze_cross_industry_effects_endpoint_exists(self):
+        """Test that cross-industry analysis endpoint is defined."""
+        from app.api.v1.endpoints.insights import analyze_cross_industry_effects
+        
+        assert callable(analyze_cross_industry_effects)
+    
+    def test_get_industry_dependencies_endpoint_exists(self):
+        """Test that industry dependencies endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_industry_dependencies
+        
+        assert callable(get_industry_dependencies)
+    
+    def test_get_early_warning_signals_endpoint_exists(self):
+        """Test that early warning signals endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_early_warning_signals
+        
+        assert callable(get_early_warning_signals)
+    
+    def test_analyze_cascade_endpoint_exists(self):
+        """Test that cascade analysis endpoint is defined."""
+        from app.api.v1.endpoints.insights import analyze_cascade
+        
+        assert callable(analyze_cascade)
+    
+    def test_get_cascade_timeline_endpoint_exists(self):
+        """Test that cascade timeline endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_cascade_timeline
+        
+        assert callable(get_cascade_timeline)
+    
+    def test_get_intervention_points_endpoint_exists(self):
+        """Test that intervention points endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_intervention_points
+        
+        assert callable(get_intervention_points)
+    
+    def test_estimate_cascade_impact_endpoint_exists(self):
+        """Test that cascade impact estimation endpoint is defined."""
+        from app.api.v1.endpoints.insights import estimate_cascade_impact
+        
+        assert callable(estimate_cascade_impact)
+    
+    def test_get_competitor_activity_endpoint_exists(self):
+        """Test that competitor activity endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_competitor_activity
+        
+        assert callable(get_competitor_activity)
+    
+    def test_analyze_market_position_endpoint_exists(self):
+        """Test that market position analysis endpoint is defined."""
+        from app.api.v1.endpoints.insights import analyze_market_position
+        
+        assert callable(analyze_market_position)
+    
+    def test_assess_competitive_threats_endpoint_exists(self):
+        """Test that competitive threats assessment endpoint is defined."""
+        from app.api.v1.endpoints.insights import assess_competitive_threats
+        
+        assert callable(assess_competitive_threats)
+    
+    def test_identify_competitive_opportunities_endpoint_exists(self):
+        """Test that competitive opportunities endpoint is defined."""
+        from app.api.v1.endpoints.insights import identify_competitive_opportunities
+        
+        assert callable(identify_competitive_opportunities)
+    
+    def test_get_competitor_comparison_endpoint_exists(self):
+        """Test that competitor comparison endpoint is defined."""
+        from app.api.v1.endpoints.insights import get_competitor_comparison
+        
+        assert callable(get_competitor_comparison)
+
+
+class TestContextualIntelligenceIntegration:
+    """Integration tests for contextual intelligence through endpoints."""
+    
+    def test_industry_benchmark_returns_comparison(self):
+        """Test that industry benchmark provides full comparison."""
+        from app.api.v1.endpoints.insights import (
+            industry_context_provider,
+            _get_mock_indicators,
+        )
+        
+        indicators = _get_mock_indicators()
+        indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+        
+        result = industry_context_provider.get_full_benchmark_comparison(
+            company_id="COMP001",
+            industry="retail",
+            company_indicators=indicator_dict,
+        )
+        
+        assert "overall_percentile" in result
+        assert "comparisons" in result
+    
+    def test_historical_matches_returns_list(self):
+        """Test that historical matches returns event matches."""
+        from app.api.v1.endpoints.insights import (
+            historical_analyzer,
+            _get_mock_indicators,
+        )
+        
+        indicators = _get_mock_indicators()
+        indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+        
+        matches = historical_analyzer.find_similar_events(
+            current_indicators=indicator_dict,
+            top_n=3,
+        )
+        
+        assert isinstance(matches, list)
+    
+    def test_cross_industry_effects_returns_insights(self):
+        """Test that cross-industry analysis returns insights."""
+        from app.api.v1.endpoints.insights import cross_industry_analyzer
+        
+        insights = cross_industry_analyzer.analyze_cross_industry_effects(
+            source_industry="logistics",
+            event_type="supply_disruption",
+            severity=0.7,
+        )
+        
+        assert isinstance(insights, list)
+    
+    def test_cascade_analysis_returns_chain(self):
+        """Test that cascade analysis returns cascade chain."""
+        from app.api.v1.endpoints.insights import cascading_analyzer
+        
+        cascade = cascading_analyzer.analyze_cascade(
+            trigger_event="fuel_shortage",
+            trigger_severity=0.8,
+        )
+        
+        assert cascade is not None
+        assert len(cascade.nodes) > 0
+    
+    def test_competitive_threats_returns_assessment(self):
+        """Test that competitive threats returns threat assessment."""
+        from app.api.v1.endpoints.insights import competitive_analyzer
+        
+        assessment = competitive_analyzer.assess_competitive_threat(
+            company_id="COMP001",
+            industry="retail",
+        )
+        
+        assert "overall_threat_level" in assessment
+        assert "threats" in assessment
+
+
 # Run tests if executed directly
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

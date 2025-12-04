@@ -30,6 +30,13 @@ from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
 from app.layer4.recommendation import RecommendationEngine
 from app.layer4.scoring import RiskScorer
 from app.layer4.prioritization import InsightPrioritizer
+from app.layer4.context import (
+    IndustryContextProvider,
+    HistoricalContextAnalyzer,
+    CrossIndustryAnalyzer,
+    CascadingImpactAnalyzer,
+    CompetitiveIntelligenceAnalyzer,
+)
 from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 router = APIRouter()
@@ -41,6 +48,13 @@ opportunity_detector = RuleBasedOpportunityDetector()
 recommendation_engine = RecommendationEngine()
 risk_scorer = RiskScorer()
 insight_prioritizer = InsightPrioritizer()
+
+# Initialize contextual intelligence components
+industry_context_provider = IndustryContextProvider()
+historical_analyzer = HistoricalContextAnalyzer()
+cross_industry_analyzer = CrossIndustryAnalyzer()
+cascading_analyzer = CascadingImpactAnalyzer()
+competitive_analyzer = CompetitiveIntelligenceAnalyzer()
 
 
 # ==============================================================================
@@ -899,6 +913,52 @@ def _create_operational_indicators(layer3_data: Dict[str, Any]) -> OperationalIn
     )
 
 
+def _get_mock_indicators() -> OperationalIndicators:
+    """
+    Get mock OperationalIndicators for testing and demo purposes.
+    Uses values scaled 0-100 to match the OperationalIndicators schema.
+    """
+    return OperationalIndicators(
+        company_id="DEMO_COMPANY",
+        timestamp=datetime.now(),
+        # Supply Chain & Logistics
+        OPS_SUPPLY_CHAIN=45.0,
+        OPS_TRANSPORT_AVAIL=55.0,
+        OPS_LOGISTICS_COST=60.0,
+        OPS_IMPORT_FLOW=50.0,
+        # Workforce & Operations
+        OPS_WORKFORCE_AVAIL=70.0,
+        OPS_LABOR_COST=55.0,
+        OPS_PRODUCTIVITY=65.0,
+        # Infrastructure & Resources
+        OPS_POWER_RELIABILITY=75.0,
+        OPS_FUEL_AVAIL=70.0,
+        OPS_WATER_SUPPLY=80.0,
+        OPS_INTERNET_CONNECTIVITY=75.0,
+        # Cost Pressures
+        OPS_COST_PRESSURE=50.0,
+        OPS_RAW_MATERIAL_COST=45.0,
+        OPS_ENERGY_COST=55.0,
+        # Market Conditions
+        OPS_DEMAND_LEVEL=60.0,
+        OPS_COMPETITION_INTENSITY=65.0,
+        OPS_PRICING_POWER=70.0,
+        # Financial Operations
+        OPS_CASH_FLOW=65.0,
+        OPS_CREDIT_AVAIL=70.0,
+        OPS_PAYMENT_DELAYS=30.0,
+        # Regulatory & Compliance
+        OPS_REGULATORY_BURDEN=40.0,
+        OPS_COMPLIANCE_COST=35.0,
+        # Trends
+        trends={
+            "OPS_SUPPLY_CHAIN": "falling",
+            "OPS_DEMAND_LEVEL": "stable",
+            "OPS_COST_PRESSURE": "rising",
+        },
+    )
+
+
 def _get_mock_risks(
     company_id: Optional[str] = None,
     category: Optional[str] = None,
@@ -1308,3 +1368,430 @@ def _get_mock_company_profile(company_id: str) -> Dict[str, Any]:
         "growth_stage": "mature",
         "regulatory_environment": "standard",
     }
+
+
+# ==============================================================================
+# Contextual Intelligence Endpoints
+# ==============================================================================
+
+@router.get("/context/industry-benchmark/{company_id}")
+async def get_industry_benchmark(
+    company_id: str,
+    industry: str = Query(..., description="Industry to compare against"),
+):
+    """
+    Get industry benchmark comparison for a company.
+    
+    Compares company indicators against industry averages and identifies
+    strengths and weaknesses relative to industry peers.
+    """
+    # Get mock indicators for demo
+    indicators = _get_mock_indicators()
+    indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+    
+    result = industry_context_provider.get_full_benchmark_comparison(
+        company_id=company_id,
+        industry=industry,
+        company_indicators=indicator_dict,
+    )
+    
+    return result
+
+
+@router.get("/context/historical-matches/{company_id}")
+async def find_historical_matches(
+    company_id: str,
+    category: Optional[str] = Query(None, description="Filter by event category"),
+    top_n: int = Query(5, description="Number of matches to return"),
+    min_similarity: float = Query(0.3, description="Minimum similarity threshold"),
+):
+    """
+    Find historical events similar to current situation.
+    
+    Matches current operational indicators to past events to provide
+    context and predictions based on historical outcomes.
+    """
+    # Get mock indicators
+    indicators = _get_mock_indicators()
+    indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+    
+    matches = historical_analyzer.find_similar_events(
+        current_indicators=indicator_dict,
+        category=category,
+        top_n=top_n,
+        min_similarity=min_similarity,
+    )
+    
+    # Convert to serializable format
+    return [
+        {
+            "event": {
+                "event_id": m.event.event_id,
+                "event_name": m.event.event_name,
+                "category": m.event.category,
+                "start_date": m.event.start_date.isoformat(),
+                "duration_days": m.event.duration_days,
+                "severity": m.event.severity,
+                "description": m.event.description,
+            },
+            "similarity_score": round(m.similarity_score, 2),
+            "predicted_duration_days": m.predicted_duration_days,
+            "predicted_severity": m.predicted_severity,
+            "relevance_narrative": m.relevance_narrative,
+            "time_since_event_days": m.time_since_event,
+        }
+        for m in matches
+    ]
+
+
+@router.post("/context/predict-impact")
+async def predict_event_impact(
+    industry: str = Query(..., description="Company industry"),
+    event_category: str = Query(..., description="Category of event (e.g., supply_chain, infrastructure)"),
+    indicators: Optional[Dict[str, float]] = None,
+):
+    """
+    Predict impact based on historical patterns.
+    
+    Uses historical data to predict duration and severity of events
+    based on current indicator values.
+    """
+    if indicators is None:
+        # Use mock indicators
+        mock_ind = _get_mock_indicators()
+        indicators = {k: v for k, v in mock_ind.model_dump().items() if v is not None}
+    
+    result = historical_analyzer.predict_event_impact(
+        current_indicators=indicators,
+        industry=industry,
+        event_category=event_category,
+    )
+    
+    return result
+
+
+@router.get("/context/leading-indicators/{company_id}")
+async def get_leading_indicator_analysis(company_id: str):
+    """
+    Analyze leading indicators that may precede problems.
+    
+    Identifies indicators at concerning levels historically associated
+    with past crises or disruptions.
+    """
+    # Get mock indicators
+    indicators = _get_mock_indicators()
+    indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+    
+    result = historical_analyzer.get_leading_indicator_context(indicator_dict)
+    
+    return {
+        "company_id": company_id,
+        "analysis_date": result["analysis_date"].isoformat(),
+        "indicators_analyzed": result["indicators_analyzed"],
+        "warnings_found": result["warnings_found"],
+        "warnings": result["warnings"],
+        "overall_assessment": result["overall_assessment"],
+    }
+
+
+@router.get("/context/cross-industry/{source_industry}")
+async def analyze_cross_industry_effects(
+    source_industry: str,
+    event_type: str = Query(..., description="Type of event (e.g., supply_disruption, labor_strike)"),
+    severity: float = Query(0.7, description="Event severity (0-1)"),
+):
+    """
+    Analyze how an event in one industry affects others.
+    
+    Identifies inter-industry dependencies and predicts propagation
+    effects across connected industries.
+    """
+    insights = cross_industry_analyzer.analyze_cross_industry_effects(
+        source_industry=source_industry,
+        event_type=event_type,
+        severity=severity,
+    )
+    
+    return [
+        {
+            "insight_id": i.insight_id,
+            "source_industry": i.source_industry,
+            "source_event": i.source_event,
+            "affected_industries": i.affected_industries,
+            "impact_direction": i.impact_direction.value,
+            "impact_strength": i.impact_strength.value,
+            "expected_lag_days": i.expected_lag_days,
+            "expected_effects": i.expected_effects,
+            "recommended_actions": i.recommended_actions,
+            "confidence": round(i.confidence, 2),
+            "narrative": i.narrative,
+        }
+        for i in insights
+    ]
+
+
+@router.get("/context/industry-dependencies/{industry}")
+async def get_industry_dependencies(
+    industry: str,
+    direction: str = Query("both", description="Direction: incoming, outgoing, or both"),
+):
+    """
+    Get dependency map for an industry.
+    
+    Shows what industries this industry depends on (incoming) and
+    what industries depend on it (outgoing).
+    """
+    result = cross_industry_analyzer.get_industry_dependencies(
+        industry=industry,
+        direction=direction,
+    )
+    
+    return result
+
+
+@router.get("/context/early-warnings/{target_industry}")
+async def get_early_warning_signals(
+    target_industry: str,
+):
+    """
+    Get early warning signals from related industries.
+    
+    Monitors upstream industries for concerning trends that may
+    affect the target industry.
+    """
+    # Mock related industry indicators
+    mock_ind = _get_mock_indicators()
+    indicator_dict = {k: v for k, v in mock_ind.model_dump().items() if v is not None}
+    
+    related_indicators = {
+        "logistics": indicator_dict,
+        "manufacturing": {k: v * 0.9 for k, v in indicator_dict.items()},
+        "energy": {k: v * 0.85 for k, v in indicator_dict.items()},
+    }
+    
+    warnings = cross_industry_analyzer.get_early_warning_signals(
+        target_industry=target_industry,
+        related_industry_indicators=related_indicators,
+    )
+    
+    return warnings
+
+
+@router.post("/context/cascade-analysis")
+async def analyze_cascade(
+    trigger_event: str = Query(..., description="Event triggering the cascade (e.g., port_strike, fuel_shortage)"),
+    trigger_severity: float = Query(0.7, description="Severity of trigger event (0-1)"),
+):
+    """
+    Analyze cascading impacts from a trigger event.
+    
+    Models how impacts propagate through interconnected systems,
+    showing the chain of effects and timeline.
+    """
+    cascade = cascading_analyzer.analyze_cascade(
+        trigger_event=trigger_event,
+        trigger_severity=trigger_severity,
+    )
+    
+    return {
+        "chain_id": cascade.chain_id,
+        "trigger_event": cascade.trigger_event,
+        "trigger_severity": cascade.trigger_severity,
+        "total_depth": cascade.total_depth,
+        "total_affected_areas": cascade.total_affected_areas,
+        "peak_impact_magnitude": round(cascade.peak_impact_magnitude, 2),
+        "peak_impact_phase": cascade.peak_impact_phase.value,
+        "estimated_resolution_days": cascade.estimated_resolution_days,
+        "affected_industries": cascade.affected_industries,
+        "key_outcomes": cascade.key_outcomes,
+        "nodes": [
+            {
+                "node_id": n.node_id,
+                "name": n.name,
+                "description": n.description,
+                "impact_magnitude": round(n.impact_magnitude, 2),
+                "impact_phase": n.impact_phase.value,
+                "delay_days": n.delay_days,
+            }
+            for n in cascade.nodes
+        ],
+    }
+
+
+@router.get("/context/cascade-timeline/{chain_id}")
+async def get_cascade_timeline(
+    trigger_event: str = Query(..., description="Event to analyze"),
+    trigger_severity: float = Query(0.7, description="Event severity"),
+):
+    """
+    Get timeline projection for a cascade.
+    
+    Shows when impacts are expected to occur across different phases.
+    """
+    cascade = cascading_analyzer.analyze_cascade(
+        trigger_event=trigger_event,
+        trigger_severity=trigger_severity,
+    )
+    
+    timeline = cascading_analyzer.get_timeline_projection(cascade)
+    
+    return timeline
+
+
+@router.get("/context/intervention-points")
+async def get_intervention_points(
+    trigger_event: str = Query(..., description="Event to analyze"),
+    trigger_severity: float = Query(0.7, description="Event severity"),
+):
+    """
+    Identify intervention points in a cascade.
+    
+    Shows where intervention can break the cascade chain and
+    recommends actions at each point.
+    """
+    cascade = cascading_analyzer.analyze_cascade(
+        trigger_event=trigger_event,
+        trigger_severity=trigger_severity,
+    )
+    
+    interventions = cascading_analyzer.identify_intervention_points(cascade)
+    
+    return interventions
+
+
+@router.get("/context/cascade-impact")
+async def estimate_cascade_impact(
+    trigger_event: str = Query(..., description="Event to analyze"),
+    trigger_severity: float = Query(0.7, description="Event severity"),
+    industry: Optional[str] = Query(None, description="Filter by industry"),
+):
+    """
+    Estimate total impact of a cascade.
+    
+    Aggregates impact across all affected areas with optional
+    industry filtering.
+    """
+    cascade = cascading_analyzer.analyze_cascade(
+        trigger_event=trigger_event,
+        trigger_severity=trigger_severity,
+    )
+    
+    impact = cascading_analyzer.estimate_total_impact(
+        cascade=cascade,
+        industry=industry,
+    )
+    
+    return impact
+
+
+@router.get("/context/competitor-activity/{industry}")
+async def get_competitor_activity(
+    industry: str,
+    lookback_days: int = Query(30, description="Days to look back"),
+):
+    """
+    Get recent competitor activity in an industry.
+    
+    Tracks competitor moves, threat levels, and key developments.
+    """
+    activity = competitive_analyzer.get_competitor_activity(
+        industry=industry,
+        lookback_days=lookback_days,
+    )
+    
+    return activity
+
+
+@router.get("/context/market-position/{company_id}")
+async def analyze_market_position(
+    company_id: str,
+    industry: str = Query(..., description="Industry for positioning"),
+):
+    """
+    Analyze company's market position relative to competitors.
+    
+    Provides competitive gap analysis, advantages, and strategic
+    recommendations.
+    """
+    # Get mock indicators for demo
+    indicators = _get_mock_indicators()
+    indicator_dict = {k: v for k, v in indicators.model_dump().items() if v is not None}
+    
+    analysis = competitive_analyzer.analyze_market_position(
+        company_id=company_id,
+        industry=industry,
+        company_indicators=indicator_dict,
+    )
+    
+    return {
+        "company_id": analysis.company_id,
+        "industry": analysis.industry,
+        "analysis_date": analysis.analysis_date.isoformat(),
+        "market_rank": analysis.market_rank,
+        "market_share_estimate": round(analysis.market_share_estimate, 2),
+        "position_category": analysis.position_category,
+        "gaps": analysis.gaps,
+        "advantages": analysis.advantages,
+        "primary_threats": analysis.primary_threats,
+        "emerging_threats": analysis.emerging_threats,
+        "opportunities": analysis.opportunities,
+        "recommendations": analysis.recommendations,
+    }
+
+
+@router.get("/context/competitive-threats/{company_id}")
+async def assess_competitive_threats(
+    company_id: str,
+    industry: str = Query(..., description="Industry for threat assessment"),
+):
+    """
+    Assess competitive threats for a company.
+    
+    Identifies competitor threats, calculates threat scores, and
+    recommends responses.
+    """
+    assessment = competitive_analyzer.assess_competitive_threat(
+        company_id=company_id,
+        industry=industry,
+    )
+    
+    return assessment
+
+
+@router.get("/context/competitive-opportunities/{company_id}")
+async def identify_competitive_opportunities(
+    company_id: str,
+    industry: str = Query(..., description="Industry for opportunity analysis"),
+    strengths: Optional[List[str]] = Query(None, description="Company strengths"),
+):
+    """
+    Identify competitive opportunities for a company.
+    
+    Finds opportunities from competitor weaknesses, market gaps,
+    and timing advantages.
+    """
+    opportunities = competitive_analyzer.identify_competitive_opportunities(
+        company_id=company_id,
+        industry=industry,
+        company_strengths=strengths,
+    )
+    
+    return opportunities
+
+
+@router.get("/context/competitor-comparison/{company_id}")
+async def get_competitor_comparison(
+    company_id: str,
+    competitor_ids: List[str] = Query(..., description="Competitor IDs to compare"),
+):
+    """
+    Compare company against specific competitors.
+    
+    Provides head-to-head comparison on key metrics and positioning.
+    """
+    comparison = competitive_analyzer.get_competitor_comparison(
+        company_id=company_id,
+        competitor_ids=competitor_ids,
+    )
+    
+    return comparison
