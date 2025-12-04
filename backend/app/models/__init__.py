@@ -22,17 +22,10 @@ from app.models.article_mapping import (
 )
 
 # Developer B additional models (dependency/threshold tracking)
-try:
-    from app.models.indicator import IndicatorDependency, IndicatorThreshold
-except ImportError:
-    IndicatorDependency = None
-    IndicatorThreshold = None
+from app.models.indicator import IndicatorDependency, IndicatorThreshold
 
-# Developer B trend model (alias to TrendAnalysis)
-try:
-    from app.models.indicator_value import IndicatorTrend
-except ImportError:
-    IndicatorTrend = TrendAnalysis  # Fallback to Developer A's model
+# Alias for backward compatibility
+IndicatorTrend = TrendAnalysis
 
 __all__ = [
     # Core indicator models
@@ -45,7 +38,7 @@ __all__ = [
     "MLClassificationResult",
     # Analysis models
     "TrendAnalysis",
-    "IndicatorTrend",  # Alias
+    "IndicatorTrend",  # Alias to TrendAnalysis
     # Mapping models
     "ArticleIndicatorMapping",
     # Extended models (Developer B)

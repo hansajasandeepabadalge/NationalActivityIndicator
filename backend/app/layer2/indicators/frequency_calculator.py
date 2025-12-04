@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 from app.layer2.indicators.calculator import IndicatorCalculator
 from app.layer2.indicators.registry import IndicatorRegistry
-from app.models.indicator import IndicatorDefinition
+from app.models import IndicatorDefinition
 
 @IndicatorRegistry.register("frequency_count")
 class FrequencyCalculator(IndicatorCalculator):

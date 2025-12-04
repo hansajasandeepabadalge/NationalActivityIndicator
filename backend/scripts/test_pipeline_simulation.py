@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 # Add backend directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from app.models.indicator import IndicatorDefinition
+from app.models import IndicatorDefinition
 from app.layer2.indicators.registry import IndicatorRegistry
 from app.layer2.indicators.frequency_calculator import FrequencyCalculator, KeywordDensityCalculator
 from app.layer2.indicators.sentiment_calculator import SentimentCalculator

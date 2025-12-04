@@ -3,7 +3,7 @@ import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from app.layer2.indicators.calculator import IndicatorCalculator
 from app.layer2.indicators.registry import IndicatorRegistry
-from app.models.indicator import IndicatorDefinition
+from app.models import IndicatorDefinition
 
 # Ensure VADER lexicon is downloaded
 try:

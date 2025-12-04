@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
-from app.models.indicator import IndicatorDefinition
+from app.models import IndicatorDefinition  # Import from unified models package
 
 class IndicatorCalculator(ABC):
     """

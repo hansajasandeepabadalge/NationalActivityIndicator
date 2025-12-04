@@ -1,59 +1,37 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, Text, TIMESTAMP, ForeignKey, JSON
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
+"""
+Developer B's additional indicator models.
+
+NOTE: IndicatorDefinition and IndicatorKeyword are defined in indicator_models.py (Developer A).
+This file only contains additional models not covered by Developer A.
+"""
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from app.db.base_class import Base
 
-class IndicatorDefinition(Base):
-    __tablename__ = "indicator_definitions"
-
-    indicator_id = Column(String, primary_key=True, index=True)
-    indicator_name = Column(String, nullable=False)
-    pestel_category = Column(String, nullable=False, index=True)
-    description = Column(Text)
-    calculation_type = Column(String, nullable=False)
-    base_weight = Column(Float, default=1.0)
-    aggregation_window = Column(String, default='1 day')
-    threshold_high = Column(Float)
-    threshold_low = Column(Float)
-    is_active = Column(Boolean, default=True)
-    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
-    updated_at = Column(TIMESTAMP, onupdate=func.now())
-    metadata_ = Column("metadata", JSON, nullable=True) # Using metadata_ to avoid conflict with Base.metadata
-
-class IndicatorKeyword(Base):
-    __tablename__ = "indicator_keywords"
-
-    keyword_id = Column(Integer, primary_key=True, index=True)
-    indicator_id = Column(String, ForeignKey("indicator_definitions.indicator_id"))
-    keyword_text = Column(String, nullable=False) # Renamed from keyword to match DB
-    keyword_type = Column(String, default='exact_match') # Added to match DB
-    weight = Column(Float, default=1.0)
-    language = Column(String, default="en")
-    is_active = Column(Boolean, default=True) # Added to match DB
-    created_at = Column(TIMESTAMP, server_default=func.now()) # Added to match DB
 
 class IndicatorDependency(Base):
-    __tablename__ = "indicator_correlations" # Renamed to match DB table 'indicator_correlations' or is this a different table? 
-    # Wait, migration has 'indicator_correlations' but model has 'indicator_dependencies'. 
-    # The migration does NOT have 'indicator_dependencies'. 
-    # I should probably comment this out or rename it if it's meant to be 'indicator_correlations'.
-    # But 'indicator_correlations' in migration has different structure (indicator_id_1, indicator_id_2).
-    # 'indicator_dependencies' seems to be a new table not in migration.
-    # If I keep it, I must ensure it can be created. But create_all failed on it.
-    # Let's keep it but fix types, and it will be created as a new table.
+    """
+    Tracks dependencies between indicators (parent-child relationships).
+    This is different from IndicatorCorrelation which tracks statistical correlations.
+    """
+    __tablename__ = "indicator_dependencies"  # Unique table name
     
     dependency_id = Column(Integer, primary_key=True, index=True)
     parent_indicator_id = Column(String, ForeignKey("indicator_definitions.indicator_id"))
     child_indicator_id = Column(String, ForeignKey("indicator_definitions.indicator_id"))
     weight = Column(Float, default=1.0)
-    relationship_type = Column(String)
+    relationship_type = Column(String)  # e.g., 'derived_from', 'component_of', 'influenced_by'
+
 
 class IndicatorThreshold(Base):
-    __tablename__ = "indicator_thresholds" # This table is NOT in migration 001.
+    """
+    Custom thresholds for indicator alerts beyond the simple high/low in IndicatorDefinition.
+    Supports multiple threshold levels with labels and severity.
+    """
+    __tablename__ = "indicator_thresholds"
     
     threshold_id = Column(Integer, primary_key=True, index=True)
     indicator_id = Column(String, ForeignKey("indicator_definitions.indicator_id"))
     threshold_value = Column(Float, nullable=False)
-    label = Column(String)
-    color_code = Column(String)
-    severity_level = Column(Integer)
+    label = Column(String)  # e.g., 'critical', 'warning', 'normal'
+    color_code = Column(String)  # e.g., '#ff0000'
+    severity_level = Column(Integer)  # 1=lowest, 5=highest
