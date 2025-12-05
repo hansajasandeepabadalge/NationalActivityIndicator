@@ -23,6 +23,13 @@ try:
 except ImportError:
     HAS_ADVANCED = False
 
+# Import Integration Pipeline endpoints
+try:
+    from app.api.v1 import pipeline
+    HAS_PIPELINE = True
+except ImportError:
+    HAS_PIPELINE = False
+
 api_router = APIRouter()
 
 
@@ -54,4 +61,12 @@ if HAS_ADVANCED:
         advanced_features.router,
         prefix="/advanced",
         tags=["advanced", "layer4"]
+    )
+
+# Include Integration Pipeline endpoints
+if HAS_PIPELINE:
+    api_router.include_router(
+        pipeline.router,
+        prefix="/pipeline",
+        tags=["pipeline", "integration"]
     )
