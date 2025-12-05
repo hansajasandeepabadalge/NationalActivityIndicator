@@ -24,6 +24,22 @@ from app.models.article_mapping import (
 # Developer B additional models (dependency/threshold tracking)
 from app.models.indicator import IndicatorDependency, IndicatorThreshold
 
+# Layer 4: Business Insights Engine models
+from app.models.business_insight_models import (
+    RiskOpportunityDefinition,
+    BusinessInsight,
+    InsightRecommendation,
+    InsightFeedback,
+    ScenarioSimulation,
+    CompetitiveIntelligence,
+    InsightTracking,
+    InsightScoreHistory
+)
+
+from app.models.company_profile_models import (
+    CompanyProfile
+)
+
 # Alias for backward compatibility
 IndicatorTrend = TrendAnalysis
 
@@ -44,4 +60,14 @@ __all__ = [
     # Extended models (Developer B)
     "IndicatorDependency",
     "IndicatorThreshold",
+    # Layer 4: Business Insights Engine
+    "RiskOpportunityDefinition",
+    "BusinessInsight",
+    "InsightRecommendation",
+    "InsightFeedback",
+    "ScenarioSimulation",
+    "CompetitiveIntelligence",
+    "InsightTracking",
+    "InsightScoreHistory",
+    "CompanyProfile",
 ]
