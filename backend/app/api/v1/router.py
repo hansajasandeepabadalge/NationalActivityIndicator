@@ -16,6 +16,13 @@ try:
 except ImportError:
     HAS_INSIGHTS = False
 
+# Import Layer 4 advanced features endpoints
+try:
+    from app.api.v1 import advanced_features
+    HAS_ADVANCED = True
+except ImportError:
+    HAS_ADVANCED = False
+
 api_router = APIRouter()
 
 
@@ -39,4 +46,12 @@ if HAS_INSIGHTS:
         insights.router,
         prefix="/insights",
         tags=["insights", "layer4"]
+    )
+
+# Include Layer 4 advanced features endpoints
+if HAS_ADVANCED:
+    api_router.include_router(
+        advanced_features.router,
+        prefix="/advanced",
+        tags=["advanced", "layer4"]
     )
