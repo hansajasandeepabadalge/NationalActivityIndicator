@@ -1,3 +1,45 @@
-fastapi
-uvicorn
-pydantic-settings
+# ===========================================
+# Layer 2 Integrated Requirements
+# Combined from Developer A & Developer B
+# ===========================================
+
+# Core Framework
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic-settings==2.1.0
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+pymongo==4.6.0
+redis==5.0.0
+alembic==1.12.1
+
+# ML & NLP (Python 3.12 compatible)
+scikit-learn>=1.3.0
+numpy>=1.26.0
+scipy>=1.11.0
+joblib>=1.3.0
+spacy>=3.7.0
+nltk>=3.8.0
+
+# Additional ML (Developer A)
+lightgbm>=4.1.0
+xgboost>=2.0.0
+
+# Transformers & Embeddings (Developer B)
+transformers>=4.35.0
+torch>=2.1.0
+sentence-transformers>=2.2.0
+
+# Data Processing
+pandas>=2.1.0
+
+# Time Series (Developer B)
+statsmodels>=0.14.0
+# prophet>=1.1.0  # Uncomment if needed - requires additional setup
+
+# Utilities
+python-dateutil>=2.8.0
+pyyaml>=6.0
+python-multipart>=0.0.6

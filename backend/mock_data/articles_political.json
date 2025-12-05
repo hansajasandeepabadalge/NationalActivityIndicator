@@ -1,0 +1,1352 @@
+[
+  {
+    "article_id": "pol_000",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-12-01T18:09:51.664174",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "parliament",
+        "demonstration",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 361,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_001",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-06T18:09:51.664211",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "demonstration",
+        "parliament",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 451,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_002",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-02T18:09:51.664220",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "demonstration",
+        "demonstration",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 224,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_003",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-11-30T18:09:51.664226",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "parliament",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 210,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_004",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-11-15T18:09:51.664230",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "protest",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 387,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_005",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-02T18:09:51.664235",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "protest",
+        "election"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 297,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_006",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-11-21T18:09:51.664241",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "unrest",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 123,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_007",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-15T18:09:51.664245",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "election",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 351,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_008",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-20T18:09:51.664250",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "parliament",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 421,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_009",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-18T18:09:51.664254",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "election",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 122,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_010",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-12-02T18:09:51.664259",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "demonstration",
+        "election",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 361,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_011",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-22T18:09:51.664264",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "demonstration",
+        "parliament",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 205,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_012",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-12-01T18:09:51.664269",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "cabinet",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 281,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_013",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-24T18:09:51.664273",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "protest",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 385,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_014",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-12-02T18:09:51.664277",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "parliament",
+        "cabinet",
+        "unrest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 437,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_015",
+    "content": {
+      "title": "Political Update: Election reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-09T18:09:51.664281",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "unrest",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 306,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_016",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-19T18:09:51.664285",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "demonstration",
+        "unrest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 455,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_017",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-16T18:09:51.664291",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "demonstration",
+        "demonstration",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.7,
+      "word_count": 296,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_018",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-28T18:09:51.664295",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "parliament",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 160,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_019",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-07T18:09:51.664300",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "cabinet",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 332,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_020",
+    "content": {
+      "title": "Political Update: Demonstration reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-25T18:09:51.664304",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "election",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 214,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_021",
+    "content": {
+      "title": "Political Update: Demonstration reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-11-19T18:09:51.664308",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "parliament",
+        "parliament",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 378,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_022",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-07T18:09:51.664312",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "parliament",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.89,
+      "word_count": 100,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_023",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-19T18:09:51.664317",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "protest",
+        "election"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 220,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_024",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-29T18:09:51.664321",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "demonstration",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 221,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_025",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-03T18:09:51.664326",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "parliament",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 220,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_026",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-23T18:09:51.664330",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "protest",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 212,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_027",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-17T18:09:51.664334",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "cabinet",
+        "unrest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 212,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_028",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-05T18:09:51.664338",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "demonstration",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 464,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_029",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-10T18:09:51.664342",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "election",
+        "protest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 340,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_030",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-21T18:09:51.664346",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "protest",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 187,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_031",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-12-01T18:09:51.664351",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "cabinet",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 124,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_032",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-05T18:09:51.664355",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "strike",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 133,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_033",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of unrest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-22T18:09:51.664359",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "election",
+        "election"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 216,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_034",
+    "content": {
+      "title": "Political Update: Demonstration reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-15T18:09:51.664363",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "unrest",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 274,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_035",
+    "content": {
+      "title": "Political Update: Election reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-16T18:09:51.664368",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "demonstration",
+        "protest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 333,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_036",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-23T18:09:51.664372",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "cabinet",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 264,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_037",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.74,
+      "publish_timestamp": "2025-11-20T18:09:51.664376",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "demonstration",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 158,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_038",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-12-01T18:09:51.664381",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "parliament",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 221,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_039",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-09T18:09:51.664385",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "unrest",
+        "parliament"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.76,
+      "word_count": 450,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_040",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of cabinet intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-12-02T18:09:51.664389",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "demonstration",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 257,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_041",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-18T18:09:51.664393",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "cabinet",
+        "strike"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 228,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_042",
+    "content": {
+      "title": "Political Update: Cabinet reported in Colombo",
+      "body": "Reports of demonstration intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.91,
+      "publish_timestamp": "2025-11-17T18:09:51.664397",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "demonstration",
+        "unrest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 495,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_043",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.81,
+      "publish_timestamp": "2025-11-18T18:09:51.664401",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "strike",
+        "election"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 224,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_044",
+    "content": {
+      "title": "Political Update: Parliament reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-18T18:09:51.664405",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "cabinet",
+        "unrest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 276,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_045",
+    "content": {
+      "title": "Political Update: Strike reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-08T18:09:51.664410",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cabinet",
+        "demonstration",
+        "election"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 377,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_046",
+    "content": {
+      "title": "Political Update: Protest reported in Colombo",
+      "body": "Reports of protest intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.81,
+      "publish_timestamp": "2025-11-16T18:09:51.664415",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "unrest",
+        "protest",
+        "protest"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 411,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_047",
+    "content": {
+      "title": "Political Update: Demonstration reported in Colombo",
+      "body": "Reports of parliament intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-12-01T18:09:51.664420",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "protest",
+        "cabinet",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 333,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_048",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of election intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-20T18:09:51.664423",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "election",
+        "protest",
+        "demonstration"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 417,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "pol_049",
+    "content": {
+      "title": "Political Update: Unrest reported in Colombo",
+      "body": "Reports of strike intensifying. Government responds with new measures. Public sentiment remains tense.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-11-11T18:09:51.664427",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "strike",
+        "strike",
+        "cabinet"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 252,
+      "is_duplicate": false
+    }
+  }
+]

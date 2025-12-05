@@ -1,0 +1,1352 @@
+[
+  {
+    "article_id": "soc_000",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-04T18:09:51.669755",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "cost of living",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 372,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_001",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-27T18:09:51.669776",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.87,
+      "word_count": 127,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_002",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-26T18:09:51.669783",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "community",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 324,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_003",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-17T18:09:51.669788",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "transport",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 374,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_004",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-04T18:09:51.669792",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "transport",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 434,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_005",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.7,
+      "publish_timestamp": "2025-11-16T18:09:51.669797",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "community",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 361,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_006",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-27T18:09:51.669801",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "health",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 315,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_007",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-19T18:09:51.669805",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "cost of living",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 338,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_008",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.74,
+      "publish_timestamp": "2025-11-20T18:09:51.669809",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "health",
+        "cost of living"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 276,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_009",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-27T18:09:51.669813",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "education",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 381,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_010",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-15T18:09:51.669817",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "community",
+        "education"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 157,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_011",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-06T18:09:51.669821",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 460,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_012",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-16T18:09:51.669826",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "cost of living",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 165,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_013",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-05T18:09:51.669830",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "poverty",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 110,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_014",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-28T18:09:51.669834",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "cost of living",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 366,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_015",
+    "content": {
+      "title": "Social Issue: Transport impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-11-20T18:09:51.669838",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "poverty",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 213,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_016",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-13T18:09:51.669842",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "health",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 410,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_017",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-29T18:09:51.669846",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "community",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 326,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_018",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-11-14T18:09:51.669851",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "poverty",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.76,
+      "word_count": 236,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_019",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-03T18:09:51.669855",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "poverty",
+        "cost of living"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 370,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_020",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-08T18:09:51.669859",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "education",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 122,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_021",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-11T18:09:51.669863",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "community",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 285,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_022",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-06T18:09:51.669867",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.74,
+      "word_count": 374,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_023",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-27T18:09:51.669871",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "poverty",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 118,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_024",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-11-11T18:09:51.669875",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "poverty",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 156,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_025",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.74,
+      "publish_timestamp": "2025-11-16T18:09:51.669879",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "transport",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 307,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_026",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-22T18:09:51.669883",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "health",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.95,
+      "word_count": 174,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_027",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-15T18:09:51.669887",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "cost of living",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 262,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_028",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-26T18:09:51.669891",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "community",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.83,
+      "word_count": 463,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_029",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-10T18:09:51.669895",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "cost of living",
+        "health"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.95,
+      "word_count": 300,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_030",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.85,
+      "publish_timestamp": "2025-11-16T18:09:51.669899",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "community",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.88,
+      "word_count": 348,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_031",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.93,
+      "publish_timestamp": "2025-11-26T18:09:51.669903",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "poverty",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 419,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_032",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-06T18:09:51.669907",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 483,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_033",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-12-02T18:09:51.669911",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "community",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.81,
+      "word_count": 322,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_034",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.95,
+      "publish_timestamp": "2025-11-21T18:09:51.669916",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "community",
+        "education"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 404,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_035",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-11-16T18:09:51.669920",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "cost of living",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 355,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_036",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-14T18:09:51.669924",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.82,
+      "word_count": 398,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_037",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over poverty. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.79,
+      "publish_timestamp": "2025-11-15T18:09:51.669927",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "cost of living",
+        "education"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 477,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_038",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-11-26T18:09:51.669931",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "cost of living",
+        "education"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 258,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_039",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-03T18:09:51.669935",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "health",
+        "education"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 146,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_040",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.7,
+      "publish_timestamp": "2025-11-10T18:09:51.669939",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "transport",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.7,
+      "word_count": 295,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_041",
+    "content": {
+      "title": "Social Issue: Poverty impacts daily life",
+      "body": "Citizens express concern over cost of living. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-14T18:09:51.669951",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "poverty",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 322,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_042",
+    "content": {
+      "title": "Social Issue: Health impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.85,
+      "publish_timestamp": "2025-11-17T18:09:51.669955",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "cost of living",
+        "community",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 426,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_043",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.85,
+      "publish_timestamp": "2025-11-19T18:09:51.669959",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "transport",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.95,
+      "word_count": 395,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_044",
+    "content": {
+      "title": "Social Issue: Education impacts daily life",
+      "body": "Citizens express concern over transport. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.71,
+      "publish_timestamp": "2025-11-10T18:09:51.669963",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "poverty",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 374,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_045",
+    "content": {
+      "title": "Social Issue: Community impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-12-01T18:09:51.669967",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "health",
+        "cost of living",
+        "community"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.78,
+      "word_count": 278,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_046",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over education. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-03T18:09:51.669971",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "transport",
+        "cost of living",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 362,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_047",
+    "content": {
+      "title": "Social Issue: Transport impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-10T18:09:51.669975",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "poverty",
+        "transport",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 153,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_048",
+    "content": {
+      "title": "Social Issue: Transport impacts daily life",
+      "body": "Citizens express concern over community. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.86,
+      "publish_timestamp": "2025-11-14T18:09:51.669979",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "education",
+        "health",
+        "transport"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 339,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "soc_049",
+    "content": {
+      "title": "Social Issue: Cost Of Living impacts daily life",
+      "body": "Citizens express concern over health. Authorities promise action. Local communities organize support.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.83,
+      "publish_timestamp": "2025-12-02T18:09:51.669983",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "community",
+        "cost of living",
+        "poverty"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 317,
+      "is_duplicate": false
+    }
+  }
+]

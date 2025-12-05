@@ -1,0 +1,361 @@
+{
+  "metadata": {
+    "model_version": "v1.0",
+    "training_date": "2025-12-03T14:41:20.753032",
+    "duration_seconds": 0.634401,
+    "model_type": "LogisticRegression (Binary Relevance)",
+    "feature_dimensions": 61
+  },
+  "datasets": {
+    "train": {
+      "n_samples": 28,
+      "label_distribution": {
+        "POL_UNREST": 4,
+        "ECO_INFLATION": 4,
+        "ECO_CONSUMER_CONF": 3,
+        "SOC_HEALTHCARE": 7,
+        "ECO_TOURISM": 3,
+        "ENV_WEATHER": 3,
+        "OPS_TRANSPORT": 4,
+        "TEC_POWER": 3
+      },
+      "avg_labels_per_article": 1.1071428571428572
+    },
+    "val": {
+      "n_samples": 8,
+      "label_distribution": {
+        "POL_UNREST": 1,
+        "ECO_INFLATION": 1,
+        "ECO_CONSUMER_CONF": 1,
+        "SOC_HEALTHCARE": 2,
+        "ECO_TOURISM": 1,
+        "ENV_WEATHER": 1,
+        "OPS_TRANSPORT": 1,
+        "TEC_POWER": 1
+      },
+      "avg_labels_per_article": 1.125
+    }
+  },
+  "hyperparameters": {
+    "C": 1.0,
+    "penalty": "l2",
+    "class_weight": "balanced",
+    "max_iter": 1000,
+    "solver": "lbfgs"
+  },
+  "performance": {
+    "weighted_f1": 0.7592592592592592,
+    "min_threshold": 0.6,
+    "success": true,
+    "acceptable": true,
+    "validation_results": {
+      "dataset_name": "Validation",
+      "n_samples": 8,
+      "weighted_f1": 0.7592592592592592,
+      "macro_f1": 0.5833333333333333,
+      "micro_f1": 0.6956521739130435,
+      "macro_precision": 0.5333333333333333,
+      "macro_recall": 0.7,
+      "per_indicator": {
+        "POL_UNREST": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1
+        },
+        "ECO_INFLATION": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1
+        },
+        "ECO_CURRENCY": {
+          "f1": null,
+          "precision": null,
+          "recall": null,
+          "support": 0
+        },
+        "ECO_CONSUMER_CONF": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1
+        },
+        "ECO_SUPPLY_CHAIN": {
+          "f1": null,
+          "precision": null,
+          "recall": null,
+          "support": 0
+        },
+        "ECO_TOURISM": {
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0,
+          "support": 1
+        },
+        "ENV_WEATHER": {
+          "f1": 0.5,
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "support": 1
+        },
+        "OPS_TRANSPORT": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1
+        },
+        "TEC_POWER": {
+          "f1": 0.6666666666666666,
+          "precision": 0.5,
+          "recall": 1.0,
+          "support": 1
+        },
+        "SOC_HEALTHCARE": {
+          "f1": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 2
+        }
+      }
+    }
+  },
+  "per_indicator_training": {
+    "POL_UNREST": {
+      "positive_examples": 4,
+      "negative_examples": 24,
+      "train_f1": 0.888888888888889,
+      "model_type": "LogisticRegression"
+    },
+    "ECO_INFLATION": {
+      "positive_examples": 4,
+      "negative_examples": 24,
+      "train_f1": 1.0,
+      "model_type": "LogisticRegression"
+    },
+    "ECO_CURRENCY": {
+      "skipped": true,
+      "reason": "no_positive_examples"
+    },
+    "ECO_CONSUMER_CONF": {
+      "positive_examples": 3,
+      "negative_examples": 25,
+      "train_f1": 0.8571428571428571,
+      "model_type": "LogisticRegression"
+    },
+    "ECO_SUPPLY_CHAIN": {
+      "skipped": true,
+      "reason": "no_positive_examples"
+    },
+    "ECO_TOURISM": {
+      "positive_examples": 3,
+      "negative_examples": 25,
+      "train_f1": 0.8571428571428571,
+      "model_type": "LogisticRegression"
+    },
+    "ENV_WEATHER": {
+      "positive_examples": 3,
+      "negative_examples": 25,
+      "train_f1": 0.6,
+      "model_type": "LogisticRegression"
+    },
+    "OPS_TRANSPORT": {
+      "positive_examples": 4,
+      "negative_examples": 24,
+      "train_f1": 0.888888888888889,
+      "model_type": "LogisticRegression"
+    },
+    "TEC_POWER": {
+      "positive_examples": 3,
+      "negative_examples": 25,
+      "train_f1": 0.6666666666666666,
+      "model_type": "LogisticRegression"
+    },
+    "SOC_HEALTHCARE": {
+      "positive_examples": 7,
+      "negative_examples": 21,
+      "train_f1": 1.0,
+      "model_type": "LogisticRegression"
+    }
+  },
+  "feature_importance": {
+    "POL_UNREST": [
+      [
+        "pestel_political",
+        1.814174345247805
+      ],
+      [
+        "tfidf_pca_4",
+        1.2748218602886936
+      ],
+      [
+        "pestel_environmental",
+        0.6441993555253197
+      ],
+      [
+        "rule_confidence_POL_UNREST",
+        0.5633912325171042
+      ],
+      [
+        "pestel_economic",
+        0.5493612782863013
+      ]
+    ],
+    "ECO_INFLATION": [
+      [
+        "pestel_economic",
+        1.602339901107379
+      ],
+      [
+        "rule_confidence_ECO_INFLATION",
+        1.3780220095573394
+      ],
+      [
+        "tfidf_pca_6",
+        0.6397811197347023
+      ],
+      [
+        "pestel_environmental",
+        0.6392517029412941
+      ],
+      [
+        "rule_confidence_ECO_TOURISM",
+        0.550931636346529
+      ]
+    ],
+    "ECO_CURRENCY": [],
+    "ECO_CONSUMER_CONF": [
+      [
+        "pestel_social",
+        1.7194251996475598
+      ],
+      [
+        "rule_confidence_ECO_CONSUMER_CONF",
+        1.1419406663206484
+      ],
+      [
+        "tfidf_pca_5",
+        0.7417904969204709
+      ],
+      [
+        "rule_confidence_SOC_HEALTHCARE",
+        0.5627003711872409
+      ],
+      [
+        "pestel_environmental",
+        0.5553321345107254
+      ]
+    ],
+    "ECO_SUPPLY_CHAIN": [],
+    "ECO_TOURISM": [
+      [
+        "rule_confidence_ECO_TOURISM",
+        1.3993677525882677
+      ],
+      [
+        "tfidf_pca_1",
+        1.3309736361555717
+      ],
+      [
+        "pestel_economic",
+        1.2637896141018774
+      ],
+      [
+        "pestel_environmental",
+        0.48854768682792576
+      ],
+      [
+        "rule_confidence_ECO_INFLATION",
+        0.40889820672717836
+      ]
+    ],
+    "ENV_WEATHER": [
+      [
+        "pestel_environmental",
+        1.4875827596737639
+      ],
+      [
+        "rule_confidence_ENV_WEATHER",
+        1.2316809588569733
+      ],
+      [
+        "tfidf_pca_5",
+        0.7020225349280166
+      ],
+      [
+        "tfidf_pca_6",
+        0.6252836113673971
+      ],
+      [
+        "tfidf_pca_7",
+        0.6019760513593152
+      ]
+    ],
+    "OPS_TRANSPORT": [
+      [
+        "rule_confidence_OPS_TRANSPORT",
+        1.49673959937513
+      ],
+      [
+        "tfidf_pca_2",
+        1.2120590216408857
+      ],
+      [
+        "pestel_environmental",
+        0.8259784525850776
+      ],
+      [
+        "tfidf_pca_1",
+        0.8112598305322493
+      ],
+      [
+        "pestel_economic",
+        0.571683836764616
+      ]
+    ],
+    "TEC_POWER": [
+      [
+        "pestel_environmental",
+        1.6531016013130202
+      ],
+      [
+        "rule_confidence_TEC_POWER",
+        0.8594762851239703
+      ],
+      [
+        "tfidf_pca_1",
+        0.6593989429957102
+      ],
+      [
+        "tfidf_pca_2",
+        0.6563707521557757
+      ],
+      [
+        "pestel_economic",
+        0.5836715815591877
+      ]
+    ],
+    "SOC_HEALTHCARE": [
+      [
+        "pestel_social",
+        1.2349701792380698
+      ],
+      [
+        "pestel_technological",
+        1.0867346371968485
+      ],
+      [
+        "pestel_environmental",
+        1.0002778481360661
+      ],
+      [
+        "tfidf_pca_3",
+        0.7804836248512672
+      ],
+      [
+        "rule_confidence_SOC_HEALTHCARE",
+        0.7518396575289414
+      ]
+    ]
+  }
+}
