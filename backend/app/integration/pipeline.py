@@ -389,52 +389,86 @@ class IntegrationPipeline:
             # If so, use the standalone components instead
             try:
                 # Try using individual Layer 4 engines that don't need DB
-                from app.layer4.engines.risk_detector import RiskDetector
-                from app.layer4.engines.opportunity_identifier import OpportunityIdentifier
-                from app.layer4.engines.recommendation_engine import RecommendationEngine
+                from app.layer4.risk_detection import RuleBasedRiskDetector
+                from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
+                from app.layer4.recommendation import RecommendationEngine
                 
                 # Create mock operational data structure
                 from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
                 
                 # Build operational indicators from Layer 3 output
+                # Using the exact field names expected by OperationalIndicators schema
                 ops_data = {
-                    "supply_chain_health": layer3_output.supply_chain_health,
-                    "transport_availability": layer3_output.supply_chain_health * 0.9,
-                    "logistics_cost_index": 100 - layer3_output.cost_pressure,
-                    "import_flow_rate": layer3_output.supply_chain_health * 0.85,
-                    "workforce_availability": layer3_output.workforce_health,
-                    "labor_cost_index": 100 - layer3_output.cost_pressure * 0.7,
-                    "productivity_index": layer3_output.workforce_health * 0.95,
-                    "power_reliability": layer3_output.infrastructure_health,
-                    "fuel_availability": layer3_output.infrastructure_health * 0.9,
-                    "water_supply_index": layer3_output.infrastructure_health * 0.95,
-                    "internet_connectivity": layer3_output.infrastructure_health,
-                    "raw_material_cost_index": 100 - layer3_output.cost_pressure,
-                    "energy_cost_index": 100 - layer3_output.cost_pressure * 0.8,
-                    "demand_level": layer3_output.market_conditions,
-                    "competition_intensity": 50.0,
-                    "pricing_power": layer3_output.market_conditions * 0.9,
-                    "cash_flow_health": layer3_output.financial_health,
-                    "credit_availability": layer3_output.financial_health * 0.85,
-                    "payment_delay_index": 100 - layer3_output.financial_health * 0.2,
-                    "regulatory_burden": layer3_output.regulatory_burden,
-                    "compliance_cost_index": layer3_output.regulatory_burden * 0.9,
-                    "overall_operational_health": layer3_output.overall_operational_health,
+                    "timestamp": datetime.now(),
+                    "company_id": layer3_output.company_id,
+                    # Supply Chain & Logistics
+                    "OPS_SUPPLY_CHAIN": layer3_output.supply_chain_health,
+                    "OPS_TRANSPORT_AVAIL": layer3_output.supply_chain_health * 0.95,
+                    "OPS_LOGISTICS_COST": 100 - layer3_output.cost_pressure,
+                    "OPS_IMPORT_FLOW": layer3_output.supply_chain_health * 0.9,
+                    # Workforce & Operations
+                    "OPS_WORKFORCE_AVAIL": layer3_output.workforce_health,
+                    "OPS_LABOR_COST": 100 - layer3_output.cost_pressure * 0.7,
+                    "OPS_PRODUCTIVITY": layer3_output.workforce_health * 0.9,
+                    # Infrastructure & Resources
+                    "OPS_POWER_RELIABILITY": layer3_output.infrastructure_health,
+                    "OPS_FUEL_AVAIL": layer3_output.infrastructure_health * 0.9,
+                    "OPS_WATER_SUPPLY": layer3_output.infrastructure_health * 0.95,
+                    "OPS_INTERNET_CONNECTIVITY": layer3_output.infrastructure_health * 0.85,
+                    # Cost Pressures
+                    "OPS_COST_PRESSURE": layer3_output.cost_pressure,
+                    "OPS_RAW_MATERIAL_COST": 100 - layer3_output.cost_pressure,
+                    "OPS_ENERGY_COST": 100 - layer3_output.cost_pressure * 0.8,
+                    # Market Conditions
+                    "OPS_DEMAND_LEVEL": layer3_output.market_conditions,
+                    "OPS_COMPETITION_INTENSITY": 50.0,  # Neutral default
+                    "OPS_PRICING_POWER": layer3_output.market_conditions * 0.85,
+                    # Financial Operations
+                    "OPS_CASH_FLOW": layer3_output.financial_health,
+                    "OPS_CREDIT_AVAIL": layer3_output.financial_health * 0.9,
+                    "OPS_PAYMENT_DELAYS": 100 - layer3_output.financial_health * 0.15,
+                    # Regulatory & Compliance
+                    "OPS_REGULATORY_BURDEN": layer3_output.regulatory_burden,
+                    "OPS_COMPLIANCE_COST": layer3_output.regulatory_burden * 0.9,
+                    # Trends
+                    "trends": {k: v.value if hasattr(v, 'value') else str(v) 
+                              for k, v in layer3_output.trends.items()},
                 }
                 
                 operational_indicators = OperationalIndicators(**ops_data)
                 
-                # Run engines
-                risk_detector = RiskDetector()
-                risks = risk_detector.detect_risks(operational_indicators)
+                # Run engines with required arguments
+                company_id = layer3_output.company_id
+                industry = layer3_output.industry
                 
-                opp_identifier = OpportunityIdentifier()
-                opportunities = opp_identifier.identify_opportunities(operational_indicators)
-                
-                rec_engine = RecommendationEngine()
-                recommendations = rec_engine.generate_recommendations(
-                    operational_indicators, risks, opportunities
+                risk_detector = RuleBasedRiskDetector()
+                risks = risk_detector.detect_risks(
+                    company_id=company_id,
+                    industry=industry,
+                    indicators=operational_indicators,
+                    company_profile=company_profile
                 )
+                
+                opp_identifier = RuleBasedOpportunityDetector()
+                opportunities = opp_identifier.detect_opportunities(
+                    company_id=company_id,
+                    industry=industry,
+                    indicators=operational_indicators
+                )
+                
+                # Generate recommendations for each insight
+                rec_engine = RecommendationEngine()
+                recommendations = []
+                
+                # Generate recommendations for risks
+                for risk in risks:
+                    recs = rec_engine.generate_recommendations(risk, company_profile)
+                    recommendations.extend(recs)
+                    
+                # Generate recommendations for opportunities
+                for opp in opportunities:
+                    recs = rec_engine.generate_recommendations(opp, company_profile)
+                    recommendations.extend(recs)
                 
                 return {
                     "timestamp": datetime.now().isoformat(),
