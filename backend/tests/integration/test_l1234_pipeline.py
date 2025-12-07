@@ -24,7 +24,7 @@ def test_all_layers_importable():
     try:
         from app.agents import (
             SourceMonitorAgent,
-            PriorityAgent,
+            PriorityDetectionAgent,  # Renamed from PriorityAgent
             ProcessingAgent,
             SchedulerAgent,
             ValidationAgent
@@ -36,7 +36,7 @@ def test_all_layers_importable():
     try:
         from app.cache import SmartCache
         from app.deduplication import SemanticDeduplicator
-        from app.cross_validation import ValidationNetwork
+        from app.cross_validation import CrossSourceValidator  # Renamed from ValidationNetwork
         from app.impact_scorer import BusinessImpactScorer
         from app.orchestrator import MasterOrchestrator
     except ImportError as e:
@@ -193,9 +193,9 @@ def test_integration_adapters_exist():
     l2_to_l3 = Layer2ToLayer3Adapter()
     l3_to_l4 = Layer3ToLayer4Adapter()
     
-    # Verify adapters have key methods
-    assert hasattr(l2_to_l3, 'transform')
-    assert hasattr(l3_to_l4, 'transform')
+    # Verify adapters have key methods (use 'adapt' not 'transform')
+    assert hasattr(l2_to_l3, 'adapt')
+    assert hasattr(l3_to_l4, 'adapt')
 
 
 def test_integration_pipeline_initialization():
@@ -294,29 +294,35 @@ class TestEndToEndDataFlow:
     def test_layer3_receives_layer2_output(self, sample_article, sample_company_profile):
         """Test that Layer 3 can receive Layer 2 output."""
         from app.integration.adapters import Layer2ToLayer3Adapter
-        from app.integration.contracts import Layer2Output, IndicatorValueOutput
+        from app.integration.contracts import Layer2Output, IndicatorValueOutput, PESTELCategory
         
-        # Create mock Layer 2 output
-        indicator_values = [
-            IndicatorValueOutput(
-                indicator_id="ECON_INTEREST_RATE",
-                value=0.75,
-                confidence=0.92,
-                trend_direction="increasing",
-                data_points=5,
-                category="Economic"
-            )
-        ]
-        
-        layer2_output = Layer2Output(
-            calculation_timestamp=datetime.now(),
-            indicators=indicator_values,
-            articles_processed=1
+        # Create mock Layer 2 output with all required fields
+        indicator_value = IndicatorValueOutput(
+            indicator_id="ECON_INTEREST_RATE",
+            indicator_name="Interest Rate Impact",
+            pestel_category=PESTELCategory.ECONOMIC,
+            timestamp=datetime.now(),
+            value=75.0,
+            raw_count=5,
+            sentiment_score=0.2,
+            confidence=0.92,
+            source_count=3
         )
         
-        # Transform to Layer 3 input
+        # Layer2Output uses Dict[str, IndicatorValueOutput] for indicators
+        layer2_output = Layer2Output(
+            timestamp=datetime.now(),
+            indicators={"ECON_INTEREST_RATE": indicator_value},
+            overall_sentiment=0.2,
+            activity_level=65.0,
+            article_count=1,
+            source_diversity=3,
+            data_quality_score=0.85
+        )
+        
+        # Adapter uses 'adapt' method
         adapter = Layer2ToLayer3Adapter()
-        layer3_input = adapter.transform(
+        layer3_input = adapter.adapt(
             layer2_output,
             company_profile=sample_company_profile
         )

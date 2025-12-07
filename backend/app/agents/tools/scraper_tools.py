@@ -398,6 +398,49 @@ def get_cache_stats() -> Dict[str, Any]:
 
 
 # ============================================
+# Scraper Tool Manager
+# ============================================
+
+class ScraperToolManager:
+    """
+    Manager class for scraper tools used by the orchestrator.
+    
+    Provides an OOP interface around the scraper functions for use
+    by the MasterOrchestrator.
+    """
+    
+    def __init__(self):
+        """Initialize the scraper tool manager."""
+        self.available_scrapers = get_available_scrapers()
+        logger.info(f"ScraperToolManager initialized with scrapers: {self.available_scrapers}")
+    
+    async def execute_scraper(self, source_name: str, force_refresh: bool = False) -> Dict[str, Any]:
+        """
+        Execute scraper for a specific source.
+        
+        Args:
+            source_name: Name of the source to scrape
+            force_refresh: Whether to bypass cache
+            
+        Returns:
+            Dict with success status and articles or error
+        """
+        return await _scrape_source_async(source_name, force_refresh)
+    
+    def get_available_sources(self) -> List[str]:
+        """Get list of available source names."""
+        return self.available_scrapers
+    
+    def get_source_config(self, source_name: str) -> Optional[Dict[str, str]]:
+        """Get configuration for a specific source."""
+        return SOURCE_CONFIG.get(source_name)
+    
+    async def get_cache_statistics(self) -> Dict[str, Any]:
+        """Get cache performance statistics."""
+        return await _get_cache_stats_async()
+
+
+# ============================================
 # Create LangChain Tools
 # ============================================
 

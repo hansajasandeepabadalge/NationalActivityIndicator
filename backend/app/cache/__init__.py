@@ -16,6 +16,9 @@ from app.cache.change_detector import ChangeDetector
 from app.cache.cache_metrics import CacheMetrics
 from typing import Optional
 
+# Alias for backward compatibility
+SmartCache = SmartCacheManager
+
 # Global cache instance
 _smart_cache: Optional[SmartCacheManager] = None
 
@@ -45,6 +48,7 @@ def get_smart_cache_sync() -> SmartCacheManager:
 
 __all__ = [
     "SmartCacheManager",
+    "SmartCache",  # Alias for backward compatibility
     "ChangeDetector", 
     "CacheMetrics",
     "get_smart_cache",
