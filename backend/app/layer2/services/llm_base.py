@@ -36,6 +36,15 @@ class LLMProvider(Enum):
 
 
 @dataclass
+class CacheConfig:
+    """Configuration for LLM response caching."""
+    enabled: bool = True
+    ttl_hours: int = 24
+    prefix: str = "llm_cache"
+    redis_url: str = ""
+
+
+@dataclass
 class LLMConfig:
     """Configuration for LLM service."""
     provider: LLMProvider = LLMProvider.GROQ
@@ -400,3 +409,7 @@ class BaseLLMService(ABC):
             "avg_processing_time_ms": round(avg_time, 2),
             "cache": cache_stats
         }
+
+
+# Alias for backward compatibility with other service files
+GroqLLMClient = BaseLLMService

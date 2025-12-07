@@ -505,9 +505,9 @@ async def get_all_stats():
     description="Get statistics for a specific service."
 )
 async def get_service_stats(
-    service: str = Query(..., description="Service name: classifier, sentiment, entities, topics, quality, pipeline")
+    service: str
 ):
-    """Get statistics for a specific service."""
+    """Get statistics for a specific service (classifier, sentiment, entities, topics, quality, pipeline)."""
     try:
         if service == "classifier":
             stats = get_llm_classifier().get_stats()
