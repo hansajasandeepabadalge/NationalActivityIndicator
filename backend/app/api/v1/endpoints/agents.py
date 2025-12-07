@@ -596,3 +596,359 @@ async def get_duplicate_clusters(hours: int = 24, limit: int = 50):
             status_code=500,
             detail=f"Failed to get duplicate clusters: {str(e)}"
         )
+
+
+# ============================================
+# Business Impact Scorer Endpoints
+# ============================================
+
+class ImpactScoreRequest(BaseModel):
+    """Request model for business impact scoring."""
+    title: str
+    body: str
+    source: Optional[str] = "unknown"
+    publish_time: Optional[str] = None
+    target_sectors: Optional[list] = None
+
+
+class BatchScoreRequest(BaseModel):
+    """Request model for batch scoring."""
+    articles: list  # List of ImpactScoreRequest-like dicts
+
+
+@router.post("/impact/score")
+async def score_article_impact(request: ImpactScoreRequest):
+    """
+    Calculate business impact score for an article.
+    
+    Uses multi-factor analysis for prioritization:
+    - Severity (25%): Event magnitude (crisis → minor)
+    - Sector Relevance (25%): Match to target industries
+    - Source Credibility (15%): Government → Unverified scale
+    - Geographic Scope (10%): National → Local coverage
+    - Temporal Urgency (15%): Breaking → Historical timeline
+    - Volume/Momentum (10%): Mention frequency and trends
+    
+    Returns:
+        - impact_score: 0-100 weighted score
+        - priority_rank: 1-5 (1 = critical, 5 = minimal)
+        - factor_breakdown: Individual factor scores
+        - sector_analysis: Primary/secondary sectors affected
+        - processing_guidance: Fast-track and notification recommendations
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer
+        
+        scorer = await get_impact_scorer()
+        
+        article = {
+            "title": request.title,
+            "content": request.body,
+            "source": request.source,
+            "publish_time": request.publish_time
+        }
+        
+        result = await scorer.score_article(article, request.target_sectors)
+        
+        return {
+            "success": True,
+            "impact_score": result.impact_score,
+            "impact_level": result.impact_level.value,
+            "priority_rank": result.priority_rank,
+            "requires_fast_track": result.requires_fast_track,
+            "requires_notification": result.requires_notification,
+            "factors": result.factors.to_dict(),
+            "factor_contributions": result.factor_contributions,
+            "primary_sectors": result.primary_sectors,
+            "secondary_sectors": result.secondary_sectors,
+            "cascade_effects": result.cascade_effects,
+            "confidence": result.confidence,
+            "detected_signals": result.detected_signals,
+            "processing_guidance": result.processing_guidance
+        }
+        
+    except Exception as e:
+        logger.error(f"Error scoring impact: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to score article impact: {str(e)}"
+        )
+
+
+@router.post("/impact/batch")
+async def score_batch_impact(request: BatchScoreRequest):
+    """
+    Score multiple articles and return sorted by priority.
+    
+    Efficiently processes a batch of articles and returns them
+    sorted by priority (highest priority first).
+    
+    Useful for:
+    - Processing a feed of new articles
+    - Re-prioritizing a queue
+    - Comparing article importance
+    
+    Returns:
+        List of scored articles sorted by priority_rank, then impact_score
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer
+        
+        scorer = await get_impact_scorer()
+        
+        articles = [
+            {
+                "title": a.get("title", ""),
+                "content": a.get("body", a.get("content", "")),
+                "source": a.get("source", "unknown"),
+                "publish_time": a.get("publish_time")
+            }
+            for a in request.articles
+        ]
+        
+        results = await scorer.score_batch(articles)
+        
+        return {
+            "success": True,
+            "total_scored": len(results),
+            "critical_count": sum(1 for r in results if r.priority_rank == 1),
+            "high_count": sum(1 for r in results if r.priority_rank == 2),
+            "results": [
+                {
+                    "title": articles[i].get("title", "")[:100],
+                    "impact_score": r.impact_score,
+                    "impact_level": r.impact_level.value,
+                    "priority_rank": r.priority_rank,
+                    "primary_sectors": [s.get("sector") for s in r.primary_sectors[:2]]
+                }
+                for i, r in enumerate(results)
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error batch scoring: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to batch score articles: {str(e)}"
+        )
+
+
+@router.get("/impact/sectors/{sector}")
+async def get_sector_details(sector: str):
+    """
+    Get information about a specific industry sector.
+    
+    Returns keywords, dependencies, and impact multipliers
+    for the specified sector.
+    
+    Args:
+        sector: Sector name (e.g., 'tourism', 'finance', 'manufacturing')
+    """
+    try:
+        from app.impact_scorer.sector_engine import SectorImpactEngine, IndustrySector
+        
+        engine = SectorImpactEngine()
+        
+        # Validate sector
+        try:
+            sector_enum = IndustrySector(sector.lower())
+        except ValueError:
+            available = [s.value for s in IndustrySector]
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unknown sector '{sector}'. Available sectors: {available}"
+            )
+        
+        # Get sector keywords
+        keywords = list(engine.SECTOR_KEYWORDS.get(sector_enum, set()))
+        
+        # Get dependencies
+        dependencies = []
+        if sector_enum in engine.SECTOR_DEPENDENCIES:
+            dependencies = [
+                {"sector": dep.value, "strength": strength}
+                for dep, strength in engine.SECTOR_DEPENDENCIES[sector_enum]
+            ]
+        
+        # Get sectors that depend on this one
+        dependent_on_this = []
+        for source_sector, deps in engine.SECTOR_DEPENDENCIES.items():
+            for dep, strength in deps:
+                if dep == sector_enum:
+                    dependent_on_this.append({
+                        "sector": source_sector.value,
+                        "strength": strength
+                    })
+        
+        return {
+            "sector": sector_enum.value,
+            "keywords": keywords[:20],
+            "keyword_count": len(keywords),
+            "impacts_sectors": dependencies,
+            "impacted_by_sectors": dependent_on_this
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting sector details: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get sector details: {str(e)}"
+        )
+
+
+@router.get("/impact/stats")
+async def get_impact_scorer_statistics():
+    """
+    Get business impact scorer statistics.
+    
+    Returns:
+        - articles_scored: Total articles processed
+        - avg_score: Average impact score
+        - critical_count: Articles with critical priority
+        - high_count: Articles with high priority
+        - avg_processing_time_ms: Average scoring time
+        - scoring_profile: Current weight profile
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer
+        
+        scorer = await get_impact_scorer()
+        stats = scorer.get_stats()
+        
+        return {
+            "success": True,
+            **stats
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting impact stats: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get impact scorer stats: {str(e)}"
+        )
+
+
+@router.put("/impact/profile/{profile}")
+async def set_scoring_profile(profile: str):
+    """
+    Change the scoring weight profile.
+    
+    Available profiles:
+    - balanced: Equal emphasis on all factors (default)
+    - urgency: Prioritize time-sensitive events (30% severity, 30% temporal)
+    - business: Prioritize sector relevance (35% sector)
+    - credibility: Prioritize source reliability (30% credibility)
+    
+    Args:
+        profile: Profile name to activate
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer
+        from app.impact_scorer.score_aggregator import ScoringProfile
+        
+        # Validate profile
+        try:
+            profile_enum = ScoringProfile(profile.lower())
+        except ValueError:
+            available = [p.value for p in ScoringProfile]
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unknown profile '{profile}'. Available profiles: {available}"
+            )
+        
+        scorer = await get_impact_scorer()
+        scorer.set_scoring_profile(profile_enum)
+        
+        return {
+            "success": True,
+            "message": f"Scoring profile changed to '{profile}'",
+            "profile": profile_enum.value,
+            "description": {
+                "balanced": "Equal emphasis on all factors",
+                "urgency": "Prioritize time-sensitive events",
+                "business": "Prioritize sector relevance",
+                "credibility": "Prioritize source reliability"
+            }.get(profile_enum.value, "")
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error setting profile: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to set scoring profile: {str(e)}"
+        )
+
+
+@router.post("/impact/compare-profiles")
+async def compare_scoring_profiles(request: ImpactScoreRequest):
+    """
+    Compare impact scores across all scoring profiles.
+    
+    Useful for understanding how different weight configurations
+    would affect article prioritization.
+    
+    Returns scores for each profile with a recommendation.
+    """
+    try:
+        from app.impact_scorer.multi_factor_analyzer import MultiFactorAnalyzer
+        from app.impact_scorer.sector_engine import SectorImpactEngine
+        from app.impact_scorer.score_aggregator import ScoreAggregator, ScoringProfile
+        
+        analyzer = MultiFactorAnalyzer()
+        sector_engine = SectorImpactEngine()
+        
+        factor_scores = analyzer.analyze(
+            title=request.title,
+            content=request.body,
+            source=request.source or "unknown"
+        )
+        
+        sector_result = sector_engine.analyze_sectors(
+            title=request.title,
+            content=request.body
+        )
+        
+        # Compare across profiles
+        profile_results = {}
+        for profile in ScoringProfile:
+            aggregator = ScoreAggregator(profile=profile)
+            result = aggregator.aggregate(factor_scores, sector_result)
+            profile_results[profile.value] = {
+                "final_score": result.final_score,
+                "priority_rank": result.priority_rank,
+                "priority_label": result.priority_label,
+                "weights": result.weights_used
+            }
+        
+        # Determine best profile
+        scores = [(k, v["final_score"]) for k, v in profile_results.items()]
+        max_profile = max(scores, key=lambda x: x[1])[0]
+        min_profile = min(scores, key=lambda x: x[1])[0]
+        variance = max(s[1] for s in scores) - min(s[1] for s in scores)
+        
+        return {
+            "success": True,
+            "factor_scores": factor_scores.to_dict(),
+            "sector_score": sector_result.overall_sector_score,
+            "profile_comparison": profile_results,
+            "analysis": {
+                "highest_score_profile": max_profile,
+                "lowest_score_profile": min_profile,
+                "score_variance": round(variance, 1),
+                "recommendation": (
+                    "balanced" if variance < 10 
+                    else f"{max_profile} for maximum impact visibility"
+                )
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Error comparing profiles: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to compare profiles: {str(e)}"
+        )

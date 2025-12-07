@@ -8,6 +8,7 @@ LangChain tools that wrap content processing functionality:
 - Quality scoring
 - Metadata extraction
 - Semantic deduplication (90% better duplicate detection)
+- Business impact scoring (better prioritization)
 """
 
 import asyncio
@@ -565,6 +566,228 @@ def translate_content(text: str, source_lang: str = "auto") -> Dict[str, Any]:
 
 
 # ============================================
+# Business Impact Scoring Functions
+# ============================================
+
+def score_business_impact(
+    title: str,
+    body: str,
+    source: str = "unknown",
+    publish_time: Optional[str] = None,
+    target_sectors: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """
+    Calculate business impact score for an article.
+    
+    Uses multi-factor analysis including:
+    - Severity/magnitude of event
+    - Sector relevance
+    - Source credibility
+    - Geographic scope
+    - Temporal urgency
+    - Volume/momentum
+    
+    Args:
+        title: Article title
+        body: Article content
+        source: Source name
+        publish_time: Publication timestamp (ISO format)
+        target_sectors: Optional list of sectors to prioritize
+        
+    Returns:
+        Dict with impact score, priority rank, factor breakdown, and sector analysis
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer_sync
+        
+        scorer = get_impact_scorer_sync()
+        
+        article = {
+            "title": title,
+            "content": body,
+            "source": source,
+            "publish_time": publish_time
+        }
+        
+        result = scorer.score_article_sync(article, target_sectors)
+        
+        return {
+            "success": True,
+            "impact_score": result.impact_score,
+            "impact_level": result.impact_level.value,
+            "priority_rank": result.priority_rank,
+            "requires_fast_track": result.requires_fast_track,
+            "requires_notification": result.requires_notification,
+            "factors": result.factors.to_dict(),
+            "factor_contributions": result.factor_contributions,
+            "primary_sectors": result.primary_sectors,
+            "secondary_sectors": result.secondary_sectors,
+            "cascade_effects": result.cascade_effects,
+            "confidence": result.confidence,
+            "detected_signals": result.detected_signals,
+            "processing_guidance": result.processing_guidance,
+            "scoring_profile": result.scoring_profile
+        }
+    except Exception as e:
+        logger.error(f"Error scoring business impact: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "impact_score": 25.0,
+            "impact_level": "minimal",
+            "priority_rank": 5
+        }
+
+
+def get_sector_impact(
+    title: str,
+    body: str,
+    target_sectors: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """
+    Get detailed sector impact analysis for an article.
+    
+    Args:
+        title: Article title
+        body: Article content
+        target_sectors: Optional list of sectors to focus on
+        
+    Returns:
+        Dict with sector analysis results
+    """
+    try:
+        from app.impact_scorer.sector_engine import SectorImpactEngine
+        
+        engine = SectorImpactEngine()
+        result = engine.analyze_sectors(
+            title=title,
+            content=body,
+            target_sectors=target_sectors
+        )
+        
+        return {
+            "success": True,
+            "overall_sector_score": result.overall_sector_score,
+            "sector_count": result.sector_count,
+            "primary_sectors": [s.to_dict() for s in result.primary_sectors],
+            "secondary_sectors": [s.to_dict() for s in result.secondary_sectors],
+            "cascade_effects": result.cascade_effects
+        }
+    except Exception as e:
+        logger.error(f"Error analyzing sectors: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "overall_sector_score": 0.0,
+            "sector_count": 0,
+            "primary_sectors": [],
+            "secondary_sectors": [],
+            "cascade_effects": []
+        }
+
+
+def get_impact_scorer_stats() -> Dict[str, Any]:
+    """
+    Get statistics from the business impact scorer.
+    
+    Returns:
+        Dict with scoring statistics
+    """
+    try:
+        from app.impact_scorer import get_impact_scorer_sync
+        
+        scorer = get_impact_scorer_sync()
+        stats = scorer.get_stats()
+        
+        return {
+            "success": True,
+            **stats
+        }
+    except Exception as e:
+        logger.error(f"Error getting impact scorer stats: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
+def compare_scoring_profiles(
+    title: str,
+    body: str,
+    source: str = "unknown"
+) -> Dict[str, Any]:
+    """
+    Compare impact scores across different scoring profiles.
+    
+    Useful for understanding how different weight configurations
+    affect article prioritization.
+    
+    Args:
+        title: Article title
+        body: Article content
+        source: Source name
+        
+    Returns:
+        Dict with scores for each profile
+    """
+    try:
+        from app.impact_scorer.multi_factor_analyzer import MultiFactorAnalyzer
+        from app.impact_scorer.sector_engine import SectorImpactEngine
+        from app.impact_scorer.score_aggregator import ScoreAggregator, ScoringProfile
+        
+        analyzer = MultiFactorAnalyzer()
+        sector_engine = SectorImpactEngine()
+        
+        factor_scores = analyzer.analyze(
+            title=title,
+            content=body,
+            source=source
+        )
+        
+        sector_result = sector_engine.analyze_sectors(
+            title=title,
+            content=body
+        )
+        
+        # Compare across profiles
+        profile_results = {}
+        for profile in ScoringProfile:
+            aggregator = ScoreAggregator(profile=profile)
+            result = aggregator.aggregate(factor_scores, sector_result)
+            profile_results[profile.value] = {
+                "final_score": result.final_score,
+                "priority_rank": result.priority_rank,
+                "priority_label": result.priority_label
+            }
+        
+        return {
+            "success": True,
+            "factor_scores": factor_scores.to_dict(),
+            "sector_score": sector_result.overall_sector_score,
+            "profile_comparison": profile_results,
+            "recommendation": _recommend_profile(profile_results)
+        }
+    except Exception as e:
+        logger.error(f"Error comparing profiles: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
+def _recommend_profile(results: Dict[str, Any]) -> str:
+    """Recommend best profile based on score variance."""
+    scores = [r["final_score"] for r in results.values()]
+    variance = max(scores) - min(scores)
+    
+    if variance < 10:
+        return "balanced - scores are consistent across profiles"
+    else:
+        max_profile = max(results.items(), key=lambda x: x[1]["final_score"])[0]
+        return f"{max_profile} - shows highest impact with this article type"
+
+
+# ============================================
 # Create LangChain Tools
 # ============================================
 
@@ -684,6 +907,60 @@ def get_processor_tools() -> List[Tool]:
                 "Get deduplication system statistics. "
                 "No input required. "
                 "Returns: metrics, index stats, cluster info."
+            )
+        ),
+        # Business Impact Scoring Tools
+        Tool(
+            name="score_business_impact",
+            func=lambda x: score_business_impact(
+                title=x.get("title", ""),
+                body=x.get("body", x.get("content", "")),
+                source=x.get("source", x.get("source_name", "unknown")),
+                publish_time=x.get("publish_time"),
+                target_sectors=x.get("target_sectors")
+            ) if isinstance(x, dict) else {"error": "Input must be a dict"},
+            description=(
+                "Calculate business impact score for prioritization. "
+                "Multi-factor scoring: severity, sector relevance, credibility, "
+                "geographic scope, temporal urgency, volume. "
+                "Input: dict with title, body/content, source, optional publish_time and target_sectors. "
+                "Returns: impact_score (0-100), priority_rank (1-5), factor breakdown, sector analysis."
+            )
+        ),
+        Tool(
+            name="get_sector_impact",
+            func=lambda x: get_sector_impact(
+                title=x.get("title", ""),
+                body=x.get("body", x.get("content", "")),
+                target_sectors=x.get("target_sectors")
+            ) if isinstance(x, dict) else {"error": "Input must be a dict"},
+            description=(
+                "Analyze sector-specific business impact. "
+                "Input: dict with title, body/content, optional target_sectors list. "
+                "Returns: primary sectors, secondary sectors, cascade effects."
+            )
+        ),
+        Tool(
+            name="compare_scoring_profiles",
+            func=lambda x: compare_scoring_profiles(
+                title=x.get("title", ""),
+                body=x.get("body", x.get("content", "")),
+                source=x.get("source", "unknown")
+            ) if isinstance(x, dict) else {"error": "Input must be a dict"},
+            description=(
+                "Compare impact scores across different scoring profiles. "
+                "Profiles: balanced, urgency_focused, business_focused, credibility_focused. "
+                "Input: dict with title, body/content, optional source. "
+                "Returns: scores for each profile with recommendation."
+            )
+        ),
+        Tool(
+            name="get_impact_scorer_stats",
+            func=lambda _: get_impact_scorer_stats(),
+            description=(
+                "Get business impact scorer statistics. "
+                "No input required. "
+                "Returns: articles scored, average score, critical count, processing time."
             )
         ),
     ]
