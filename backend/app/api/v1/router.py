@@ -30,6 +30,13 @@ try:
 except ImportError:
     HAS_PIPELINE = False
 
+# Import Layer 2 Enhanced Processing endpoints (LLM Services)
+try:
+    from app.api.v1.endpoints import enhanced_processing
+    HAS_ENHANCED = True
+except ImportError:
+    HAS_ENHANCED = False
+
 api_router = APIRouter()
 
 
@@ -69,4 +76,12 @@ if HAS_PIPELINE:
         pipeline.router,
         prefix="/pipeline",
         tags=["pipeline", "integration"]
+    )
+
+# Include Layer 2 Enhanced Processing endpoints (LLM Services)
+if HAS_ENHANCED:
+    api_router.include_router(
+        enhanced_processing.router,
+        prefix="/enhanced",
+        tags=["enhanced", "layer2", "llm"]
     )

@@ -43,3 +43,25 @@ statsmodels>=0.14.0
 python-dateutil>=2.8.0
 pyyaml>=6.0
 python-multipart>=0.0.6
+
+# ===========================================
+# Layer 2 LLM Enhancement Dependencies
+# Groq Llama 3.1 70B Integration
+# ===========================================
+
+# LangChain & LLM
+langchain>=0.1.0
+langchain-groq>=0.0.1
+groq>=0.4.0
+
+# Vector Store for Topic Modeling
+chromadb>=0.4.0
+
+# Tokenization & Text Processing
+tiktoken>=0.5.0
+
+# Retry & Resilience
+tenacity>=8.2.0
+
+# Fuzzy Matching for Entity Linking
+rapidfuzz>=3.0.0
