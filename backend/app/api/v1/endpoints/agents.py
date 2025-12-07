@@ -952,3 +952,312 @@ async def compare_scoring_profiles(request: ImpactScoreRequest):
             status_code=500,
             detail=f"Failed to compare profiles: {str(e)}"
         )
+
+
+# ============================================
+# Cross-Source Validation Endpoints
+# ============================================
+
+class ValidationRequest(BaseModel):
+    """Request model for article validation."""
+    article_id: str
+    title: str
+    body: str
+    source: Optional[str] = None
+    publish_time: Optional[str] = None
+
+
+class BatchValidationRequest(BaseModel):
+    """Request model for batch validation."""
+    articles: list  # List of ValidationRequest-like dicts
+
+
+@router.post("/validation/validate")
+async def validate_article_trust(request: ValidationRequest):
+    """
+    Validate article credibility through cross-source validation.
+    
+    Calculates trust score based on:
+    - Source reputation (30%)
+    - Corroboration from other sources (35%)
+    - Source diversity (20%)
+    - Recency match (15%)
+    
+    Returns trust level: VERIFIED, HIGH_TRUST, MODERATE, LOW_TRUST, UNVERIFIED
+    """
+    try:
+        from app.cross_validation import get_validator
+        from datetime import datetime
+        
+        # Parse publish time
+        published_at = None
+        if request.publish_time:
+            try:
+                published_at = datetime.fromisoformat(
+                    request.publish_time.replace('Z', '+00:00')
+                )
+            except:
+                published_at = datetime.utcnow()
+        
+        validator = get_validator()
+        result = validator.validate_article(
+            article_id=request.article_id,
+            content=request.body,
+            title=request.title,
+            source_name=request.source or "unknown",
+            published_at=published_at
+        )
+        
+        return {
+            "success": True,
+            "article_id": result.article_id,
+            "trust_score": round(result.score, 1),
+            "trust_level": result.trust_level.value,
+            "source": result.source_name,
+            "corroboration": {
+                "count": len(result.corroboration.corroborating_articles) if result.corroboration else 0,
+                "sources": [
+                    a.source_name for a in result.corroboration.corroborating_articles
+                ][:5] if result.corroboration else [],
+                "has_conflicts": result.trust_score.has_conflicts,
+                "conflict_count": len(result.corroboration.conflicting_articles) if result.corroboration else 0
+            },
+            "claims_extracted": len(result.claims),
+            "source_reputation": {
+                "score": round(result.source_reputation.current_reputation, 1) if result.source_reputation else 0,
+                "tier": result.source_reputation.tier.value if result.source_reputation else "unknown"
+            },
+            "factor_breakdown": {
+                "source_reputation": {
+                    "score": round(result.trust_score.source_reputation_score.score, 1),
+                    "weight": result.trust_score.source_reputation_score.weight
+                },
+                "corroboration": {
+                    "score": round(result.trust_score.corroboration_score.score, 1),
+                    "weight": result.trust_score.corroboration_score.weight
+                },
+                "source_diversity": {
+                    "score": round(result.trust_score.source_diversity_score.score, 1),
+                    "weight": result.trust_score.source_diversity_score.weight
+                },
+                "recency": {
+                    "score": round(result.trust_score.recency_score.score, 1),
+                    "weight": result.trust_score.recency_score.weight
+                }
+            },
+            "processing_time_ms": round(result.processing_time_ms, 2)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error validating article: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Validation failed: {str(e)}"
+        )
+
+
+@router.post("/validation/batch")
+async def batch_validate_trust(request: BatchValidationRequest):
+    """
+    Validate trust for multiple articles at once.
+    
+    More efficient than individual calls as articles can be
+    cross-referenced against each other.
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        results = validator.validate_batch(request.articles)
+        
+        return {
+            "success": True,
+            "articles_validated": len(results),
+            "results": [
+                {
+                    "article_id": r.article_id,
+                    "trust_score": round(r.score, 1),
+                    "trust_level": r.trust_level.value,
+                    "source": r.source_name,
+                    "corroboration_count": len(r.corroboration.corroborating_articles) if r.corroboration else 0,
+                    "has_conflicts": r.trust_score.has_conflicts,
+                    "claims_count": len(r.claims)
+                }
+                for r in results
+            ],
+            "summary": validator.get_trust_summary(results)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in batch validation: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Batch validation failed: {str(e)}"
+        )
+
+
+@router.get("/validation/source/{source_name}")
+async def get_source_reputation(source_name: str):
+    """
+    Get reputation information for a specific source.
+    
+    Returns dynamic reputation based on historical accuracy,
+    tier classification, and tracking metrics.
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        reputation = validator.get_source_reputation(source_name)
+        
+        return {
+            "success": True,
+            "source": reputation.source_name,
+            "source_id": reputation.source_id,
+            "reputation_score": round(reputation.current_reputation, 1),
+            "base_reputation": reputation.base_reputation,
+            "tier": reputation.tier.value,
+            "category": reputation.category.value,
+            "metrics": {
+                "total_articles": reputation.total_articles,
+                "confirmed_reports": reputation.confirmed_reports,
+                "contradicted_reports": reputation.contradicted_reports,
+                "corrections_issued": reputation.corrections_issued,
+                "first_to_report": reputation.first_to_report
+            },
+            "accuracy_rate": round(reputation.accuracy_rate, 3),
+            "correction_rate": round(reputation.correction_rate, 3)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting source reputation: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get source reputation: {str(e)}"
+        )
+
+
+@router.post("/validation/extract-claims")
+async def extract_claims(request: ValidationRequest):
+    """
+    Extract verifiable claims from an article.
+    
+    Identifies numeric claims, statements/quotes, and events
+    that can be cross-referenced with other sources.
+    """
+    try:
+        from app.cross_validation import ClaimExtractor
+        
+        extractor = ClaimExtractor()
+        claims = extractor.extract_claims(
+            content=request.body,
+            title=request.title,
+            article_id=request.article_id,
+            source_name=request.source or ""
+        )
+        
+        return {
+            "success": True,
+            "article_id": request.article_id,
+            "total_claims": len(claims),
+            "claims_by_type": {
+                "numeric": sum(1 for c in claims if c.claim_type.value == "numeric"),
+                "attribution": sum(1 for c in claims if c.claim_type.value == "attribution"),
+                "event": sum(1 for c in claims if c.claim_type.value == "event")
+            },
+            "claims": [
+                {
+                    "claim_id": claim.claim_id,
+                    "type": claim.claim_type.value,
+                    "text": claim.text[:300],
+                    "normalized": claim.normalized[:200],
+                    "subject": claim.subject,
+                    "predicate": claim.predicate,
+                    "object": claim.object[:100] if claim.object else None,
+                    "numeric": {
+                        "value": claim.numeric_value,
+                        "unit": claim.numeric_unit,
+                        "context": claim.numeric_context
+                    } if claim.claim_type.value == "numeric" else None,
+                    "entities": [e.to_dict() for e in claim.entities[:5]],
+                    "confidence": round(claim.confidence, 2)
+                }
+                for claim in claims[:20]  # Limit to 20 claims
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error extracting claims: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Claim extraction failed: {str(e)}"
+        )
+
+
+@router.get("/validation/stats")
+async def get_validation_stats():
+    """
+    Get cross-source validation system statistics.
+    
+    Includes validation metrics, source reputation stats,
+    and corroboration engine stats.
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        stats = validator.get_statistics()
+        metrics = validator.get_metrics()
+        
+        return {
+            "success": True,
+            "validation_metrics": metrics.to_dict(),
+            "reputation_stats": stats.get("reputation_stats", {}),
+            "corroboration_stats": stats.get("corroboration_stats", {}),
+            "cache_size": stats.get("cache_size", 0),
+            "top_sources": stats.get("top_sources", [])
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting validation stats: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get validation stats: {str(e)}"
+        )
+
+
+@router.get("/validation/sources/top")
+async def get_top_sources(limit: int = 10):
+    """
+    Get top sources by reputation score.
+    
+    Returns the most reputable sources tracked by the system.
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        top_sources = validator._reputation_tracker.get_top_sources(limit)
+        
+        return {
+            "success": True,
+            "count": len(top_sources),
+            "sources": [
+                {
+                    "source": s.source_name,
+                    "reputation_score": round(s.current_reputation, 1),
+                    "tier": s.tier.value,
+                    "category": s.category.value,
+                    "total_articles": s.total_articles,
+                    "accuracy_rate": round(s.accuracy_rate, 3)
+                }
+                for s in top_sources
+            ]
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting top sources: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get top sources: {str(e)}"
+        )

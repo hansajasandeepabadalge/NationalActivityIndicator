@@ -9,6 +9,7 @@ LangChain tools that wrap content processing functionality:
 - Metadata extraction
 - Semantic deduplication (90% better duplicate detection)
 - Business impact scoring (better prioritization)
+- Cross-source validation (trust & credibility)
 """
 
 import asyncio
@@ -788,6 +789,233 @@ def _recommend_profile(results: Dict[str, Any]) -> str:
 
 
 # ============================================
+# Cross-Source Validation Functions
+# ============================================
+
+def validate_article_trust(
+    article_id: str,
+    title: str,
+    body: str,
+    source: str,
+    publish_time: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Validate article credibility through cross-source validation.
+    
+    Args:
+        article_id: Article identifier
+        title: Article title
+        body: Article content
+        source: Source name
+        publish_time: Publication time (ISO format)
+        
+    Returns:
+        Dict with trust score, level, and validation details
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        # Parse publish time if provided
+        published_at = None
+        if publish_time:
+            try:
+                published_at = datetime.fromisoformat(publish_time.replace('Z', '+00:00'))
+            except:
+                published_at = datetime.utcnow()
+        
+        validator = get_validator()
+        result = validator.validate_article(
+            article_id=article_id,
+            content=body,
+            title=title,
+            source_name=source,
+            published_at=published_at
+        )
+        
+        return {
+            "success": True,
+            "article_id": result.article_id,
+            "trust_score": round(result.score, 1),
+            "trust_level": result.trust_level.value,
+            "source": result.source_name,
+            "corroboration_count": len(result.corroboration.corroborating_articles) if result.corroboration else 0,
+            "has_conflicts": result.trust_score.has_conflicts,
+            "claims_extracted": len(result.claims),
+            "source_reputation": result.source_reputation.current_reputation if result.source_reputation else 0,
+            "processing_time_ms": result.processing_time_ms,
+            "factor_breakdown": {
+                "source_reputation": round(result.trust_score.source_reputation_score.score, 1),
+                "corroboration": round(result.trust_score.corroboration_score.score, 1),
+                "source_diversity": round(result.trust_score.source_diversity_score.score, 1),
+                "recency": round(result.trust_score.recency_score.score, 1)
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error validating article trust: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "trust_score": 30,  # Default low trust
+            "trust_level": "unverified"
+        }
+
+
+def get_source_reputation(source_name: str) -> Dict[str, Any]:
+    """
+    Get reputation information for a source.
+    
+    Args:
+        source_name: Name of the source
+        
+    Returns:
+        Dict with reputation score and details
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        reputation = validator.get_source_reputation(source_name)
+        
+        return {
+            "success": True,
+            "source": reputation.source_name,
+            "reputation_score": round(reputation.current_reputation, 1),
+            "tier": reputation.tier.value,
+            "category": reputation.category.value,
+            "total_articles": reputation.total_articles,
+            "confirmed_reports": reputation.confirmed_reports,
+            "contradicted_reports": reputation.contradicted_reports,
+            "accuracy_rate": round(reputation.accuracy_rate, 3)
+        }
+    except Exception as e:
+        logger.error(f"Error getting source reputation: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
+def extract_article_claims(
+    title: str,
+    body: str,
+    article_id: str = "",
+    source: str = ""
+) -> Dict[str, Any]:
+    """
+    Extract verifiable claims from an article.
+    
+    Args:
+        title: Article title
+        body: Article content
+        article_id: Optional article ID
+        source: Optional source name
+        
+    Returns:
+        Dict with extracted claims
+    """
+    try:
+        from app.cross_validation import ClaimExtractor
+        
+        extractor = ClaimExtractor()
+        claims = extractor.extract_claims(
+            content=body,
+            title=title,
+            article_id=article_id or "temp",
+            source_name=source
+        )
+        
+        return {
+            "success": True,
+            "total_claims": len(claims),
+            "claims": [
+                {
+                    "type": claim.claim_type.value,
+                    "text": claim.text[:200],  # Truncate for readability
+                    "subject": claim.subject,
+                    "numeric_value": claim.numeric_value,
+                    "numeric_unit": claim.numeric_unit,
+                    "entities": [e.to_dict() for e in claim.entities[:3]]
+                }
+                for claim in claims[:10]  # Limit to top 10
+            ]
+        }
+    except Exception as e:
+        logger.error(f"Error extracting claims: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "total_claims": 0,
+            "claims": []
+        }
+
+
+def get_validation_stats() -> Dict[str, Any]:
+    """
+    Get cross-validation system statistics.
+    
+    Returns:
+        Dict with validation metrics
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        stats = validator.get_statistics()
+        
+        return {
+            "success": True,
+            "statistics": stats
+        }
+    except Exception as e:
+        logger.error(f"Error getting validation stats: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
+def batch_validate_trust(
+    articles: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Validate trust for multiple articles.
+    
+    Args:
+        articles: List of article dicts with id, title, body/content, source
+        
+    Returns:
+        Dict with validation results for all articles
+    """
+    try:
+        from app.cross_validation import get_validator
+        
+        validator = get_validator()
+        results = validator.validate_batch(articles)
+        
+        return {
+            "success": True,
+            "articles_validated": len(results),
+            "results": [
+                {
+                    "article_id": r.article_id,
+                    "trust_score": round(r.score, 1),
+                    "trust_level": r.trust_level.value,
+                    "corroboration_count": len(r.corroboration.corroborating_articles) if r.corroboration else 0,
+                    "has_conflicts": r.trust_score.has_conflicts
+                }
+                for r in results
+            ],
+            "summary": validator.get_trust_summary(results)
+        }
+    except Exception as e:
+        logger.error(f"Error in batch validation: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
+# ============================================
 # Create LangChain Tools
 # ============================================
 
@@ -961,6 +1189,57 @@ def get_processor_tools() -> List[Tool]:
                 "Get business impact scorer statistics. "
                 "No input required. "
                 "Returns: articles scored, average score, critical count, processing time."
+            )
+        ),
+        # Cross-Source Validation Tools
+        Tool(
+            name="validate_article_trust",
+            func=lambda x: validate_article_trust(
+                article_id=x.get("article_id", x.get("id", "")),
+                title=x.get("title", ""),
+                body=x.get("body", x.get("content", "")),
+                source=x.get("source", x.get("source_name", "unknown")),
+                publish_time=x.get("publish_time")
+            ) if isinstance(x, dict) else {"error": "Input must be a dict"},
+            description=(
+                "Validate article credibility through cross-source validation. "
+                "Calculates trust score based on source reputation, corroboration, "
+                "source diversity, and recency. "
+                "Input: dict with article_id, title, body/content, source. "
+                "Returns: trust_score (0-100), trust_level, corroboration details."
+            )
+        ),
+        Tool(
+            name="get_source_reputation",
+            func=lambda x: get_source_reputation(x) if isinstance(x, str) else {"error": "Input must be source name string"},
+            description=(
+                "Get reputation information for a news source. "
+                "Input: source name string. "
+                "Returns: reputation score, tier, category, accuracy rate."
+            )
+        ),
+        Tool(
+            name="extract_article_claims",
+            func=lambda x: extract_article_claims(
+                title=x.get("title", ""),
+                body=x.get("body", x.get("content", "")),
+                article_id=x.get("article_id", ""),
+                source=x.get("source", "")
+            ) if isinstance(x, dict) else {"error": "Input must be a dict"},
+            description=(
+                "Extract verifiable claims from an article. "
+                "Extracts numeric claims, statements, events. "
+                "Input: dict with title, body/content. "
+                "Returns: list of claims with type, subject, entities."
+            )
+        ),
+        Tool(
+            name="get_validation_stats",
+            func=lambda _: get_validation_stats(),
+            description=(
+                "Get cross-source validation system statistics. "
+                "No input required. "
+                "Returns: validation metrics, reputation stats, corroboration stats."
             )
         ),
     ]
