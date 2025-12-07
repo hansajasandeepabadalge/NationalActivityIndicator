@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
 
 from langchain.tools import Tool, StructuredTool
-from langchain.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 
 from app.db.session import SessionLocal
 from app.models.agent_models import (
