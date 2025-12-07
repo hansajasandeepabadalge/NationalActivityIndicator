@@ -77,8 +77,6 @@ class ProcessedArticle(BaseModel):
     priority_score: Optional[float] = None
     business_impact_score: Optional[float] = None
 
-    class Config:
-        populate_by_name = True
-        json_encoders = {
-            datetime: lambda v: v.isoformat() if v else None
-        }
+    model_config = {
+        "populate_by_name": True,
+    }

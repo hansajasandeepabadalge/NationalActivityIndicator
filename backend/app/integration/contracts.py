@@ -5,7 +5,7 @@ Defines the data schemas and validation for inter-layer communication.
 These contracts ensure type safety and data integrity between layers.
 """
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 from enum import Enum
@@ -56,8 +56,7 @@ class IndicatorValueOutput(BaseModel):
     confidence: float = Field(default=1.0, ge=0, le=1)
     source_count: int = Field(default=1, ge=1)
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class IndicatorTrendOutput(BaseModel):
@@ -67,8 +66,7 @@ class IndicatorTrendOutput(BaseModel):
     change_percent: float
     period_days: int = Field(default=7, ge=1)
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class IndicatorEventOutput(BaseModel):
@@ -82,8 +80,7 @@ class IndicatorEventOutput(BaseModel):
     value_after: Optional[float] = None
     description: Optional[str] = None
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class Layer2Output(BaseModel):
@@ -113,7 +110,8 @@ class Layer2Output(BaseModel):
     source_diversity: int = Field(ge=0)
     data_quality_score: float = Field(ge=0, le=1)
     
-    @validator('indicators')
+    @field_validator('indicators')
+    @classmethod
     def validate_indicators_not_empty(cls, v):
         if not v:
             raise ValueError("indicators cannot be empty")
@@ -145,8 +143,7 @@ class OperationalIndicatorOutput(BaseModel):
     contributing_national_indicators: List[str] = Field(default_factory=list)
     confidence: float = Field(default=1.0, ge=0, le=1)
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class Layer3Output(BaseModel):
@@ -182,7 +179,8 @@ class Layer3Output(BaseModel):
     # Source traceability
     source_national_indicators: List[str] = Field(default_factory=list)
     
-    @validator('indicators')
+    @field_validator('indicators')
+    @classmethod
     def validate_indicators_not_empty(cls, v):
         if not v:
             raise ValueError("indicators cannot be empty")

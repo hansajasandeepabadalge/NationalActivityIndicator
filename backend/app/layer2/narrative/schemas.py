@@ -15,8 +15,8 @@ class NarrativeText(BaseModel):
     confidence: float
     generated_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "article_id": "ART_001",
                 "indicator_id": "ECO_CURRENCY_STABILITY",
@@ -27,3 +27,4 @@ class NarrativeText(BaseModel):
                 "generated_at": "2025-12-03T10:30:00Z"
             }
         }
+    }

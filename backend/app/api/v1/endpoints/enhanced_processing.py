@@ -46,8 +46,8 @@ class ArticleInput(BaseModel):
     article_id: str = Field(default="", description="Unique article identifier")
     published_at: Optional[datetime] = Field(default=None, description="Publication timestamp")
     
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "text": "The Federal Reserve announced a 0.25% interest rate hike today, citing concerns about persistent inflation...",
                 "title": "Fed Raises Interest Rates Amid Inflation Concerns",
@@ -55,6 +55,7 @@ class ArticleInput(BaseModel):
                 "article_id": "art_12345"
             }
         }
+    }
 
 
 class BatchArticleInput(BaseModel):

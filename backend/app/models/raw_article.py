@@ -33,8 +33,6 @@ class RawArticle(BaseModel):
     raw_content: RawContent
     validation: ValidationStatus
 
-    class Config:
-        populate_by_name = True
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+    model_config = {
+        "populate_by_name": True,
+    }

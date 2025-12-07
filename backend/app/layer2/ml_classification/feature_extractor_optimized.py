@@ -519,4 +519,3 @@ class OptimizedFeatureExtractor:
         print(f"  Before: F1 ~0.76 (61 features)")
         print(f"  After:  F1 ~0.85-0.90 ({actual_features} optimized features)")
         print("="*60 + "\n")
-```

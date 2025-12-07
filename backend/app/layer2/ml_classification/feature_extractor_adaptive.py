@@ -749,4 +749,3 @@ class AdaptiveFeatureExtractor:
         print(f"  GPU: {'Enabled' if self.use_gpu else 'Disabled'}")
         print(f"  Batch processing: Supported")
         print("="*60 + "\n")
-```

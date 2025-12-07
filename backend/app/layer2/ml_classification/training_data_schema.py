@@ -46,8 +46,8 @@ class TrainingArticle(BaseModel):
         description="Confidences from rule-based classifier"
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "article_id": "article_001",
                 "title": "Nationwide strike paralyzes transport sector",
@@ -61,6 +61,7 @@ class TrainingArticle(BaseModel):
                 "category": "Political"
             }
         }
+    }
 
 
 class TrainingDataset(BaseModel):
@@ -87,8 +88,8 @@ class TrainingDataset(BaseModel):
         description="Agreement score if multiple labelers"
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "articles": [],
                 "dataset_version": "v1.0",
@@ -102,6 +103,7 @@ class TrainingDataset(BaseModel):
                 "avg_labels_per_article": 1.5
             }
         }
+    }
 
 
 class TrainingValidationSplit(BaseModel):
@@ -121,8 +123,8 @@ class TrainingValidationSplit(BaseModel):
     split_date: datetime = Field(default_factory=datetime.utcnow)
     random_seed: int = Field(42, description="Random seed for reproducibility")
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "train_article_ids": ["article_001", "article_002"],
                 "val_article_ids": ["article_099", "article_100"],
@@ -132,4 +134,6 @@ class TrainingValidationSplit(BaseModel):
                 "train_label_distribution": {"POL_UNREST": 12, "ECO_INFLATION": 10},
                 "val_label_distribution": {"POL_UNREST": 3, "ECO_INFLATION": 2}
             }
+        }
+    }
         }

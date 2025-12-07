@@ -98,10 +98,11 @@ class Settings(BaseSettings):
     # Data Source Toggle
     USE_MOCK_DATA: bool = True  # Set to False for production/real data
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
-        extra = "ignore"
+    model_config = {
+        "env_file": ".env",
+        "case_sensitive": False,
+        "extra": "ignore"
+    }
 
 
 settings = Settings()

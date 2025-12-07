@@ -123,8 +123,8 @@ class PipelineSummaryResponse(BaseModel):
     # Performance
     total_time_seconds: float
     
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "success": True,
                 "company_id": "COMP001",
@@ -151,6 +151,7 @@ class PipelineSummaryResponse(BaseModel):
                 "total_time_seconds": 0.45
             }
         }
+    }
 
 
 class PipelineFullResponse(BaseModel):
