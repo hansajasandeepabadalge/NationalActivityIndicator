@@ -22,6 +22,11 @@ langsmith>=0.0.77
 redis>=5.0.0
 aioredis>=2.0.0
 
+# Semantic Deduplication Dependencies
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0
+numpy>=1.24.0
+
 # Additional utilities
 python-dotenv>=1.0.0
 tenacity>=8.2.0
