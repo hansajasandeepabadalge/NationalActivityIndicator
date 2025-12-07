@@ -9,6 +9,13 @@ try:
 except ImportError:
     HAS_INDICATORS = False
 
+# Import enhanced processing endpoints (Layer 2 LLM Enhancement)
+try:
+    from app.api.v1.endpoints import enhanced_processing
+    HAS_ENHANCED = True
+except ImportError:
+    HAS_ENHANCED = False
+
 api_router = APIRouter()
 
 
@@ -24,4 +31,11 @@ if HAS_INDICATORS:
         indicators.router,
         prefix="/indicators",
         tags=["indicators"]
+    )
+
+# Include enhanced processing endpoints (Layer 2 LLM Enhancement)
+if HAS_ENHANCED:
+    api_router.include_router(
+        enhanced_processing.router,
+        tags=["enhanced-processing"]
     )

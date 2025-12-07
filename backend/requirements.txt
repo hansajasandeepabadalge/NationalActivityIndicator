@@ -43,3 +43,26 @@ statsmodels>=0.14.0
 python-dateutil>=2.8.0
 pyyaml>=6.0
 python-multipart>=0.0.6
+
+# ===========================================
+# Layer 2 AI/LLM Enhancement Dependencies
+# ===========================================
+
+# LangChain Framework
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-community>=0.0.10
+
+# Groq LLM (FREE tier - Llama 3.1 70B)
+langchain-groq>=0.0.1
+groq>=0.4.0
+
+# Vector Database for Topic Modeling
+chromadb>=0.4.0
+
+# Text Processing Enhancement
+rapidfuzz>=3.5.0  # Fuzzy matching for entity resolution
+
+# Async Support
+httpx>=0.25.0
+aiohttp>=3.9.0
