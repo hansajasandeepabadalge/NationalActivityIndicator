@@ -1,6 +1,13 @@
-"""API v1 router - Integrated"""
+"""API v1 router - Integrated (Layers 1-4)"""
 
 from fastapi import APIRouter
+
+# Import Layer 1 AI Agent endpoints
+try:
+    from app.api.v1.endpoints import agents
+    HAS_AGENTS = True
+except ImportError:
+    HAS_AGENTS = False
 
 # Import endpoint routers (Developer A)
 try:
@@ -43,8 +50,16 @@ api_router = APIRouter()
 # Health check endpoint (Developer B)
 @api_router.get("/health")
 def health_check():
-    return {"status": "ok", "version": "1.0.0", "layer": "Layer4-BusinessInsights"}
+    return {"status": "ok", "version": "1.0.0", "layer": "Full-Stack-L1234"}
 
+
+# Include Layer 1 AI Agent endpoints
+if HAS_AGENTS:
+    api_router.include_router(
+        agents.router,
+        prefix="/agents",
+        tags=["agents", "layer1", "ai"]
+    )
 
 # Include indicator endpoints if available (Developer A)
 if HAS_INDICATORS:

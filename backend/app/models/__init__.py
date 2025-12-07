@@ -1,5 +1,25 @@
 """SQLAlchemy models package - Integrated from Developer A and Developer B"""
 
+# Layer 1: Raw Article and Agent models
+from app.models.raw_article import (
+    RawArticle,
+    RawContent,
+    SourceInfo,
+    ScrapeMetadata,
+    ValidationStatus
+)
+
+from app.models.agent_models import (
+    UrgencyLevel,
+    PriorityLevel,
+    AgentDecision,
+    ScrapingSchedule,
+    UrgencyClassification,
+    QualityValidation,
+    AgentMetrics,
+    SourceConfig
+)
+
 # Developer A models (comprehensive with relationships and ENUMs)
 from app.models.indicator_models import (
     IndicatorDefinition,
@@ -70,4 +90,18 @@ __all__ = [
     "InsightTracking",
     "InsightScoreHistory",
     "CompanyProfile",
+    # Layer 1: Raw Article and Agent models
+    "RawArticle",
+    "RawContent",
+    "SourceInfo",
+    "ScrapeMetadata",
+    "ValidationStatus",
+    "UrgencyLevel",
+    "PriorityLevel",
+    "AgentDecision",
+    "ScrapingSchedule",
+    "UrgencyClassification",
+    "QualityValidation",
+    "AgentMetrics",
+    "SourceConfig",
 ]
