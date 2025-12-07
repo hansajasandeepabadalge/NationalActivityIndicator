@@ -9,3 +9,20 @@ httpx
 beautifulsoup4
 lxml
 ftfy
+
+# AI Agent System Dependencies
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-community>=0.0.20
+langchain-groq>=0.1.0
+langgraph>=0.0.20
+langsmith>=0.0.77
+
+# Redis for caching and job queues
+redis>=5.0.0
+aioredis>=2.0.0
+
+# Additional utilities
+python-dotenv>=1.0.0
+tenacity>=8.2.0
+structlog>=24.1.0
