@@ -2,7 +2,7 @@
 from sqlalchemy import Column, String, Integer, Float, Date, ForeignKey, TIMESTAMP
 from sqlalchemy.dialects.postgresql import JSONB, ENUM
 from sqlalchemy.sql import func
-from app.db.session import Base
+from app.db.base_class import Base
 
 class TrendAnalysis(Base):
     __tablename__ = 'trend_analysis'

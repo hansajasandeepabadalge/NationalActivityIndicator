@@ -10,14 +10,18 @@ def get_database_url():
 
     if in_docker and os.getenv('DATABASE_URL'):
         # Use environment variable (for Docker container)
-        return os.getenv('DATABASE_URL')
+        url = os.getenv('DATABASE_URL')
+        # Convert to psycopg3 dialect if using old format
+        if url.startswith('postgresql://') and '+' not in url.split('://')[0]:
+            url = url.replace('postgresql://', 'postgresql+psycopg://')
+        return url
     elif in_docker:
         # Use Docker service name (internal port is still 5432)
-        return 'postgresql://postgres:postgres_secure_2024@timescaledb:5432/national_indicator'
+        return 'postgresql+psycopg://postgres:postgres_secure_2024@timescaledb:5432/national_indicator'
     else:
         # Use 127.0.0.1 with port 15432 (Docker TimescaleDB mapped port)
         # This avoids conflict with local Windows PostgreSQL on 5432 and Windows reserved ports
-        return 'postgresql://postgres:postgres_secure_2024@127.0.0.1:15432/national_indicator'
+        return 'postgresql+psycopg://postgres:postgres_secure_2024@127.0.0.1:15432/national_indicator'
 
 
 class Settings(BaseSettings):

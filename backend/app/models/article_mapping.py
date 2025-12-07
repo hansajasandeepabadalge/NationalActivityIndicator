@@ -4,11 +4,7 @@ from sqlalchemy import Column, String, Integer, Float, TIMESTAMP, ForeignKey, Te
 from sqlalchemy.dialects.postgresql import JSONB, ARRAY
 from sqlalchemy.sql import func
 
-# Support both import patterns (Developer A and Developer B)
-try:
-    from app.db.session import Base
-except ImportError:
-    from app.db.base_class import Base
+from app.db.base_class import Base
 
 
 class ArticleIndicatorMapping(Base):

@@ -20,7 +20,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 # revision identifiers
 revision = 'layer1_ai_agent_tables'
-down_revision = '94bc03e7215f_add_layer4_business_insights_schema'
+down_revision = '94bc03e7215f'
 branch_labels = None
 depends_on = None
 

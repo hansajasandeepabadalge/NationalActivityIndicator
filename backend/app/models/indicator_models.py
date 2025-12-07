@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Float, Integer, Boolean, Text, TIMESTAMP,
 from sqlalchemy.dialects.postgresql import JSONB, ENUM, ARRAY
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.db.session import Base
+from app.db.base_class import Base
 
 class IndicatorDefinition(Base):
     __tablename__ = 'indicator_definitions'

@@ -4,7 +4,7 @@ Layer 4: Company Profile Models
 from sqlalchemy import Column, Integer, String, Text, DECIMAL, Boolean, TIMESTAMP, ARRAY
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.sql import func
-from app.db.session import Base
+from app.db.base_class import Base
 
 
 class CompanyProfile(Base):
