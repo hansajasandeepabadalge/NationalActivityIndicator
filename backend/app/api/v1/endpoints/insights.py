@@ -38,6 +38,7 @@ from app.layer4.context import (
     CompetitiveIntelligenceAnalyzer,
 )
 from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+from app.layer4.llm.llm_service import LLMInsightService
 
 router = APIRouter()
 
@@ -55,6 +56,9 @@ historical_analyzer = HistoricalContextAnalyzer()
 cross_industry_analyzer = CrossIndustryAnalyzer()
 cascading_analyzer = CascadingImpactAnalyzer()
 competitive_analyzer = CompetitiveIntelligenceAnalyzer()
+
+# Initialize LLM Service
+llm_service = LLMInsightService()
 
 
 # ==============================================================================
@@ -1795,3 +1799,57 @@ async def get_competitor_comparison(
     )
     
     return comparison
+
+# ==============================================================================
+# LLM Smart Path Endpoints
+# ==============================================================================
+
+@router.post("/generate")
+async def generate_complete_insights(
+    company_id: str,
+):
+    """
+    Generate complete AI-driven business intelligence.
+    Uses Layer 4 Smart Path (LLM) to analyze risks and opportunities.
+    """
+    try:
+        return await llm_service.generate_complete_insights(company_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Insight generation failed: {str(e)}")
+
+@router.post("/risks/analyze")
+async def analyze_risks_llm(
+    company_id: str,
+):
+    """
+    Perform deep qualitative risk analysis using LLM.
+    """
+    try:
+        return await llm_service.generate_risk_analysis(company_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Risk analysis failed: {str(e)}")
+
+@router.post("/opportunities/analyze")
+async def analyze_opportunities_llm(
+    company_id: str,
+):
+    """
+    Detect creative business opportunities using LLM.
+    """
+    try:
+        return await llm_service.generate_opportunity_analysis(company_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Opportunity analysis failed: {str(e)}")
+
+@router.post("/recommendations/generate-ai")
+async def generate_recommendations_llm(
+    company_id: str,
+    insight: Dict[str, Any],
+):
+    """
+    Generate AI-powered recommendations for a specific insight.
+    """
+    try:
+        return await llm_service.generate_recommendations(insight, company_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"LLM Recommendation generation failed: {str(e)}")
