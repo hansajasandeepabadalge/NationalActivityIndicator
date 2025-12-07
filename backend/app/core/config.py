@@ -98,6 +98,16 @@ class Settings(BaseSettings):
     # Data Source Toggle
     USE_MOCK_DATA: bool = True  # Set to False for production/real data
 
+    # ===========================================
+    # Layer 4 LLM Engine Settings
+    # ===========================================
+    OPENAI_API_KEY: str = ""  # Set via environment variable
+    ANTHROPIC_API_KEY: str = ""  # Set via environment variable
+    DEFAULT_LLM_PROVIDER: str = "openai"  # "openai" or "anthropic"
+    LLM_TEMPERATURE: float = 0.7
+    LLM_MAX_TOKENS: int = 2000
+    LLM_CACHE_TTL: int = 3600  # 1 hour cache for LLM responses
+
     model_config = {
         "env_file": ".env",
         "case_sensitive": False,

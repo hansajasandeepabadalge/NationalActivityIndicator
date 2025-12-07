@@ -95,3 +95,14 @@ aioredis>=2.0.0
 
 # Text Processing
 ftfy>=6.1.0
+
+# ===========================================
+# Layer 4 LLM Engine Dependencies
+# OpenAI & Anthropic Integration
+# ===========================================
+
+# OpenAI API Client
+openai>=1.0.0
+
+# Anthropic API Client
+anthropic>=0.7.0
