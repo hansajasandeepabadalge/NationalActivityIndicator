@@ -3,10 +3,11 @@ Layer 5: Dashboard Service
 
 Bridge service that reads data from Layers 2-4 and formats it for dashboard display.
 This service ONLY READS from Layer 2-4 tables, never writes to them.
+Uses synchronous SQLAlchemy sessions (same pattern as L1-L4).
 """
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy import select, func, desc, and_, or_
 
 # Layer 2 models
@@ -33,12 +34,12 @@ class DashboardService:
     Reads from Layers 2-4 and formats for dashboard display.
     """
     
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: Session):
         self.db = db
     
     # ============== National Indicators (Layer 2) ==============
     
-    async def get_national_indicators(
+    def get_national_indicators(
         self,
         category: Optional[str] = None,
         limit: int = 20
@@ -55,14 +56,14 @@ class DashboardService:
         
         query = query.limit(limit)
         
-        result = await self.db.execute(query)
+        result = self.db.execute(query)
         definitions = list(result.scalars().all())
         
         indicators = []
         for defn in definitions:
             # Get latest value for this indicator
-            latest_value = await self._get_latest_indicator_value(defn.indicator_id)
-            previous_value = await self._get_previous_indicator_value(defn.indicator_id)
+            latest_value = self._get_latest_indicator_value(defn.indicator_id)
+            previous_value = self._get_previous_indicator_value(defn.indicator_id)
             
             # Calculate change and trend
             change = None
@@ -111,9 +112,9 @@ class DashboardService:
             by_category=category_counts
         )
     
-    async def _get_latest_indicator_value(self, indicator_id: str) -> Optional[IndicatorValue]:
+    def _get_latest_indicator_value(self, indicator_id: str) -> Optional[IndicatorValue]:
         """Get the most recent value for an indicator"""
-        result = await self.db.execute(
+        result = self.db.execute(
             select(IndicatorValue)
             .where(IndicatorValue.indicator_id == indicator_id)
             .order_by(desc(IndicatorValue.timestamp))
@@ -121,9 +122,9 @@ class DashboardService:
         )
         return result.scalar_one_or_none()
     
-    async def _get_previous_indicator_value(self, indicator_id: str) -> Optional[IndicatorValue]:
+    def _get_previous_indicator_value(self, indicator_id: str) -> Optional[IndicatorValue]:
         """Get the second most recent value for trend calculation"""
-        result = await self.db.execute(
+        result = self.db.execute(
             select(IndicatorValue)
             .where(IndicatorValue.indicator_id == indicator_id)
             .order_by(desc(IndicatorValue.timestamp))
@@ -134,7 +135,7 @@ class DashboardService:
     
     # ============== Business Insights (Layer 4) ==============
     
-    async def get_business_insights(
+    def get_business_insights(
         self,
         company_id: Optional[str] = None,
         insight_type: Optional[str] = None,
@@ -170,7 +171,7 @@ class DashboardService:
             desc(BusinessInsight.detected_at)
         ).limit(limit).offset(offset)
         
-        result = await self.db.execute(query)
+        result = self.db.execute(query)
         insights = list(result.scalars().all())
         
         # Convert to response schema
@@ -221,27 +222,27 @@ class DashboardService:
             by_category=by_category
         )
     
-    async def get_risks(
+    def get_risks(
         self,
         company_id: Optional[str] = None,
         severity: Optional[str] = None,
         limit: int = 20
     ) -> BusinessInsightListResponse:
         """Get only risks"""
-        return await self.get_business_insights(
+        return self.get_business_insights(
             company_id=company_id,
             insight_type="risk",
             severity=severity,
             limit=limit
         )
     
-    async def get_opportunities(
+    def get_opportunities(
         self,
         company_id: Optional[str] = None,
         limit: int = 20
     ) -> BusinessInsightListResponse:
         """Get only opportunities"""
-        return await self.get_business_insights(
+        return self.get_business_insights(
             company_id=company_id,
             insight_type="opportunity",
             limit=limit
@@ -249,21 +250,21 @@ class DashboardService:
     
     # ============== Dashboard Home ==============
     
-    async def get_dashboard_home(self, company_id: str) -> DashboardHomeResponse:
+    def get_dashboard_home(self, company_id: str) -> DashboardHomeResponse:
         """
         Get complete dashboard home data for a company.
         Used by USER role.
         """
         # Get company info
-        company = await self._get_company(company_id)
+        company = self._get_company(company_id)
         if not company:
             raise ValueError(f"Company {company_id} not found")
         
         # Get insights for this company
-        insights = await self.get_business_insights(company_id=company_id, limit=100)
+        insights = self.get_business_insights(company_id=company_id, limit=100)
         
         # Calculate health score
-        health_score = await self._calculate_health_score(company_id, insights)
+        health_score = self._calculate_health_score(company_id, insights)
         
         # Build risk summary
         risk_insights = [i for i in insights.insights if i.insight_type == InsightType.RISK]
@@ -301,14 +302,14 @@ class DashboardService:
             last_updated=datetime.utcnow()
         )
     
-    async def _get_company(self, company_id: str) -> Optional[CompanyProfile]:
+    def _get_company(self, company_id: str) -> Optional[CompanyProfile]:
         """Get company by ID"""
-        result = await self.db.execute(
+        result = self.db.execute(
             select(CompanyProfile).where(CompanyProfile.company_id == company_id)
         )
         return result.scalar_one_or_none()
     
-    async def _calculate_health_score(
+    def _calculate_health_score(
         self, 
         company_id: str, 
         insights: BusinessInsightListResponse
@@ -357,13 +358,13 @@ class DashboardService:
     
     # ============== Admin Dashboard ==============
     
-    async def get_admin_dashboard(self) -> AdminDashboardResponse:
+    def get_admin_dashboard(self) -> AdminDashboardResponse:
         """
         Get admin dashboard overview.
         Shows aggregate data across all companies.
         """
         # Count companies
-        company_count = await self.db.execute(
+        company_count = self.db.execute(
             select(func.count(CompanyProfile.company_id))
         )
         total_companies = company_count.scalar() or 0
@@ -372,10 +373,10 @@ class DashboardService:
         total_active_users = 0
         
         # Get all insights
-        all_insights = await self.get_business_insights(limit=1000)
+        all_insights = self.get_business_insights(limit=1000)
         
         # Get industries
-        industry_result = await self.db.execute(
+        industry_result = self.db.execute(
             select(CompanyProfile.industry).distinct()
         )
         industries = [row[0] for row in industry_result.fetchall() if row[0]]
@@ -383,7 +384,7 @@ class DashboardService:
         # Build industry overviews
         industry_overviews = []
         for industry in industries:
-            overview = await self._get_industry_overview(industry)
+            overview = self._get_industry_overview(industry)
             if overview:
                 industry_overviews.append(overview)
         
@@ -397,10 +398,10 @@ class DashboardService:
             last_updated=datetime.utcnow()
         )
     
-    async def _get_industry_overview(self, industry: str) -> Optional[IndustryOverviewResponse]:
+    def _get_industry_overview(self, industry: str) -> Optional[IndustryOverviewResponse]:
         """Get overview for a specific industry"""
         # Count companies in industry
-        count_result = await self.db.execute(
+        count_result = self.db.execute(
             select(func.count(CompanyProfile.company_id))
             .where(CompanyProfile.industry == industry)
         )
@@ -410,14 +411,14 @@ class DashboardService:
             return None
         
         # Get company IDs in this industry
-        companies_result = await self.db.execute(
+        companies_result = self.db.execute(
             select(CompanyProfile.company_id)
             .where(CompanyProfile.industry == industry)
         )
         company_ids = [row[0] for row in companies_result.fetchall()]
         
         # Count insights for these companies
-        insights_result = await self.db.execute(
+        insights_result = self.db.execute(
             select(
                 BusinessInsight.insight_type,
                 BusinessInsight.severity_level,
@@ -454,7 +455,7 @@ class DashboardService:
     
     # ============== Indicator Trends ==============
     
-    async def get_indicator_history(
+    def get_indicator_history(
         self,
         indicator_id: str,
         days: int = 30
@@ -462,7 +463,7 @@ class DashboardService:
         """Get historical values for an indicator"""
         cutoff = datetime.utcnow() - timedelta(days=days)
         
-        result = await self.db.execute(
+        result = self.db.execute(
             select(IndicatorValue)
             .where(IndicatorValue.indicator_id == indicator_id)
             .where(IndicatorValue.timestamp >= cutoff)

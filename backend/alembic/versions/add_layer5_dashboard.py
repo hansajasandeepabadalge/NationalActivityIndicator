@@ -20,54 +20,51 @@ depends_on = None
 
 
 def upgrade() -> None:
-    # Create user_role enum type
-    op.execute("CREATE TYPE user_role_enum AS ENUM ('admin', 'user')")
+    # Create user_role enum type (if not exists)
+    op.execute("DO $$ BEGIN CREATE TYPE user_role_enum AS ENUM ('admin', 'user'); EXCEPTION WHEN duplicate_object THEN null; END $$;")
     
-    # Create l5_users table
-    op.create_table(
-        'l5_users',
-        sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column('email', sa.String(255), nullable=False),
-        sa.Column('password_hash', sa.String(255), nullable=False),
-        sa.Column('full_name', sa.String(200), nullable=True),
-        sa.Column('role', sa.Enum('admin', 'user', name='user_role_enum', create_type=False), 
-                  nullable=False, server_default='user'),
-        sa.Column('company_id', sa.String(50), nullable=True),
-        sa.Column('is_active', sa.Boolean(), nullable=False, server_default='true'),
-        sa.Column('is_verified', sa.Boolean(), nullable=False, server_default='false'),
-        sa.Column('refresh_token', sa.String(500), nullable=True),
-        sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=True),
-        sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=True),
-        sa.Column('last_login_at', sa.TIMESTAMP(timezone=True), nullable=True),
-        sa.PrimaryKeyConstraint('id'),
-        sa.ForeignKeyConstraint(['company_id'], ['company_profiles.company_id'], ondelete='SET NULL'),
-    )
+    # Create l5_users table using raw SQL to avoid SQLAlchemy enum issues
+    op.execute("""
+        CREATE TABLE IF NOT EXISTS l5_users (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password_hash VARCHAR(255) NOT NULL,
+            full_name VARCHAR(200),
+            role user_role_enum NOT NULL DEFAULT 'user',
+            company_id VARCHAR(50) REFERENCES company_profiles(company_id) ON DELETE SET NULL,
+            is_active BOOLEAN NOT NULL DEFAULT true,
+            is_verified BOOLEAN NOT NULL DEFAULT false,
+            refresh_token VARCHAR(500),
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            last_login_at TIMESTAMP WITH TIME ZONE
+        )
+    """)
     
     # Create indexes for l5_users
-    op.create_index('ix_l5_users_email', 'l5_users', ['email'], unique=True)
-    op.create_index('ix_l5_users_role', 'l5_users', ['role'])
-    op.create_index('ix_l5_users_is_active', 'l5_users', ['is_active'])
+    op.execute("CREATE INDEX IF NOT EXISTS ix_l5_users_email ON l5_users(email)")
+    op.execute("CREATE INDEX IF NOT EXISTS ix_l5_users_role ON l5_users(role)")
+    op.execute("CREATE INDEX IF NOT EXISTS ix_l5_users_is_active ON l5_users(is_active)")
     
     # Create l5_dashboard_access_log table
-    op.create_table(
-        'l5_dashboard_access_log',
-        sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column('user_id', sa.Integer(), nullable=False),
-        sa.Column('endpoint', sa.String(200), nullable=False),
-        sa.Column('action', sa.String(50), nullable=True),
-        sa.Column('resource_type', sa.String(50), nullable=True),
-        sa.Column('resource_id', sa.String(100), nullable=True),
-        sa.Column('ip_address', sa.String(50), nullable=True),
-        sa.Column('user_agent', sa.Text(), nullable=True),
-        sa.Column('query_params', sa.dialects.postgresql.JSONB(), nullable=True),
-        sa.Column('accessed_at', sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=True),
-        sa.PrimaryKeyConstraint('id'),
-        sa.ForeignKeyConstraint(['user_id'], ['l5_users.id'], ondelete='CASCADE'),
-    )
+    op.execute("""
+        CREATE TABLE IF NOT EXISTS l5_dashboard_access_log (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES l5_users(id) ON DELETE CASCADE,
+            endpoint VARCHAR(200) NOT NULL,
+            action VARCHAR(50),
+            resource_type VARCHAR(50),
+            resource_id VARCHAR(100),
+            ip_address VARCHAR(50),
+            user_agent TEXT,
+            query_params JSONB,
+            accessed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        )
+    """)
     
     # Create indexes for l5_dashboard_access_log
-    op.create_index('ix_l5_dashboard_access_log_user_id', 'l5_dashboard_access_log', ['user_id'])
-    op.create_index('ix_l5_dashboard_access_log_accessed_at', 'l5_dashboard_access_log', ['accessed_at'])
+    op.execute("CREATE INDEX IF NOT EXISTS ix_l5_dashboard_access_log_user_id ON l5_dashboard_access_log(user_id)")
+    op.execute("CREATE INDEX IF NOT EXISTS ix_l5_dashboard_access_log_accessed_at ON l5_dashboard_access_log(accessed_at)")
     
     # Create default admin user (password: admin123 - CHANGE IN PRODUCTION!)
     # Hash is bcrypt with 12 rounds for 'admin123'
@@ -81,6 +78,7 @@ def upgrade() -> None:
             true,
             true
         )
+        ON CONFLICT (email) DO NOTHING
     """)
 
 

@@ -3,12 +3,13 @@ Layer 5: User API Routes
 
 User dashboard endpoints for viewing company-specific data.
 Users can only see their own company's insights and profile.
+Uses synchronous SQLAlchemy sessions (same pattern as L1-L4).
 """
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from typing import Optional
 
-from app.db.session import get_async_session
+from app.db.session import get_db
 from app.layer5.api.auth_routes import get_current_user
 from app.layer5.services.dashboard_service import DashboardService
 from app.layer5.services.company_service import CompanyService
@@ -35,9 +36,9 @@ def _get_user_company_id(user: UserResponse) -> str:
 # ============== Dashboard Home ==============
 
 @router.get("/dashboard/home", response_model=DashboardHomeResponse)
-async def get_dashboard_home(
+def get_dashboard_home(
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Get user's dashboard home page.
@@ -48,7 +49,7 @@ async def get_dashboard_home(
     dashboard_service = DashboardService(db)
     
     try:
-        return await dashboard_service.get_dashboard_home(company_id)
+        return dashboard_service.get_dashboard_home(company_id)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -56,9 +57,9 @@ async def get_dashboard_home(
 # ============== Company Profile ==============
 
 @router.get("/company", response_model=CompanyProfileResponse)
-async def get_my_company(
+def get_my_company(
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Get user's company profile.
@@ -66,7 +67,7 @@ async def get_my_company(
     company_id = _get_user_company_id(current_user)
     
     company_service = CompanyService(db)
-    company = await company_service.get_company(company_id)
+    company = company_service.get_company(company_id)
     
     if not company:
         raise HTTPException(status_code=404, detail="Company profile not found")
@@ -75,10 +76,10 @@ async def get_my_company(
 
 
 @router.put("/company", response_model=CompanyProfileResponse)
-async def update_my_company(
+def update_my_company(
     update_data: CompanyProfileUpdate,
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Update user's company profile.
@@ -87,7 +88,7 @@ async def update_my_company(
     company_id = _get_user_company_id(current_user)
     
     company_service = CompanyService(db)
-    company = await company_service.update_company(company_id, update_data)
+    company = company_service.update_company(company_id, update_data)
     
     if not company:
         raise HTTPException(status_code=404, detail="Company profile not found")
@@ -98,14 +99,14 @@ async def update_my_company(
 # ============== Business Insights ==============
 
 @router.get("/insights", response_model=BusinessInsightListResponse)
-async def get_my_insights(
+def get_my_insights(
     insight_type: Optional[str] = Query(None, description="Filter by 'risk' or 'opportunity'"),
     severity: Optional[str] = Query(None),
     status: str = Query("active"),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Get business insights for user's company.
@@ -113,7 +114,7 @@ async def get_my_insights(
     company_id = _get_user_company_id(current_user)
     
     dashboard_service = DashboardService(db)
-    return await dashboard_service.get_business_insights(
+    return dashboard_service.get_business_insights(
         company_id=company_id,
         insight_type=insight_type,
         severity=severity,
@@ -124,11 +125,11 @@ async def get_my_insights(
 
 
 @router.get("/risks", response_model=BusinessInsightListResponse)
-async def get_my_risks(
+def get_my_risks(
     severity: Optional[str] = Query(None),
     limit: int = Query(20, ge=1, le=100),
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Get risks for user's company.
@@ -136,7 +137,7 @@ async def get_my_risks(
     company_id = _get_user_company_id(current_user)
     
     dashboard_service = DashboardService(db)
-    return await dashboard_service.get_risks(
+    return dashboard_service.get_risks(
         company_id=company_id,
         severity=severity,
         limit=limit
@@ -144,10 +145,10 @@ async def get_my_risks(
 
 
 @router.get("/opportunities", response_model=BusinessInsightListResponse)
-async def get_my_opportunities(
+def get_my_opportunities(
     limit: int = Query(20, ge=1, le=100),
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Get opportunities for user's company.
@@ -155,7 +156,7 @@ async def get_my_opportunities(
     company_id = _get_user_company_id(current_user)
     
     dashboard_service = DashboardService(db)
-    return await dashboard_service.get_opportunities(
+    return dashboard_service.get_opportunities(
         company_id=company_id,
         limit=limit
     )
@@ -164,24 +165,23 @@ async def get_my_opportunities(
 # ============== Insight Actions ==============
 
 @router.post("/insights/{insight_id}/acknowledge")
-async def acknowledge_insight(
+def acknowledge_insight(
     insight_id: int,
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Acknowledge a business insight.
     Marks it as seen/acknowledged by the user.
     """
     from datetime import datetime
-    from sqlalchemy import update
+    from sqlalchemy import update, select
     from app.models.business_insight_models import BusinessInsight
     
     company_id = _get_user_company_id(current_user)
     
     # Verify the insight belongs to user's company
-    from sqlalchemy import select
-    result = await db.execute(
+    result = db.execute(
         select(BusinessInsight).where(
             BusinessInsight.insight_id == insight_id,
             BusinessInsight.company_id == company_id
@@ -196,7 +196,7 @@ async def acknowledge_insight(
         )
     
     # Update status
-    await db.execute(
+    db.execute(
         update(BusinessInsight)
         .where(BusinessInsight.insight_id == insight_id)
         .values(
@@ -205,17 +205,17 @@ async def acknowledge_insight(
             acknowledged_by=current_user.email
         )
     )
-    await db.commit()
+    db.commit()
     
     return {"message": "Insight acknowledged", "insight_id": insight_id}
 
 
 @router.post("/insights/{insight_id}/resolve")
-async def resolve_insight(
+def resolve_insight(
     insight_id: int,
     resolution_notes: str = "",
     current_user: UserResponse = Depends(get_current_user),
-    db: AsyncSession = Depends(get_async_session)
+    db: Session = Depends(get_db)
 ):
     """
     Mark a business insight as resolved.
@@ -227,7 +227,7 @@ async def resolve_insight(
     company_id = _get_user_company_id(current_user)
     
     # Verify the insight belongs to user's company
-    result = await db.execute(
+    result = db.execute(
         select(BusinessInsight).where(
             BusinessInsight.insight_id == insight_id,
             BusinessInsight.company_id == company_id
@@ -242,7 +242,7 @@ async def resolve_insight(
         )
     
     # Update status
-    await db.execute(
+    db.execute(
         update(BusinessInsight)
         .where(BusinessInsight.insight_id == insight_id)
         .values(
@@ -251,6 +251,6 @@ async def resolve_insight(
             resolution_notes=resolution_notes
         )
     )
-    await db.commit()
+    db.commit()
     
     return {"message": "Insight resolved", "insight_id": insight_id}

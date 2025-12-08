@@ -2,12 +2,13 @@
 Layer 5: Authentication Service
 
 Handles user authentication with JWT tokens.
+Uses synchronous SQLAlchemy session (same as L1-L4).
 """
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Optional
 import bcrypt
 from jose import jwt, JWTError
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy import select, update
 
 from app.layer5.config import layer5_settings
@@ -18,7 +19,7 @@ from app.layer5.schemas.auth import UserCreate, UserLogin, TokenResponse, TokenD
 class AuthService:
     """Service for user authentication and JWT management"""
     
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: Session):
         self.db = db
     
     # ============== Password Hashing ==============
@@ -83,10 +84,10 @@ class AuthService:
     
     # ============== User Management ==============
     
-    async def create_user(self, user_data: UserCreate, role: UserRole = UserRole.USER) -> User:
+    def create_user(self, user_data: UserCreate, role: UserRole = UserRole.USER) -> User:
         """Create a new user"""
         # Check if email already exists
-        existing = await self.get_user_by_email(user_data.email)
+        existing = self.get_user_by_email(user_data.email)
         if existing:
             raise ValueError("Email already registered")
         
@@ -102,28 +103,28 @@ class AuthService:
         )
         
         self.db.add(user)
-        await self.db.commit()
-        await self.db.refresh(user)
+        self.db.commit()
+        self.db.refresh(user)
         
         return user
     
-    async def get_user_by_email(self, email: str) -> Optional[User]:
+    def get_user_by_email(self, email: str) -> Optional[User]:
         """Get user by email"""
-        result = await self.db.execute(
+        result = self.db.execute(
             select(User).where(User.email == email)
         )
         return result.scalar_one_or_none()
     
-    async def get_user_by_id(self, user_id: int) -> Optional[User]:
+    def get_user_by_id(self, user_id: int) -> Optional[User]:
         """Get user by ID"""
-        result = await self.db.execute(
+        result = self.db.execute(
             select(User).where(User.id == user_id)
         )
         return result.scalar_one_or_none()
     
-    async def authenticate(self, login_data: UserLogin) -> Optional[User]:
+    def authenticate(self, login_data: UserLogin) -> Optional[User]:
         """Authenticate user with email and password"""
-        user = await self.get_user_by_email(login_data.email)
+        user = self.get_user_by_email(login_data.email)
         
         if not user:
             return None
@@ -135,16 +136,16 @@ class AuthService:
             return None
         
         # Update last login
-        await self.db.execute(
+        self.db.execute(
             update(User).where(User.id == user.id).values(last_login_at=datetime.utcnow())
         )
-        await self.db.commit()
+        self.db.commit()
         
         return user
     
-    async def login(self, login_data: UserLogin) -> Optional[TokenResponse]:
+    def login(self, login_data: UserLogin) -> Optional[TokenResponse]:
         """Login and return tokens"""
-        user = await self.authenticate(login_data)
+        user = self.authenticate(login_data)
         
         if not user:
             return None
@@ -153,10 +154,10 @@ class AuthService:
         refresh_token = self.create_refresh_token(user)
         
         # Store refresh token
-        await self.db.execute(
+        self.db.execute(
             update(User).where(User.id == user.id).values(refresh_token=refresh_token)
         )
-        await self.db.commit()
+        self.db.commit()
         
         return TokenResponse(
             access_token=access_token,
@@ -165,14 +166,14 @@ class AuthService:
             expires_in=layer5_settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
         )
     
-    async def refresh_tokens(self, refresh_token: str) -> Optional[TokenResponse]:
+    def refresh_tokens(self, refresh_token: str) -> Optional[TokenResponse]:
         """Refresh access token using refresh token"""
         token_data = self.decode_token(refresh_token)
         
         if not token_data:
             return None
         
-        user = await self.get_user_by_id(token_data.user_id)
+        user = self.get_user_by_id(token_data.user_id)
         
         if not user or user.refresh_token != refresh_token:
             return None
@@ -185,10 +186,10 @@ class AuthService:
         new_refresh_token = self.create_refresh_token(user)
         
         # Update stored refresh token
-        await self.db.execute(
+        self.db.execute(
             update(User).where(User.id == user.id).values(refresh_token=new_refresh_token)
         )
-        await self.db.commit()
+        self.db.commit()
         
         return TokenResponse(
             access_token=new_access_token,
@@ -197,17 +198,17 @@ class AuthService:
             expires_in=layer5_settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
         )
     
-    async def logout(self, user_id: int) -> bool:
+    def logout(self, user_id: int) -> bool:
         """Logout user by invalidating refresh token"""
-        await self.db.execute(
+        self.db.execute(
             update(User).where(User.id == user_id).values(refresh_token=None)
         )
-        await self.db.commit()
+        self.db.commit()
         return True
     
-    async def change_password(self, user_id: int, current_password: str, new_password: str) -> bool:
+    def change_password(self, user_id: int, current_password: str, new_password: str) -> bool:
         """Change user password"""
-        user = await self.get_user_by_id(user_id)
+        user = self.get_user_by_id(user_id)
         
         if not user:
             return False
@@ -217,12 +218,12 @@ class AuthService:
         
         new_hash = self.hash_password(new_password)
         
-        await self.db.execute(
+        self.db.execute(
             update(User).where(User.id == user_id).values(
                 password_hash=new_hash,
                 refresh_token=None  # Invalidate all sessions
             )
         )
-        await self.db.commit()
+        self.db.commit()
         
         return True

@@ -15,7 +15,7 @@ import enum
 
 
 class UserRole(str, enum.Enum):
-    """User role enumeration"""
+    """User role enumeration - values match database enum labels"""
     ADMIN = "admin"
     USER = "user"
 
@@ -41,8 +41,14 @@ class User(Base):
     full_name = Column(String(200))
     
     # Role - admin or user
+    # Use values_callable to use enum values (lowercase) instead of names (uppercase)
     role = Column(
-        SQLEnum(UserRole, name='user_role_enum', create_type=True),
+        SQLEnum(
+            UserRole, 
+            name='user_role_enum', 
+            create_type=False,  # Don't create, already exists
+            values_callable=lambda enum_class: [e.value for e in enum_class]
+        ),
         default=UserRole.USER,
         nullable=False,
         index=True
