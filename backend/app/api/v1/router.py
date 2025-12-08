@@ -44,6 +44,13 @@ try:
 except ImportError:
     HAS_ENHANCED = False
 
+# Import Source Reputation System endpoints
+try:
+    from app.api.v1.endpoints import reputation
+    HAS_REPUTATION = True
+except ImportError:
+    HAS_REPUTATION = False
+
 api_router = APIRouter()
 
 
@@ -99,4 +106,11 @@ if HAS_ENHANCED:
         enhanced_processing.router,
         prefix="/enhanced",
         tags=["enhanced", "layer2", "llm"]
+    )
+
+# Include Source Reputation System endpoints
+if HAS_REPUTATION:
+    api_router.include_router(
+        reputation.router,
+        tags=["reputation", "quality"]
     )

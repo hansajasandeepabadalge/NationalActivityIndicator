@@ -60,6 +60,17 @@ from app.models.company_profile_models import (
     CompanyProfile
 )
 
+# Source Reputation System
+from app.models.source_reputation_models import (
+    SourceReputation,
+    SourceReputationHistory,
+    QualityFilterLog,
+    ReputationThreshold,
+    ReputationTier,
+    FilterAction,
+    DEFAULT_THRESHOLDS
+)
+
 # Alias for backward compatibility
 IndicatorTrend = TrendAnalysis
 
@@ -104,4 +115,12 @@ __all__ = [
     "QualityValidation",
     "AgentMetrics",
     "SourceConfig",
+    # Source Reputation System
+    "SourceReputation",
+    "SourceReputationHistory",
+    "QualityFilterLog",
+    "ReputationThreshold",
+    "ReputationTier",
+    "FilterAction",
+    "DEFAULT_THRESHOLDS",
 ]
