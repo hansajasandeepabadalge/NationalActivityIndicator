@@ -1,4 +1,5 @@
 "use client";
+
 import {useState} from "react";
 import RiskOverviewPage from "@/components/Pages/RiskOverviewPage"
 import OpportunitiesPage from "@/components/Pages/OpportunitiesPage"
