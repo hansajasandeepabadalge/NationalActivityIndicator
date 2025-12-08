@@ -106,3 +106,17 @@ openai>=1.0.0
 
 # Anthropic API Client
 anthropic>=0.7.0
+
+# ===========================================
+# Layer 5 Dashboard Dependencies
+# Authentication & Async Database
+# ===========================================
+
+# Password Hashing
+bcrypt>=4.0.0
+
+# JWT Authentication
+python-jose[cryptography]>=3.3.0
+
+# Async PostgreSQL Driver
+asyncpg>=0.29.0

@@ -1,4 +1,4 @@
-"""API v1 router - Integrated (Layers 1-4)"""
+"""API v1 router - Integrated (Layers 1-5)"""
 
 from fastapi import APIRouter
 
@@ -51,13 +51,20 @@ try:
 except ImportError:
     HAS_REPUTATION = False
 
+# Import Layer 5 Dashboard endpoints
+try:
+    from app.layer5.api import auth_router, admin_router, user_router
+    HAS_LAYER5 = True
+except ImportError:
+    HAS_LAYER5 = False
+
 api_router = APIRouter()
 
 
 # Health check endpoint (Developer B)
 @api_router.get("/health")
 def health_check():
-    return {"status": "ok", "version": "1.0.0", "layer": "Full-Stack-L1234"}
+    return {"status": "ok", "version": "1.0.0", "layer": "Full-Stack-L12345"}
 
 
 # Include Layer 1 AI Agent endpoints
@@ -113,4 +120,19 @@ if HAS_REPUTATION:
     api_router.include_router(
         reputation.router,
         tags=["reputation", "quality"]
+    )
+
+# Include Layer 5 Dashboard endpoints
+if HAS_LAYER5:
+    api_router.include_router(
+        auth_router,
+        tags=["auth", "layer5"]
+    )
+    api_router.include_router(
+        admin_router,
+        tags=["admin", "layer5"]
+    )
+    api_router.include_router(
+        user_router,
+        tags=["user", "layer5"]
     )

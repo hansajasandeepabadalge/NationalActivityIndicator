@@ -16,6 +16,12 @@ try:
 except ImportError:
     pass  # Models not yet created
 
+# Import Layer 5 models
+try:
+    from app.layer5.models import *  # noqa
+except ImportError:
+    pass  # Layer 5 models not yet created
+
 config = context.config
 config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
 
