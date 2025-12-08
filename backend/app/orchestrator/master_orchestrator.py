@@ -32,6 +32,14 @@ from app.orchestrator.state_manager import (
     get_state_manager
 )
 
+# Source Reputation System imports
+try:
+    from app.services.quality_filter import QualityFilter
+    from app.services.reputation_manager import ReputationManager
+    HAS_REPUTATION = True
+except ImportError:
+    HAS_REPUTATION = False
+
 logger = logging.getLogger(__name__)
 
 
@@ -77,6 +85,16 @@ class MasterOrchestrator:
         
         # Initialize tools
         self.scraper_manager = ScraperToolManager()
+        
+        # Initialize Source Reputation System
+        if HAS_REPUTATION:
+            self.quality_filter = QualityFilter()
+            self.reputation_manager = ReputationManager()
+            logger.info("Source Reputation System enabled")
+        else:
+            self.quality_filter = None
+            self.reputation_manager = None
+            logger.warning("Source Reputation System not available")
         
         # Build the LangGraph workflow
         self.graph = self._build_graph()
@@ -481,7 +499,8 @@ class MasterOrchestrator:
         """
         Node: Store validated articles to databases.
         
-        Stores to both PostgreSQL and MongoDB.
+        Applies quality filtering based on source reputation,
+        then stores to both PostgreSQL and MongoDB.
         """
         logger.info(f"Run {state['run_id']}: Storing {len(state['validated_articles'])} articles")
         
@@ -492,10 +511,52 @@ class MasterOrchestrator:
             )
             
             stored_articles = []
+            filtered_articles = []
             errors = state.get("errors", [])
             
             for article in state["validated_articles"]:
                 try:
+                    # Apply quality filter if enabled
+                    if self.quality_filter:
+                        source_name = article.get("source_name") or article.get("source", {}).get("name", "unknown")
+                        article_id = article.get("article_id", f"art_{hash(article.get('url', ''))}")
+                        
+                        if source_name:
+                            # Pre-filter based on source reputation
+                            filter_result = await self.quality_filter.pre_filter(
+                                article_id=article_id,
+                                source_name=source_name
+                            )
+                            
+                            from app.services.reputation_manager import FilterAction
+                            
+                            if filter_result.action == FilterAction.REJECTED:
+                                filtered_articles.append({
+                                    "article": article.get("url", "unknown"),
+                                    "source_name": source_name,
+                                    "reason": filter_result.reason
+                                })
+                                logger.info(f"Article filtered: {filter_result.reason}")
+                                
+                                # Record rejection in reputation system
+                                if self.reputation_manager:
+                                    await self.reputation_manager.record_article_result(
+                                        source_name=source_name,
+                                        article_id=article_id,
+                                        quality_score=30.0,  # Default low score for filtered articles
+                                        was_accepted=False
+                                    )
+                                continue
+                            
+                            # Record acceptance in reputation system
+                            if self.reputation_manager:
+                                await self.reputation_manager.record_article_result(
+                                    source_name=source_name,
+                                    article_id=article_id,
+                                    quality_score=70.0,  # Default reasonable score
+                                    was_accepted=True
+                                )
+                    
                     # TODO: Implement actual storage
                     # For now, just mark as stored
                     stored = {
@@ -518,7 +579,8 @@ class MasterOrchestrator:
                 "errors": errors,
                 "metrics": {
                     **state.get("metrics", {}),
-                    "articles_stored": len(stored_articles)
+                    "articles_stored": len(stored_articles),
+                    "articles_filtered": len(filtered_articles)
                 }
             }
             
