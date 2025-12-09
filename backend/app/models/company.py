@@ -1,6 +1,3 @@
-"""
-Company model for business client profiles.
-"""
 from datetime import datetime, timezone
 from typing import Optional, List, Literal
 from beanie import Document, Indexed
@@ -8,7 +5,6 @@ from pydantic import Field, BaseModel
 
 
 class OperationalProfile(BaseModel):
-    """Operational characteristics of the company."""
     import_dependency: float = Field(default=0, ge=0, le=100, description="Import dependency percentage")
     fuel_dependency: Literal["critical", "high", "medium", "low"] = Field(default="medium")
     workforce_provinces: List[str] = Field(default_factory=list)
@@ -16,7 +12,6 @@ class OperationalProfile(BaseModel):
 
 
 class RiskSensitivity(BaseModel):
-    """Risk sensitivity profile of the company."""
     currency_sensitivity: int = Field(default=5, ge=1, le=10)
     power_cut_impact: Literal["critical", "high", "medium", "low"] = Field(default="medium")
     political_stability_impact: Literal["high", "medium", "low"] = Field(default="medium")
@@ -24,10 +19,6 @@ class RiskSensitivity(BaseModel):
 
 
 class Company(Document):
-    """
-    Company document model for MongoDB.
-    Stores business client profiles and operational data.
-    """
 
     # Owner reference
     user_id: Indexed(str)  # type: ignore

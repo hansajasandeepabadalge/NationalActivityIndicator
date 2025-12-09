@@ -1,4 +1,3 @@
-"""Models module containing all Beanie document models."""
 from app.models.Indicator import NationalIndicator, OPERATIONAL_INDICATORS, IndicatorHistory, OperationalIndicatorValue, \
     NATIONAL_INDICATORS
 from app.models.user import User

@@ -1,6 +1,3 @@
-"""
-MongoDB database connection and initialization using Motor and Beanie ODM.
-"""
 from typing import Optional
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from beanie import init_beanie
@@ -10,20 +7,12 @@ from app.core.config import settings
 
 
 class Database:
-    """
-    MongoDB database connection manager.
-    Implements singleton pattern for connection reuse.
-    """
 
     client: Optional[AsyncIOMotorClient] = None
     db: Optional[AsyncIOMotorDatabase] = None
 
     @classmethod
     async def connect(cls) -> None:
-        """
-        Establish connection to MongoDB.
-        Initializes Beanie ODM with document models.
-        """
         try:
             logger.info(f"Connecting to MongoDB at {settings.MONGODB_URL}")
 
@@ -67,21 +56,18 @@ class Database:
 
     @classmethod
     async def disconnect(cls) -> None:
-        """Close MongoDB connection."""
         if cls.client:
             cls.client.close()
             logger.info("Disconnected from MongoDB")
 
     @classmethod
     def get_db(cls) -> AsyncIOMotorDatabase:
-        """Get database instance."""
         if cls.db is None:
             raise RuntimeError("Database not initialized. Call connect() first.")
         return cls.db
 
     @classmethod
     def get_client(cls) -> AsyncIOMotorClient:
-        """Get client instance."""
         if cls.client is None:
             raise RuntimeError("Database not initialized. Call connect() first.")
         return cls.client
@@ -89,15 +75,12 @@ class Database:
 
 # Convenience functions
 async def connect_to_mongo() -> None:
-    """Connect to MongoDB."""
     await Database.connect()
 
 
 async def close_mongo_connection() -> None:
-    """Close MongoDB connection."""
     await Database.disconnect()
 
 
 def get_database() -> AsyncIOMotorDatabase:
-    """Get database instance for dependency injection."""
     return Database.get_db()

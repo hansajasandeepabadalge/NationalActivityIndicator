@@ -1,6 +1,3 @@
-"""
-Dashboard service for combined dashboard data.
-"""
 from datetime import datetime, timezone
 from typing import Optional
 from pymongo import DESCENDING
@@ -16,25 +13,16 @@ from app.schemas.dashboard import (
     UserAlertsResponse,
     DashboardStats
 )
+from app.schemas.Insight import InsightListItem
 from app.services.IndicatorService import IndicatorService
 from app.services.InsightService import InsightService
 from app.services.companyService import CompanyService
 
 
 class DashboardService:
-    """Service for dashboard operations."""
 
     @staticmethod
     async def get_user_dashboard_home(company_id: str) -> UserDashboardHome:
-        """
-        Get data for user dashboard home page.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            UserDashboardHome with all dashboard data
-        """
         # Get company
         company = await Company.get(company_id)
         if not company:
@@ -61,12 +49,6 @@ class DashboardService:
 
     @staticmethod
     async def get_admin_dashboard_home() -> AdminDashboardHome:
-        """
-        Get data for admin dashboard home page.
-
-        Returns:
-            AdminDashboardHome with all dashboard data
-        """
         # Get total companies
         total_companies = await Company.find_all().count()
 
@@ -111,18 +93,22 @@ class DashboardService:
             "active": True
         }).sort([("created_at", DESCENDING)]).limit(5).to_list()
 
-        recent_critical_insights = []
-        for ins in recent_critical:
-            company = await Company.get(ins.company_id)
-            recent_critical_insights.append({
-                "id": str(ins.id),
-                "company_id": ins.company_id,
-                "company_name": company.company_name if company else "Unknown",
-                "type": ins.type,
-                "severity": ins.severity,
-                "title": ins.title,
-                "created_at": ins.created_at.isoformat()
-            })
+        recent_critical_insights = [
+            InsightListItem(
+                id=str(ins.id),
+                company_id=ins.company_id,
+                type=ins.type,
+                severity=ins.severity,
+                title=ins.title,
+                summary=ins.summary,
+                impact_score=getattr(ins, 'impact_score', None),
+                probability=getattr(ins, 'probability', None),
+                category=ins.category,
+                active=getattr(ins, 'active', True),
+                created_at=ins.created_at
+            )
+            for ins in recent_critical
+        ]
 
         # Get industries overview
         industries = await CompanyService.get_all_industries()
@@ -161,16 +147,6 @@ class DashboardService:
             company_id: str,
             limit: int = 20
     ) -> UserAlertsResponse:
-        """
-        Get alerts for a user's company.
-
-        Args:
-            company_id: Company ID
-            limit: Maximum number of alerts
-
-        Returns:
-            UserAlertsResponse with alerts
-        """
         # Get recent insights as alerts
         insights = await BusinessInsight.find(
             BusinessInsight.company_id == company_id,
@@ -208,15 +184,6 @@ class DashboardService:
 
     @staticmethod
     async def get_dashboard_stats(company_id: Optional[str] = None) -> DashboardStats:
-        """
-        Get dashboard statistics.
-
-        Args:
-            company_id: Company ID (optional, for user-specific stats)
-
-        Returns:
-            DashboardStats
-        """
         if company_id:
             # User-specific stats
             indicators = await OperationalIndicatorValue.find(
@@ -280,17 +247,6 @@ class DashboardService:
             ip_address: Optional[str] = None,
             user_agent: Optional[str] = None
     ):
-        """
-        Log dashboard access for analytics.
-
-        Args:
-            user_id: User ID
-            action: Action performed (e.g., "view_dashboard")
-            resource_type: Type of resource accessed
-            resource_id: ID of resource accessed
-            ip_address: Client IP (optional)
-            user_agent: Client user agent (optional)
-        """
         log_entry = DashboardAccessLog(
             user_id=user_id,
             action=action,

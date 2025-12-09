@@ -1,6 +1,3 @@
-"""
-User API routes for business user dashboard.
-"""
 from typing import Optional
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 from loguru import logger

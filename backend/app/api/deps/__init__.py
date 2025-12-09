@@ -1,6 +1,3 @@
-"""
-API dependencies for authentication and authorization.
-"""
 from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -18,15 +15,6 @@ security = HTTPBearer(auto_error=False)
 async def get_current_user_optional(
         credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ) -> Optional[User]:
-    """
-    Get current user from token (optional).
-
-    Args:
-        credentials: HTTP Bearer credentials
-
-    Returns:
-        User if authenticated, None otherwise
-    """
     if not credentials:
         return None
 
@@ -41,18 +29,6 @@ async def get_current_user_optional(
 async def get_current_user(
         credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ) -> User:
-    """
-    Get current user from token (required).
-
-    Args:
-        credentials: HTTP Bearer credentials
-
-    Returns:
-        User object
-
-    Raises:
-        HTTPException: If not authenticated or invalid token
-    """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -89,18 +65,6 @@ async def get_current_user(
 async def get_current_admin(
         current_user: User = Depends(get_current_user)
 ) -> User:
-    """
-    Get current admin user.
-
-    Args:
-        current_user: Current authenticated user
-
-    Returns:
-        User object if admin
-
-    Raises:
-        HTTPException: If not an admin
-    """
     if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -112,18 +76,6 @@ async def get_current_admin(
 async def get_current_business_user(
         current_user: User = Depends(get_current_user)
 ) -> User:
-    """
-    Get current business user.
-
-    Args:
-        current_user: Current authenticated user
-
-    Returns:
-        User object if regular user
-
-    Raises:
-        HTTPException: If not a regular user
-    """
     if current_user.role != "user":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -135,18 +87,6 @@ async def get_current_business_user(
 def get_token_data(
         credentials: HTTPAuthorizationCredentials = Depends(security)
 ) -> TokenData:
-    """
-    Extract and validate token data.
-
-    Args:
-        credentials: HTTP Bearer credentials
-
-    Returns:
-        TokenData
-
-    Raises:
-        HTTPException: If invalid token
-    """
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -1,6 +1,3 @@
-"""
-Authentication service for user management and authentication.
-"""
 from datetime import datetime, timezone
 from typing import Optional, Tuple
 from loguru import logger

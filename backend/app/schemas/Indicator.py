@@ -1,19 +1,14 @@
-"""
-Indicator schemas for request/response validation.
-"""
 from datetime import datetime
 from typing import Optional, List, Literal, Dict, Any
 from pydantic import BaseModel, Field
 
 
 class IndicatorHistoryPoint(BaseModel):
-    """Schema for indicator history data point."""
     value: float
     recorded_at: datetime
 
 
 class NationalIndicatorResponse(BaseModel):
-    """Schema for national indicator response."""
     id: str
     indicator_name: str
     category: str
@@ -32,12 +27,10 @@ class NationalIndicatorResponse(BaseModel):
 
 
 class NationalIndicatorWithHistory(NationalIndicatorResponse):
-    """Schema for national indicator with history."""
     history: List[IndicatorHistoryPoint] = Field(default_factory=list)
 
 
 class NationalIndicatorsGrouped(BaseModel):
-    """Schema for grouped national indicators by category."""
     political: List[NationalIndicatorResponse]
     economic: List[NationalIndicatorResponse]
     social: List[NationalIndicatorResponse]
@@ -45,7 +38,6 @@ class NationalIndicatorsGrouped(BaseModel):
 
 
 class OperationalIndicatorResponse(BaseModel):
-    """Schema for operational indicator response."""
     id: str
     company_id: str
     indicator_name: str
@@ -62,24 +54,20 @@ class OperationalIndicatorResponse(BaseModel):
 
 
 class OperationalIndicatorWithHistory(OperationalIndicatorResponse):
-    """Schema for operational indicator with history."""
     history: List[IndicatorHistoryPoint] = Field(default_factory=list)
 
 
 class IndicatorHistoryRequest(BaseModel):
-    """Schema for requesting indicator history."""
     indicator_name: str
     days: int = Field(default=30, ge=1, le=365)
 
 
 class IndicatorHistoryResponse(BaseModel):
-    """Schema for indicator history response."""
     indicator_name: str
     data_points: List[IndicatorHistoryPoint]
 
 
 class HealthScoreResponse(BaseModel):
-    """Schema for health score response."""
     health_score: float
     trend: str
     trend_change: Optional[float] = None
@@ -88,7 +76,6 @@ class HealthScoreResponse(BaseModel):
 
 
 class IndustryIndicatorSummary(BaseModel):
-    """Schema for industry indicator summary (admin view)."""
     industry: str
     company_count: int
     avg_indicators: Dict[str, float]

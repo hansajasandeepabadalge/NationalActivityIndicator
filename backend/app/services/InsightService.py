@@ -1,6 +1,3 @@
-"""
-Insight service for business insights (risks and opportunities).
-"""
 from typing import Optional, List, Literal
 from loguru import logger
 from pymongo import DESCENDING
@@ -17,7 +14,6 @@ from app.schemas.Insight import (
 
 
 class InsightService:
-    """Service for business insight operations."""
 
     @staticmethod
     async def get_company_insights(
@@ -28,20 +24,6 @@ class InsightService:
             page: int = 1,
             page_size: int = 20
     ) -> tuple[List[InsightListItem], int]:
-        """
-        Get insights for a company with filtering.
-
-        Args:
-            company_id: Company ID
-            insight_type: Filter by type (risk/opportunity)
-            severity: Filter by severity
-            active_only: Only return active insights
-            page: Page number
-            page_size: Items per page
-
-        Returns:
-            Tuple of (insights list, total count)
-        """
         query_filters = {"company_id": company_id}
 
         if insight_type:
@@ -68,10 +50,10 @@ class InsightService:
                 severity=ins.severity,
                 title=ins.title,
                 summary=ins.summary,
-                impact_score=ins.impact_score,
-                probability=ins.probability,
+                impact_score=getattr(ins, 'impact_score', None),
+                probability=getattr(ins, 'probability', None),
                 category=ins.category,
-                active=ins.active,
+                active=getattr(ins, 'active', True),
                 created_at=ins.created_at
             )
             for ins in insights
@@ -81,15 +63,6 @@ class InsightService:
 
     @staticmethod
     async def get_insight_by_id(insight_id: str) -> Optional[InsightResponse]:
-        """
-        Get full insight details by ID.
-
-        Args:
-            insight_id: Insight ID
-
-        Returns:
-            InsightResponse if found, None otherwise
-        """
         try:
             insight = await BusinessInsight.get(insight_id)
             if not insight:
@@ -125,16 +98,6 @@ class InsightService:
             company_id: str,
             severity: Optional[str] = None
     ) -> List[InsightListItem]:
-        """
-        Get all risks for a company.
-
-        Args:
-            company_id: Company ID
-            severity: Filter by severity
-
-        Returns:
-            List of risk insights
-        """
         insights, _ = await InsightService.get_company_insights(
             company_id=company_id,
             insight_type="risk",
@@ -145,15 +108,6 @@ class InsightService:
 
     @staticmethod
     async def get_company_opportunities(company_id: str) -> List[InsightListItem]:
-        """
-        Get all opportunities for a company.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            List of opportunity insights
-        """
         insights, _ = await InsightService.get_company_insights(
             company_id=company_id,
             insight_type="opportunity",
@@ -163,15 +117,6 @@ class InsightService:
 
     @staticmethod
     async def get_company_insights_summary(company_id: str) -> InsightsSummary:
-        """
-        Get insights summary for a company.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            InsightsSummary with counts and recent insights
-        """
         # Get counts
         total_risks = await BusinessInsight.find(
             BusinessInsight.company_id == company_id,
@@ -221,10 +166,10 @@ class InsightService:
                 severity=ins.severity,
                 title=ins.title,
                 summary=ins.summary,
-                impact_score=ins.impact_score,
-                probability=ins.probability,
+                impact_score=getattr(ins, 'impact_score', None),
+                probability=getattr(ins, 'probability', None),
                 category=ins.category,
-                active=ins.active,
+                active=getattr(ins, 'active', True),
                 created_at=ins.created_at
             )
             for ins in recent
@@ -241,16 +186,6 @@ class InsightService:
 
     @staticmethod
     async def acknowledge_insight(insight_id: str, user_id: str = "system") -> bool:
-        """
-        Acknowledge an insight.
-
-        Args:
-            insight_id: Insight ID
-            user_id: ID of the user acknowledging
-
-        Returns:
-            True if successful, False otherwise
-        """
         try:
             insight = await BusinessInsight.get(insight_id)
             if not insight:
@@ -264,15 +199,6 @@ class InsightService:
 
     @staticmethod
     async def resolve_insight(insight_id: str) -> bool:
-        """
-        Mark an insight as resolved.
-
-        Args:
-            insight_id: Insight ID
-
-        Returns:
-            True if successful, False otherwise
-        """
         try:
             insight = await BusinessInsight.get(insight_id)
             if not insight:
@@ -292,19 +218,6 @@ class InsightService:
             page: int = 1,
             page_size: int = 20
     ) -> tuple[List[InsightListWithCompany], int]:
-        """
-        Get all insights for admin view with company info.
-
-        Args:
-            industry: Filter by industry
-            insight_type: Filter by type
-            severity: Filter by severity
-            page: Page number
-            page_size: Items per page
-
-        Returns:
-            Tuple of (insights with company info, total count)
-        """
         # Build query
         query_filters = {"active": True}
 
@@ -351,12 +264,6 @@ class InsightService:
 
     @staticmethod
     async def get_admin_insights_summary() -> AdminInsightsSummary:
-        """
-        Get insights summary for admin dashboard.
-
-        Returns:
-            AdminInsightsSummary with aggregated data
-        """
         # Total companies
         total_companies = await Company.find_all().count()
 
@@ -395,10 +302,12 @@ class InsightService:
             {"$match": {"type": "risk", "active": True}},
             {"$group": {"_id": "$category", "count": {"$sum": 1}}}
         ]
-        category_results = await BusinessInsight.aggregate(pipeline).to_list()
-        risks_by_category = {
-            r["_id"]: r["count"] for r in category_results if r["_id"]
-        }
+        collection = BusinessInsight.get_pymongo_collection()
+        cursor = collection.aggregate(pipeline)
+        risks_by_category = {}
+        async for r in cursor:
+            if r.get("_id"):
+                risks_by_category[r["_id"]] = r["count"]
 
         # Industries at risk (with critical/high risks)
         high_risk_insights = await BusinessInsight.find({
@@ -425,9 +334,6 @@ class InsightService:
 
     @staticmethod
     async def seed_company_insights(company_id: str):
-        """
-        Seed sample insights for a company.
-        """
         # Sample risks
         sample_risks = [
             {

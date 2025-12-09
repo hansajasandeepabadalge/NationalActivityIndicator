@@ -1,4 +1,3 @@
-"""Database module for MongoDB and Redis connections."""
 from app.db.mongodb import (
     Database,
     connect_to_mongo,

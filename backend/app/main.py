@@ -1,6 +1,3 @@
-"""
-Layer5 Dashboard API - Main Application Entry Point
-"""
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,7 +13,6 @@ from app.api.routes.adminRoutes import router as admin_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Handle application startup and shutdown."""
     # Startup
     logger.info("Starting up application...")
     await connect_to_mongo()
@@ -53,12 +49,9 @@ app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
 app.include_router(user_router, prefix=settings.API_V1_PREFIX)
 app.include_router(admin_router, prefix=settings.API_V1_PREFIX)
 
-
-
 @app.get("/")
 async def root():
     return {"message": f"{settings.APP_NAME} is running"}
-
 
 @app.get("/health")
 async def health_check():

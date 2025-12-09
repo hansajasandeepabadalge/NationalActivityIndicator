@@ -1,13 +1,9 @@
-"""
-Insight schemas for request/response validation.
-"""
 from datetime import datetime
 from typing import Optional, List, Literal, Dict, Any
 from pydantic import BaseModel, Field
 
 
 class RecommendationSchema(BaseModel):
-    """Schema for recommendation."""
     title: str
     description: str
     priority: Literal["high", "medium", "low"] = "medium"
@@ -17,14 +13,12 @@ class RecommendationSchema(BaseModel):
 
 
 class RelatedIndicatorSchema(BaseModel):
-    """Schema for related indicator."""
     indicator_name: str
     indicator_type: Literal["national", "operational"]
     contribution_weight: Optional[float] = None
 
 
 class InsightResponse(BaseModel):
-    """Schema for business insight response."""
     id: str
     company_id: str
     type: str
@@ -51,17 +45,16 @@ class InsightResponse(BaseModel):
 
 
 class InsightListItem(BaseModel):
-    """Schema for insight list item."""
     id: str
     company_id: str
     type: str
     severity: str
     title: str
     summary: Optional[str] = None
-    impact_score: int
-    probability: int
+    impact_score: Optional[int] = None
+    probability: Optional[int] = None
     category: Optional[str] = None
-    active: bool
+    active: Optional[bool] = True
     created_at: datetime
 
     class Config:
@@ -69,13 +62,11 @@ class InsightListItem(BaseModel):
 
 
 class InsightListWithCompany(InsightListItem):
-    """Schema for insight list item with company info (admin view)."""
     company_name: str
     industry: str
 
 
 class InsightsFilter(BaseModel):
-    """Schema for filtering insights."""
     type: Optional[Literal["risk", "opportunity"]] = None
     severity: Optional[Literal["critical", "high", "medium", "low"]] = None
     category: Optional[str] = None
@@ -86,12 +77,10 @@ class InsightsFilter(BaseModel):
 
 
 class InsightAcknowledge(BaseModel):
-    """Schema for acknowledging an insight."""
     notes: Optional[str] = None
 
 
 class InsightsSummary(BaseModel):
-    """Schema for insights summary."""
     total_risks: int
     critical_risks: int
     high_risks: int
@@ -101,7 +90,6 @@ class InsightsSummary(BaseModel):
 
 
 class AdminInsightsSummary(BaseModel):
-    """Schema for admin insights summary."""
     total_companies: int
     companies_with_critical_risks: int
     total_risks: int

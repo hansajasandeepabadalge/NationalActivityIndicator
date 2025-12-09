@@ -1,6 +1,3 @@
-"""
-User model for authentication and authorization.
-"""
 from datetime import datetime, timezone
 from typing import Optional, Literal
 from beanie import Document, Indexed

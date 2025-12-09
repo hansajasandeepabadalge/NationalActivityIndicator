@@ -1,6 +1,3 @@
-"""
-Indicator models for national and operational indicators.
-"""
 from datetime import datetime, timezone
 from typing import Optional, Literal, List
 from beanie import Document, Indexed
@@ -8,16 +5,11 @@ from pydantic import Field, BaseModel
 
 
 class IndicatorHistory(BaseModel):
-    """Historical data point for an indicator."""
     value: float
     recorded_at: datetime
 
 
 class NationalIndicator(Document):
-    """
-    National indicator document model.
-    Represents country-level indicators from Layer 2.
-    """
 
     indicator_name: Indexed(str, unique=True)  # type: ignore
     category: Literal["political", "economic", "social", "infrastructure"]
@@ -54,7 +46,6 @@ class NationalIndicator(Document):
 
     @property
     def status(self) -> str:
-        """Get status based on value thresholds."""
         if self.value >= self.threshold_good:
             return "good"
         elif self.value >= self.threshold_warning:
@@ -63,7 +54,6 @@ class NationalIndicator(Document):
 
     @property
     def status_color(self) -> str:
-        """Get color based on status."""
         status_colors = {
             "good": "green",
             "warning": "yellow",
@@ -73,10 +63,6 @@ class NationalIndicator(Document):
 
 
 class OperationalIndicatorValue(Document):
-    """
-    Operational indicator value document model.
-    Company-specific indicators from Layer 3.
-    """
 
     company_id: Indexed(str)  # type: ignore
     indicator_name: str

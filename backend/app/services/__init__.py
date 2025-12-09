@@ -1,5 +1,8 @@
-"""Services module containing business logic."""
-
+from app.services.authService import AuthService
+from app.services.companyService import CompanyService
+from app.services.dashboardService import DashboardService
+from app.services.InsightService import InsightService
+from app.services.IndicatorService import IndicatorService
 
 __all__ = [
     "AuthService",
@@ -8,8 +11,4 @@ __all__ = [
     "InsightService",
     "DashboardService"
 ]
-
-from app.services.authService import AuthService
-from app.services.companyService import CompanyService
-from app.services.dashboardService import DashboardService
 

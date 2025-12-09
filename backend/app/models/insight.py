@@ -1,6 +1,3 @@
-"""
-Business Insight model for risks and opportunities.
-"""
 from datetime import datetime, timezone
 from typing import Optional, List, Literal
 from beanie import Document, Indexed
@@ -8,7 +5,6 @@ from pydantic import Field, BaseModel
 
 
 class Recommendation(BaseModel):
-    """Recommendation for handling an insight."""
     title: str
     description: str
     priority: Literal["high", "medium", "low"] = "medium"
@@ -18,17 +14,12 @@ class Recommendation(BaseModel):
 
 
 class RelatedIndicator(BaseModel):
-    """Indicator related to an insight."""
     indicator_name: str
     indicator_type: Literal["national", "operational"]
     contribution_weight: Optional[float] = None
 
 
 class BusinessInsight(Document):
-    """
-    Business insight document model.
-    Represents risks and opportunities for companies.
-    """
 
     company_id: Indexed(str)  # type: ignore
     type: Literal["risk", "opportunity"]
@@ -76,18 +67,15 @@ class BusinessInsight(Document):
         use_state_management = True
 
     def calculate_risk_score(self) -> float:
-        """Calculate risk score from impact and probability."""
         return (self.impact_score * self.probability) / 10
 
     def acknowledge(self, user_id: str) -> None:
-        """Mark insight as acknowledged."""
         self.acknowledged = True
         self.acknowledged_at = datetime.now(timezone.utc)
         self.acknowledged_by = user_id
         self.updated_at = datetime.now(timezone.utc)
 
     def resolve(self) -> None:
-        """Mark insight as resolved."""
         self.resolved = True
         self.resolved_at = datetime.now(timezone.utc)
         self.active = False

@@ -1,6 +1,3 @@
-"""
-Middleware for logging, rate limiting, and request processing.
-"""
 import time
 from typing import Callable
 from fastapi import Request, Response
@@ -9,10 +6,8 @@ from loguru import logger
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
-    """Middleware for request/response logging."""
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """Process request and log details."""
         start_time = time.time()
 
         # Log request
@@ -41,10 +36,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
 
 class RequestIDMiddleware(BaseHTTPMiddleware):
-    """Middleware for adding request ID to responses."""
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """Add request ID to response headers."""
         import uuid
 
         request_id = str(uuid.uuid4())
@@ -57,10 +50,8 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    """Middleware for adding security headers."""
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """Add security headers to response."""
         response = await call_next(request)
 
         # Security headers

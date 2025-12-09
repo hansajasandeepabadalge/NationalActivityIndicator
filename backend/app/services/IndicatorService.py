@@ -1,6 +1,3 @@
-"""
-Indicator service for national and operational indicators.
-"""
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict
 from loguru import logger
@@ -25,7 +22,6 @@ from app.db.redis import RedisCache, cache_key
 
 
 class IndicatorService:
-    """Service for indicator operations."""
 
     # Cache keys
     NATIONAL_INDICATORS_CACHE = "national_indicators"
@@ -33,12 +29,6 @@ class IndicatorService:
 
     @staticmethod
     async def get_all_national_indicators() -> List[NationalIndicatorResponse]:
-        """
-        Get all national indicators.
-
-        Returns:
-            List of national indicator responses
-        """
         # Try cache first
         cached = await RedisCache.get(IndicatorService.NATIONAL_INDICATORS_CACHE)
         if cached:
@@ -74,12 +64,6 @@ class IndicatorService:
 
     @staticmethod
     async def get_national_indicators_grouped() -> NationalIndicatorsGrouped:
-        """
-        Get national indicators grouped by category.
-
-        Returns:
-            NationalIndicatorsGrouped with indicators by category
-        """
         indicators = await IndicatorService.get_all_national_indicators()
 
         grouped = {
@@ -100,16 +84,6 @@ class IndicatorService:
             indicator_name: str,
             days: int = 30
     ) -> IndicatorHistoryResponse:
-        """
-        Get historical data for a national indicator.
-
-        Args:
-            indicator_name: Name of the indicator
-            days: Number of days of history
-
-        Returns:
-            IndicatorHistoryResponse with data points
-        """
         indicator = await NationalIndicator.find_one(
             NationalIndicator.indicator_name == indicator_name
         )
@@ -137,15 +111,6 @@ class IndicatorService:
     async def get_company_indicators(
             company_id: str
     ) -> List[OperationalIndicatorResponse]:
-        """
-        Get operational indicators for a company.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            List of operational indicator responses
-        """
         cache_key_str = cache_key(IndicatorService.OPERATIONAL_INDICATORS_CACHE, company_id)
 
         # Try cache
@@ -179,15 +144,6 @@ class IndicatorService:
 
     @staticmethod
     async def get_company_health_score(company_id: str) -> HealthScoreResponse:
-        """
-        Get health score and indicators for a company.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            HealthScoreResponse with health score and indicators
-        """
         indicators = await IndicatorService.get_company_indicators(company_id)
 
         if not indicators:
@@ -232,15 +188,6 @@ class IndicatorService:
     async def get_industry_indicators_summary(
             industry: str
     ) -> IndustryIndicatorSummary:
-        """
-        Get aggregated indicator summary for an industry.
-
-        Args:
-            industry: Industry name
-
-        Returns:
-            IndustryIndicatorSummary with aggregated data
-        """
         # Get all companies in industry
         companies = await Company.find(Company.industry == industry).to_list()
         company_ids = [str(c.id) for c in companies]
@@ -287,9 +234,6 @@ class IndicatorService:
 
     @staticmethod
     async def seed_national_indicators():
-        """
-        Seed initial national indicators for testing.
-        """
         import random
 
         for category, indicators in NATIONAL_INDICATORS.items():
@@ -315,9 +259,6 @@ class IndicatorService:
 
     @staticmethod
     async def seed_company_indicators(company_id: str):
-        """
-        Seed initial operational indicators for a company.
-        """
         import random
 
         for ind_data in OPERATIONAL_INDICATORS:

@@ -1,7 +1,3 @@
-"""
-Security utilities for authentication and authorization.
-Handles JWT token creation/verification and password hashing.
-"""
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import jwt, JWTError
@@ -13,7 +9,6 @@ from app.core.config import settings
 
 
 class TokenPayload(BaseModel):
-    """JWT token payload structure."""
     sub: str  # Subject (user_id)
     exp: datetime  # Expiration time
     iat: datetime  # Issued at
@@ -22,7 +17,6 @@ class TokenPayload(BaseModel):
 
 
 class TokenData(BaseModel):
-    """Extracted token data."""
     user_id: str
     role: str
     token_type: str
@@ -33,17 +27,6 @@ def create_access_token(
         role: str,
         expires_delta: Optional[timedelta] = None
 ) -> str:
-    """
-    Create a JWT access token.
-
-    Args:
-        subject: The subject (user_id) for the token
-        role: User role (admin or user)
-        expires_delta: Optional custom expiration time
-
-    Returns:
-        Encoded JWT token string
-    """
     now = datetime.now(timezone.utc)
 
     if expires_delta:
@@ -71,17 +54,6 @@ def create_refresh_token(
         role: str,
         expires_delta: Optional[timedelta] = None
 ) -> str:
-    """
-    Create a JWT refresh token.
-
-    Args:
-        subject: The subject (user_id) for the token
-        role: User role
-        expires_delta: Optional custom expiration time
-
-    Returns:
-        Encoded JWT refresh token string
-    """
     now = datetime.now(timezone.utc)
 
     if expires_delta:
@@ -105,15 +77,6 @@ def create_refresh_token(
 
 
 def verify_token(token: str) -> Optional[TokenData]:
-    """
-    Verify and decode a JWT token.
-
-    Args:
-        token: The JWT token string to verify
-
-    Returns:
-        TokenData if valid, None if invalid
-    """
     try:
         payload = jwt.decode(
             token,
@@ -139,16 +102,6 @@ def verify_token(token: str) -> Optional[TokenData]:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verify a password against its hash.
-
-    Args:
-        plain_password: The plain text password
-        hashed_password: The hashed password to compare against
-
-    Returns:
-        True if password matches, False otherwise
-    """
     # Truncate password to 72 bytes (bcrypt limitation)
     password_bytes = plain_password.encode('utf-8')[:72]
     hashed_bytes = hashed_password.encode('utf-8')
@@ -156,15 +109,6 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def get_password_hash(password: str) -> str:
-    """
-    Hash a password using bcrypt.
-
-    Args:
-        password: The plain text password to hash
-
-    Returns:
-        The hashed password string
-    """
     # Truncate password to 72 bytes (bcrypt limitation)
     password_bytes = password.encode('utf-8')[:72]
     salt = bcrypt.gensalt()

@@ -1,6 +1,3 @@
-"""
-Dashboard access log model for tracking user activity.
-"""
 from datetime import datetime, timezone
 from typing import Optional
 from beanie import Document, Indexed
@@ -8,10 +5,6 @@ from pydantic import Field
 
 
 class DashboardAccessLog(Document):
-    """
-    Dashboard access log document model.
-    Tracks user activity and access patterns.
-    """
 
     user_id: Indexed(str)  # type: ignore
     company_id: Optional[str] = None

@@ -1,7 +1,3 @@
-"""
-Application configuration settings using Pydantic Settings.
-All configuration is loaded from environment variables with sensible defaults.
-"""
 from functools import lru_cache
 from typing import List, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -9,7 +5,6 @@ from pydantic import Field, AnyHttpUrl
 
 
 class Settings(BaseSettings):
-    """Application settings with environment variable support."""
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -83,10 +78,6 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    """
-    Get cached settings instance.
-    Using lru_cache ensures settings are only loaded once.
-    """
     return Settings()
 
 

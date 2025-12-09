@@ -1,13 +1,9 @@
-"""
-Company schemas for request/response validation.
-"""
 from datetime import datetime
 from typing import Optional, List, Literal, Dict, Any
 from pydantic import BaseModel, Field
 
 
 class OperationalProfileSchema(BaseModel):
-    """Schema for operational profile."""
     import_dependency: float = Field(default=0, ge=0, le=100)
     fuel_dependency: Literal["critical", "high", "medium", "low"] = "medium"
     workforce_provinces: List[str] = Field(default_factory=list)
@@ -15,7 +11,6 @@ class OperationalProfileSchema(BaseModel):
 
 
 class RiskSensitivitySchema(BaseModel):
-    """Schema for risk sensitivity."""
     currency_sensitivity: int = Field(default=5, ge=1, le=10)
     power_cut_impact: Literal["critical", "high", "medium", "low"] = "medium"
     political_stability_impact: Literal["high", "medium", "low"] = "medium"
@@ -23,7 +18,6 @@ class RiskSensitivitySchema(BaseModel):
 
 
 class CompanyCreate(BaseModel):
-    """Schema for creating a company profile."""
     company_name: str = Field(..., min_length=2, max_length=200)
     industry: str
     business_scale: Literal["micro", "small", "medium", "large"] = "small"
@@ -38,7 +32,6 @@ class CompanyCreate(BaseModel):
 
 
 class CompanyUpdate(BaseModel):
-    """Schema for updating a company profile."""
     company_name: Optional[str] = Field(None, min_length=2, max_length=200)
     industry: Optional[str] = None
     business_scale: Optional[Literal["micro", "small", "medium", "large"]] = None
@@ -53,7 +46,6 @@ class CompanyUpdate(BaseModel):
 
 
 class CompanyResponse(BaseModel):
-    """Schema for company response."""
     id: str
     user_id: str
     company_name: str
@@ -76,7 +68,6 @@ class CompanyResponse(BaseModel):
 
 
 class CompanyListItem(BaseModel):
-    """Schema for company list item (admin view)."""
     id: str
     company_name: str
     industry: str
@@ -91,7 +82,6 @@ class CompanyListItem(BaseModel):
 
 
 class IndustryAggregation(BaseModel):
-    """Schema for industry-level aggregation."""
     industry: str
     company_count: int
     avg_health_score: Optional[float] = None

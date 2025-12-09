@@ -1,6 +1,3 @@
-"""
-Admin API routes for admin dashboard.
-"""
 from typing import Optional, List
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 from loguru import logger
@@ -47,15 +44,6 @@ router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
 async def get_admin_dashboard_home(
         current_user: User = Depends(get_current_admin)
 ):
-    """
-    Get all data for the admin dashboard home page.
-
-    Includes:
-    - System overview statistics
-    - National indicators summary
-    - Critical alerts
-    - Industry overview
-    """
     return await DashboardService.get_admin_dashboard_home()
 
 
@@ -67,7 +55,6 @@ async def get_admin_dashboard_home(
 async def get_system_stats(
         current_user: User = Depends(get_current_admin)
 ):
-    """Get system-wide dashboard statistics."""
     return await DashboardService.get_dashboard_stats()
 
 
@@ -81,7 +68,6 @@ async def get_system_stats(
 async def get_national_indicators(
         current_user: User = Depends(get_current_admin)
 ):
-    """Get all 20 national indicators with current values."""
     return await IndicatorService.get_all_national_indicators()
 
 
@@ -93,11 +79,6 @@ async def get_national_indicators(
 async def get_national_indicators_grouped(
         current_user: User = Depends(get_current_admin)
 ):
-    """
-    Get national indicators grouped by category.
-
-    Categories: Political, Economic, Social, Infrastructure
-    """
     return await IndicatorService.get_national_indicators_grouped()
 
 
@@ -118,14 +99,13 @@ async def get_national_indicator_history(
     )
 
 
-@router.post(
+@router.get(
     "/national-indicators/seed",
     summary="Seed national indicators"
 )
 async def seed_national_indicators(
         current_user: User = Depends(get_current_admin)
 ):
-    """Seed initial national indicators data for testing."""
     await IndicatorService.seed_national_indicators()
     return {"message": "National indicators seeded successfully"}
 
@@ -140,7 +120,6 @@ async def seed_national_indicators(
 async def get_all_industries(
         current_user: User = Depends(get_current_admin)
 ):
-    """Get list of all industries with registered companies."""
     return await CompanyService.get_all_industries()
 
 
@@ -153,11 +132,6 @@ async def get_industry_indicators(
         industry: str,
         current_user: User = Depends(get_current_admin)
 ):
-    """
-    Get aggregated operational indicators for an industry.
-
-    Shows average values and distribution across companies.
-    """
     return await IndicatorService.get_industry_indicators_summary(industry)
 
 
@@ -170,7 +144,6 @@ async def get_industry_aggregation(
         industry: str,
         current_user: User = Depends(get_current_admin)
 ):
-    """Get aggregated company data for an industry."""
     return await CompanyService.get_industry_aggregation(industry)
 
 
@@ -185,11 +158,6 @@ async def get_all_companies(
         industry: Optional[str] = None,
         current_user: User = Depends(get_current_admin)
 ):
-    """
-    Get all companies with risk counts.
-
-    Optionally filter by industry.
-    """
     companies = await CompanyService.get_company_list_with_risks()
 
     if industry:
@@ -207,7 +175,6 @@ async def get_company_details(
         company_id: str,
         current_user: User = Depends(get_current_admin)
 ):
-    """Get detailed information for a specific company."""
     company = await CompanyService.get_company_by_id(company_id)
 
     if not company:
@@ -227,7 +194,6 @@ async def get_company_indicators(
         company_id: str,
         current_user: User = Depends(get_current_admin)
 ):
-    """Get all operational indicators for a specific company."""
     company = await CompanyService.get_company_by_id(company_id)
 
     if not company:
@@ -259,7 +225,6 @@ async def get_company_insights(
         page_size: int = Query(default=20, ge=1, le=100),
         current_user: User = Depends(get_current_admin)
 ):
-    """Get all insights for a specific company."""
     company = await CompanyService.get_company_by_id(company_id)
 
     if not company:
@@ -300,11 +265,6 @@ async def get_all_insights(
         page_size: int = Query(default=20, ge=1, le=100),
         current_user: User = Depends(get_current_admin)
 ):
-    """
-    Get all insights across all companies.
-
-    Can filter by industry, type, and severity.
-    """
     insights, total = await InsightService.get_all_insights_admin(
         industry=industry,
         insight_type=insight_type,
@@ -313,7 +273,7 @@ async def get_all_insights(
         page_size=page_size
     )
 
-    total_pages = (total + page_size - 1) // page_size
+    total_pages = (total + page_size - 1)
 
     return {
         "items": insights,
@@ -334,7 +294,6 @@ async def get_all_insights(
 async def get_insights_summary(
         current_user: User = Depends(get_current_admin)
 ):
-    """Get aggregated insights summary across all companies."""
     return await InsightService.get_admin_insights_summary()
 
 
@@ -347,7 +306,6 @@ async def get_insight_details(
         insight_id: str,
         current_user: User = Depends(get_current_admin)
 ):
-    """Get detailed information for a specific insight."""
     insight = await InsightService.get_insight_by_id(insight_id)
 
     if not insight:

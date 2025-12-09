@@ -1,4 +1,3 @@
-"""Schemas module containing all Pydantic schemas for API validation."""
 from app.schemas.Indicator import (
     IndicatorHistoryPoint,
     NationalIndicatorResponse,

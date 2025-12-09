@@ -1,6 +1,3 @@
-"""
-Company service for business profile management.
-"""
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 from loguru import logger
@@ -19,23 +16,9 @@ from app.schemas.company import (
 
 
 class CompanyService:
-    """Service for company profile operations."""
 
     @staticmethod
     async def create_company(user_id: str, company_data: CompanyCreate) -> Company:
-        """
-        Create a new company profile.
-
-        Args:
-            user_id: Owner user ID
-            company_data: Company creation data
-
-        Returns:
-            Created company object
-
-        Raises:
-            ValueError: If user already has a company
-        """
         # Check if user already has a company
         existing = await Company.find_one(Company.user_id == user_id)
         if existing:
@@ -80,28 +63,10 @@ class CompanyService:
 
     @staticmethod
     async def get_company_by_user(user_id: str) -> Optional[Company]:
-        """
-        Get company by user ID.
-
-        Args:
-            user_id: Owner user ID
-
-        Returns:
-            Company object if found, None otherwise
-        """
         return await Company.find_one(Company.user_id == user_id)
 
     @staticmethod
     async def get_company_by_id(company_id: str) -> Optional[Company]:
-        """
-        Get company by ID.
-
-        Args:
-            company_id: Company ID
-
-        Returns:
-            Company object if found, None otherwise
-        """
         try:
             return await Company.get(company_id)
         except Exception:
@@ -112,16 +77,6 @@ class CompanyService:
             company: Company,
             update_data: CompanyUpdate
     ) -> Company:
-        """
-        Update company profile.
-
-        Args:
-            company: Company object to update
-            update_data: Update data
-
-        Returns:
-            Updated company object
-        """
         update_dict = update_data.model_dump(exclude_unset=True)
 
         # Handle nested objects
@@ -152,17 +107,6 @@ class CompanyService:
             page: int = 1,
             page_size: int = 20
     ) -> tuple[List[Company], int]:
-        """
-        Get all companies with optional filtering.
-
-        Args:
-            industry: Filter by industry
-            page: Page number
-            page_size: Items per page
-
-        Returns:
-            Tuple of (companies list, total count)
-        """
         query = Company.find()
 
         if industry:
@@ -176,12 +120,7 @@ class CompanyService:
 
     @staticmethod
     async def get_company_list_with_risks() -> List[CompanyListItem]:
-        """
-        Get company list with risk counts for admin view.
 
-        Returns:
-            List of CompanyListItem with risk counts
-        """
         companies = await Company.find_all().to_list()
         result = []
 
@@ -215,15 +154,6 @@ class CompanyService:
 
     @staticmethod
     async def get_industry_aggregation(industry: str) -> IndustryAggregation:
-        """
-        Get aggregated data for an industry.
-
-        Args:
-            industry: Industry name
-
-        Returns:
-            IndustryAggregation with summary data
-        """
         companies = await Company.find(Company.industry == industry).to_list()
 
         if not companies:
@@ -250,31 +180,22 @@ class CompanyService:
 
     @staticmethod
     async def get_all_industries() -> List[str]:
-        """
-        Get list of all industries with companies.
-
-        Returns:
-            List of industry names
-        """
         pipeline = [
             {"$group": {"_id": "$industry"}},
             {"$sort": {"_id": 1}}
         ]
 
-        result = await Company.aggregate(pipeline).to_list()
-        return [r["_id"] for r in result if r["_id"]]
+        # Use the collection directly for aggregation
+        collection = Company.get_pymongo_collection()
+        cursor = collection.aggregate(pipeline)
+        result = []
+        async for doc in cursor:
+            if doc.get("_id"):
+                result.append(doc["_id"])
+        return result
 
     @staticmethod
     def company_to_response(company: Company) -> CompanyResponse:
-        """
-        Convert Company model to CompanyResponse schema.
-
-        Args:
-            company: Company object
-
-        Returns:
-            CompanyResponse schema
-        """
         return CompanyResponse(
             id=str(company.id),
             user_id=company.user_id,

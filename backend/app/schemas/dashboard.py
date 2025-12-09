@@ -1,6 +1,3 @@
-"""
-Dashboard schemas for combined dashboard responses.
-"""
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
@@ -13,7 +10,6 @@ from app.schemas.Insight import InsightListItem
 
 
 class UserDashboardHome(BaseModel):
-    """Schema for user dashboard home page."""
     health_score: float
     health_trend: str
     health_trend_change: Optional[float] = None
@@ -27,7 +23,6 @@ class UserDashboardHome(BaseModel):
 
 
 class AdminDashboardHome(BaseModel):
-    """Schema for admin dashboard home page."""
     total_companies: int
     companies_at_risk: int
     avg_health_score: float
@@ -39,7 +34,6 @@ class AdminDashboardHome(BaseModel):
 
 
 class AlertItem(BaseModel):
-    """Schema for alert item."""
     id: str
     type: str
     severity: str
@@ -49,14 +43,12 @@ class AlertItem(BaseModel):
 
 
 class UserAlertsResponse(BaseModel):
-    """Schema for user alerts response."""
     alerts: List[AlertItem]
     unread_count: int
     total_count: int
 
 
 class DashboardStats(BaseModel):
-    """Schema for dashboard statistics."""
     total_indicators: int
     indicators_improving: int
     indicators_declining: int
@@ -66,7 +58,6 @@ class DashboardStats(BaseModel):
 
 
 class ReportRequest(BaseModel):
-    """Schema for report generation request."""
     report_type: str  # "summary", "detailed", "risks", "opportunities"
     date_range_start: Optional[datetime] = None
     date_range_end: Optional[datetime] = None
@@ -75,7 +66,6 @@ class ReportRequest(BaseModel):
 
 
 class ReportResponse(BaseModel):
-    """Schema for report generation response."""
     report_id: str
     status: str  # "generating", "ready", "failed"
     download_url: Optional[str] = None
