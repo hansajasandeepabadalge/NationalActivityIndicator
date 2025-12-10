@@ -8,13 +8,19 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import settings
-from app.db.session import Base
+from app.db.base_class import Base
 
 # Import all models to register them with Base.metadata
 try:
     from app.models import *  # noqa
 except ImportError:
     pass  # Models not yet created
+
+# Import Layer 5 models
+try:
+    from app.layer5.models import *  # noqa
+except ImportError:
+    pass  # Layer 5 models not yet created
 
 config = context.config
 config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
@@ -39,8 +45,10 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
+    configuration = config.get_section(config.config_ini_section, {})
+    configuration["sqlalchemy.url"] = config.get_main_option("sqlalchemy.url")
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

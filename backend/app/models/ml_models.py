@@ -2,7 +2,7 @@
 from sqlalchemy import Column, String, Integer, TIMESTAMP
 from sqlalchemy.dialects.postgresql import JSONB, ARRAY
 from sqlalchemy.sql import func
-from app.db.session import Base
+from app.db.base_class import Base
 
 class MLClassificationResult(Base):
     __tablename__ = 'ml_classification_results'
@@ -15,4 +15,4 @@ class MLClassificationResult(Base):
     classification_method = Column(String(50), default='hybrid')
     processing_time_ms = Column(Integer)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)

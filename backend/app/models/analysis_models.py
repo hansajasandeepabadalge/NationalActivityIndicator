@@ -2,7 +2,7 @@
 from sqlalchemy import Column, String, Integer, Float, Date, ForeignKey, TIMESTAMP
 from sqlalchemy.dialects.postgresql import JSONB, ENUM
 from sqlalchemy.sql import func
-from app.db.session import Base
+from app.db.base_class import Base
 
 class TrendAnalysis(Base):
     __tablename__ = 'trend_analysis'
@@ -23,4 +23,4 @@ class TrendAnalysis(Base):
     forecast_30d = Column(Float)
     confidence = Column(Float, default=0.5)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
-    metadata = Column(JSONB)
+    extra_metadata = Column(JSONB)

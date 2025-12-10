@@ -1,13 +1,28 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+
 export default function Home() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        router.push('/dashboard');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isAuthenticated, isLoading, router]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Hello World!
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          The National Activity Indicator frontend is running.
-        </p>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-blue-300">Loading...</p>
       </div>
     </div>
   );

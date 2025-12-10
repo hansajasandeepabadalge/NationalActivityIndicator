@@ -1,0 +1,146 @@
+{
+    "timestamp": "2025-12-01T10:00:00Z",
+    "indicators": [
+        {
+            "indicator_code": "POL_UNREST_01",
+            "indicator_name": "Political Unrest Index",
+            "pestel_category": "Political",
+            "current_value": 78.5,
+            "normalized_value": 0.785,
+            "trend": {
+                "direction": "rising",
+                "strength": 0.82
+            },
+            "geographic_distribution": {
+                "Colombo": 12,
+                "Kandy": 2,
+                "Galle": 1
+            }
+        },
+        {
+            "indicator_code": "ECON_FUEL_AVAIL",
+            "indicator_name": "Fuel Availability Index",
+            "pestel_category": "Economic",
+            "current_value": 42.0,
+            "normalized_value": 0.42,
+            "trend": {
+                "direction": "falling",
+                "strength": 0.75
+            },
+            "severity": "high"
+        },
+        {
+            "indicator_code": "ENV_WEATHER_SEV",
+            "indicator_name": "Weather Severity Index",
+            "pestel_category": "Environmental",
+            "current_value": 65.0,
+            "normalized_value": 0.65,
+            "geographic_distribution": {
+                "Colombo": 8,
+                "Kandy": 3
+            }
+        },
+        {
+            "indicator_code": "ECON_CONSUMER_CONF",
+            "indicator_name": "Consumer Confidence Proxy",
+            "pestel_category": "Economic",
+            "current_value": 48.0,
+            "normalized_value": 0.48,
+            "trend": {
+                "direction": "falling",
+                "strength": 0.60
+            }
+        },
+        {
+            "indicator_code": "ECON_PORT_OPS",
+            "indicator_name": "Port Operations Status",
+            "pestel_category": "Economic",
+            "current_value": 65.0,
+            "normalized_value": 0.65
+        },
+        {
+            "indicator_code": "ENV_ROAD_STATUS",
+            "indicator_name": "Road Network Status",
+            "pestel_category": "Environmental",
+            "current_value": 72.0,
+            "normalized_value": 0.72
+        },
+        {
+            "indicator_code": "ECON_FUEL_PRICES",
+            "indicator_name": "Fuel Price Index",
+            "pestel_category": "Economic",
+            "current_value": 60.0,
+            "normalized_value": 0.60
+        },
+        {
+            "indicator_code": "ECON_INFLATION_PRESSURE",
+            "indicator_name": "Inflation Pressure Index",
+            "pestel_category": "Economic",
+            "current_value": 55.0,
+            "normalized_value": 0.55
+        },
+        {
+            "indicator_code": "ECON_CURRENCY_STAB",
+            "indicator_name": "Currency Stability Index",
+            "pestel_category": "Economic",
+            "current_value": 45.0,
+            "normalized_value": 0.45
+        },
+        {
+            "indicator_code": "SOCIAL_WAGE_PRESSURE",
+            "indicator_name": "Wage Pressure Index",
+            "pestel_category": "Social",
+            "current_value": 52.0,
+            "normalized_value": 0.52
+        },
+        {
+            "indicator_code": "LEGAL_REGULATORY_CHANGES",
+            "indicator_name": "Regulatory Change Index",
+            "pestel_category": "Legal",
+            "current_value": 30.0,
+            "normalized_value": 0.30
+        },
+        {
+            "indicator_code": "LEGAL_TAX_POLICY",
+            "indicator_name": "Tax Policy Stability",
+            "pestel_category": "Legal",
+            "current_value": 40.0,
+            "normalized_value": 0.40
+        },
+        {
+            "indicator_code": "SOCIAL_SAFETY_PERCEPTION",
+            "indicator_name": "Public Safety Perception",
+            "pestel_category": "Social",
+            "current_value": 60.0,
+            "normalized_value": 0.60
+        },
+        {
+            "indicator_code": "SOCIAL_HEALTH_ALERTS",
+            "indicator_name": "Health Alert Index",
+            "pestel_category": "Social",
+            "current_value": 20.0,
+            "normalized_value": 0.20
+        },
+        {
+            "indicator_code": "POL_STRIKE_ACTIVITY",
+            "indicator_name": "Strike Activity Index",
+            "pestel_category": "Political",
+            "current_value": 35.0,
+            "normalized_value": 0.35
+        },
+        {
+            "indicator_code": "ENV_POWER_RELIABILITY",
+            "indicator_name": "Power Grid Reliability",
+            "pestel_category": "Environmental",
+            "current_value": 85.0,
+            "normalized_value": 0.85
+        },
+        {
+            "indicator_code": "LEGAL_IMPORT_POLICY",
+            "indicator_name": "Import Policy Stability",
+            "pestel_category": "Legal",
+            "current_value": 70.0,
+            "normalized_value": 0.70
+        }
+    ]
+}
