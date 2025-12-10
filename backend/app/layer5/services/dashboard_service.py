@@ -168,13 +168,14 @@ class DashboardService:
         Returns:
             List of operational indicators with current values
         """
-        if not self.mongo_db:
+        if self.mongo_db is None:
             # Return empty response if MongoDB not connected
             return OperationalIndicatorListResponse(
                 company_id=company_id or "all",
                 indicators=[],
                 total=0,
-                critical_count=0
+                critical_count=0,
+                warning_count=0
             )
 
         try:
@@ -254,7 +255,8 @@ class DashboardService:
                 company_id=company_id or "all",
                 indicators=indicators,
                 total=len(indicators),
-                critical_count=critical_count
+                critical_count=critical_count,
+                warning_count=0
             )
 
         except Exception as e:
@@ -266,7 +268,8 @@ class DashboardService:
                 company_id=company_id or "all",
                 indicators=[],
                 total=0,
-                critical_count=0
+                critical_count=0,
+                warning_count=0
             )
 
     def _get_operational_indicator_name(self, code: str) -> str:
