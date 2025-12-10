@@ -12,7 +12,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
 
-from langchain.tools import Tool, StructuredTool
+from langchain_core.tools import Tool, StructuredTool
 from pydantic import BaseModel, Field
 
 from app.db.session import SessionLocal
@@ -291,7 +291,7 @@ def log_agent_decision(
     output_decision: Dict[str, Any] = None,
     reasoning: str = "",
     llm_provider: str = "groq",
-    llm_model: str = "llama-3.1-70b-versatile",
+    llm_model: str = "llama-3.3-70b-versatile",
     tokens_used: int = 0,
     latency_ms: int = 0,
     success: bool = True,

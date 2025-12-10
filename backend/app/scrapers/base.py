@@ -44,6 +44,7 @@ class BaseScraper(ABC):
                 scraper_version="1.0.0"
             ),
             raw_content=RawContent(
+                url=url,
                 html=None,
                 title=title,
                 body=body,

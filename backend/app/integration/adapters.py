@@ -34,7 +34,66 @@ class Layer2ToLayer3Adapter:
     3. Provides company-relevant filtering
     """
     
-    # Mapping from PESTEL indicators to operational categories
+    # Mapping from PESTEL categories to operational categories
+    # Layer 2 now outputs 105 real indicators with their PESTEL categories
+    PESTEL_TO_OPERATIONAL = {
+        "Political": {
+            "supply_chain": 0.3,      # Political instability affects supply chains
+            "workforce": 0.2,          # Strikes, unrest affect workforce
+            "infrastructure": 0.1,
+            "cost_pressure": 0.1,
+            "market_conditions": 0.2,
+            "financial": 0.1,
+            "regulatory": 0.5,         # Political changes drive regulation
+        },
+        "Economic": {
+            "supply_chain": 0.4,
+            "workforce": 0.2,
+            "infrastructure": 0.1,
+            "cost_pressure": 0.5,      # Economic factors drive costs
+            "market_conditions": 0.5,  # Economic factors drive market
+            "financial": 0.5,          # Economic factors drive finance
+            "regulatory": 0.1,
+        },
+        "Social": {
+            "supply_chain": 0.1,
+            "workforce": 0.5,          # Social factors heavily impact workforce
+            "infrastructure": 0.1,
+            "cost_pressure": 0.2,
+            "market_conditions": 0.4,  # Consumer behavior
+            "financial": 0.1,
+            "regulatory": 0.1,
+        },
+        "Technological": {
+            "supply_chain": 0.2,
+            "workforce": 0.3,          # Tech affects skills/automation
+            "infrastructure": 0.5,     # Tech is infrastructure
+            "cost_pressure": 0.2,
+            "market_conditions": 0.3,
+            "financial": 0.2,
+            "regulatory": 0.2,
+        },
+        "Environmental": {
+            "supply_chain": 0.4,       # Weather, disasters affect supply
+            "workforce": 0.2,
+            "infrastructure": 0.4,     # Environmental affects infrastructure
+            "cost_pressure": 0.3,
+            "market_conditions": 0.2,
+            "financial": 0.1,
+            "regulatory": 0.3,
+        },
+        "Legal": {
+            "supply_chain": 0.2,
+            "workforce": 0.3,          # Labor laws
+            "infrastructure": 0.1,
+            "cost_pressure": 0.4,      # Compliance costs
+            "market_conditions": 0.2,
+            "financial": 0.3,
+            "regulatory": 0.6,         # Legal directly affects regulation
+        },
+    }
+    
+    # Legacy mapping for backwards compatibility
     INDICATOR_MAPPING = {
         # Economic indicators -> Supply Chain, Cost, Financial
         "ECON_GDP_SENTIMENT": ["supply_chain", "market_conditions"],
@@ -209,12 +268,29 @@ class Layer2ToLayer3Adapter:
         }
         
         for indicator_id, indicator in layer2_output.indicators.items():
+            # First try legacy mapping
             categories = self.INDICATOR_MAPPING.get(indicator_id, [])
-            for category in categories:
-                if category in categorized:
-                    # Only include if sensitivity > 0.5
-                    if sensitivity.get(category, 1.0) > 0.5:
-                        categorized[category].append(indicator)
+            
+            # If no legacy mapping, use PESTEL category-based mapping
+            if not categories:
+                pestel_cat = indicator.pestel_category
+                if hasattr(pestel_cat, 'value'):
+                    pestel_cat = pestel_cat.value
+                
+                # Get the operational category weights for this PESTEL category
+                category_weights = self.PESTEL_TO_OPERATIONAL.get(pestel_cat, {})
+                
+                # Add to all operational categories with weight > 0.2
+                for op_cat, weight in category_weights.items():
+                    if weight >= 0.2 and op_cat in categorized:
+                        if sensitivity.get(op_cat, 1.0) > 0.5:
+                            categorized[op_cat].append(indicator)
+            else:
+                # Use legacy mapping
+                for category in categories:
+                    if category in categorized:
+                        if sensitivity.get(category, 1.0) > 0.5:
+                            categorized[category].append(indicator)
         
         return categorized
     

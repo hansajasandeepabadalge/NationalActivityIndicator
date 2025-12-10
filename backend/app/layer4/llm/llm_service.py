@@ -8,7 +8,7 @@ import logging
 import asyncio
 from datetime import datetime
 
-from app.layer4.llm.llm_client import openai_client, anthropic_client, UnifiedLLMClient
+from app.layer4.llm.llm_client import openai_client, anthropic_client, deepseek_client, UnifiedLLMClient
 from app.layer4.llm.prompts import PromptTemplateManager
 from app.layer4.cache.manager import CacheManager
 from app.layer4.data.aggregator import DataAggregator
@@ -22,14 +22,14 @@ class LLMInsightService:
     """
 
     def __init__(self):
-        # Default to OpenAI, fallback to Anthropic if configured, or None
-        self.llm = openai_client if openai_client else anthropic_client
+        # Priority: DeepSeek (affordable) -> OpenAI -> Anthropic
+        self.llm = deepseek_client if deepseek_client else (openai_client if openai_client else anthropic_client)
         self.prompts = PromptTemplateManager()
         self.cache = CacheManager()
         self.aggregator = DataAggregator()
 
         if not self.llm:
-            logger.warning("No LLM client available. LLM features will fail.")
+            logger.warning("No LLM client available. LLM features will use rule-based fallback.")
 
     async def generate_risk_analysis(
         self,

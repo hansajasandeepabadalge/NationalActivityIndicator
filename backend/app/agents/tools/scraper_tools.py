@@ -8,6 +8,8 @@ Enhanced with Smart Caching to achieve 70% faster scraping through:
 - ETag/Last-Modified header checking
 - Content signature detection
 - Automatic cache invalidation
+
+Now supports Universal Configurable Scraper that reads from database.
 """
 
 import asyncio
@@ -15,13 +17,16 @@ import logging
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
-from langchain.tools import Tool
+from langchain_core.tools import Tool
 
 from app.scrapers.base import BaseScraper
 from app.scrapers.news.ada_derana import AdaDeranaScraper
+from app.scrapers.configurable_scraper import ConfigurableScraper, get_configurable_scraper, get_all_configurable_sources
 from app.models.raw_article import RawArticle
+from app.models.agent_models import SourceConfig
 from app.agents.tools.database_tools import update_scrape_result
 from app.cache import get_smart_cache, SmartCacheManager
+from app.db.session import SessionLocal
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +35,12 @@ logger = logging.getLogger(__name__)
 # Scraper Registry with Cache Configuration
 # ============================================
 
-# Map source names to their scraper classes
+# Map source names to their scraper classes (for custom scrapers)
+# ConfigurableScraper sources are loaded from database automatically
 SCRAPER_REGISTRY: Dict[str, type] = {
     "ada_derana": AdaDeranaScraper,
-    # Add more scrapers as they are implemented:
-    # "daily_mirror": DailyMirrorScraper,
-    # "hiru_news": HiruNewsScraper,
-    # "government_gazette": GovernmentGazetteScraper,
+    # Custom scrapers can still be added here:
+    # "special_source": SpecialScraper,
 }
 
 # Source configuration for smart caching
@@ -47,33 +51,46 @@ SOURCE_CONFIG: Dict[str, Dict[str, str]] = {
         "source_type": "news",  # Uses RSS > ETag > Signature detection
         "cache_ttl": 3600,  # 1 hour cache
     },
-    # Add more sources with their configurations:
-    # "daily_mirror": {
-    #     "url": "https://www.dailymirror.lk/breaking-news",
-    #     "source_type": "news",
-    #     "cache_ttl": 3600,
-    # },
-    # "government_gazette": {
-    #     "url": "http://documents.gov.lk/",
-    #     "source_type": "government",  # Uses Last-Modified > Signature
-    #     "cache_ttl": 86400,  # 24 hours
-    # },
-    # "twitter_feed": {
-    #     "url": "https://api.twitter.com/...",
-    #     "source_type": "social",  # Always scrapes (real-time)
-    #     "cache_ttl": 300,  # 5 minutes
-    # },
+    "daily_ft": {
+        "url": "https://www.ft.lk/",
+        "source_type": "news",
+        "cache_ttl": 3600,
+    },
+    "hiru_news": {
+        "url": "https://www.hirunews.lk/english/",
+        "source_type": "news",
+        "cache_ttl": 3600,
+    },
 }
 
 
 def get_available_scrapers() -> List[str]:
-    """Get list of available scraper names."""
-    return list(SCRAPER_REGISTRY.keys())
+    """
+    Get list of all available scraper names.
+    
+    Includes both custom scrapers from registry AND
+    configurable scrapers from database.
+    """
+    sources = list(SCRAPER_REGISTRY.keys())
+    
+    # Add configurable sources from database
+    try:
+        configurable = get_all_configurable_sources()
+        for source in configurable:
+            if source not in sources:
+                sources.append(source)
+    except Exception as e:
+        logger.warning(f"Could not load configurable sources: {e}")
+    
+    return sources
 
 
 def get_scraper_instance(source_name: str) -> Optional[BaseScraper]:
     """
     Get a scraper instance for the given source.
+    
+    First checks custom scrapers in registry, then falls back to
+    ConfigurableScraper from database.
     
     Args:
         source_name: Name of the source
@@ -81,9 +98,19 @@ def get_scraper_instance(source_name: str) -> Optional[BaseScraper]:
     Returns:
         Scraper instance or None if not found
     """
+    # 1. Check custom scraper registry first
     scraper_class = SCRAPER_REGISTRY.get(source_name)
     if scraper_class:
         return scraper_class()
+    
+    # 2. Try to get ConfigurableScraper from database
+    try:
+        configurable = get_configurable_scraper(source_name)
+        if configurable:
+            return configurable
+    except Exception as e:
+        logger.warning(f"Could not create ConfigurableScraper for {source_name}: {e}")
+    
     return None
 
 
@@ -183,8 +210,9 @@ async def _scrape_source_async(source_name: str, force_refresh: bool = False) ->
         if source_url:
             await cache.cache_articles(
                 source_name=source_name,
+                url=source_url,
                 articles=articles_data,
-                ttl=cache_ttl
+                source_type=source_type
             )
             # Record the cache miss for metrics
             cache.metrics.record_miss(source_name, "content_changed")

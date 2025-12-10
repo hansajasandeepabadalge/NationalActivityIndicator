@@ -597,3 +597,151 @@ async def health_check():
         health["status"] = "degraded"
     
     return health
+
+
+# ============================================================================
+# Layer 2 Full Pipeline Endpoints
+# ============================================================================
+
+class Layer2PipelineRequest(BaseModel):
+    """Request to run the full Layer 2 pipeline."""
+    article_limit: int = Field(default=100, ge=1, le=1000, description="Maximum articles to process")
+    time_window_hours: int = Field(default=24, ge=1, le=168, description="Time window for indicator calculation")
+    store_results: bool = Field(default=True, description="Store results in databases")
+
+
+class Layer2PipelineResponse(BaseModel):
+    """Response from Layer 2 pipeline run."""
+    success: bool
+    timestamp: datetime
+    articles_processed: int
+    indicators_calculated: int
+    total_duration_ms: float
+    stages: List[Dict[str, Any]]
+    activity_level: Optional[float] = None
+    overall_sentiment: Optional[float] = None
+    errors: List[str] = Field(default_factory=list)
+
+
+@router.post(
+    "/pipeline/run",
+    response_model=Layer2PipelineResponse,
+    summary="Run Layer 2 Pipeline",
+    description="Run the complete Layer 2 pipeline: fetch articles from Layer 1, process through PESTEL classification, sentiment analysis, entity extraction, and calculate all 105 national indicators."
+)
+async def run_layer2_pipeline(
+    request: Layer2PipelineRequest,
+    background_tasks: BackgroundTasks
+):
+    """
+    Run the complete Layer 2 processing pipeline.
+    
+    This endpoint:
+    1. Fetches processed articles from Layer 1 (MongoDB)
+    2. Runs PESTEL classification on each article
+    3. Performs sentiment analysis
+    4. Extracts named entities
+    5. Calculates all 105 national indicators
+    6. Generates composite scores and National Activity Index
+    7. Produces Layer2Output contract ready for Layer 3
+    """
+    try:
+        from app.layer2.pipeline_orchestrator import Layer2PipelineOrchestrator
+        
+        orchestrator = Layer2PipelineOrchestrator()
+        
+        result = await orchestrator.run_full_pipeline(
+            article_limit=request.article_limit,
+            time_window_hours=request.time_window_hours,
+            store_results=request.store_results
+        )
+        
+        return Layer2PipelineResponse(
+            success=result.success,
+            timestamp=result.timestamp,
+            articles_processed=result.articles_processed,
+            indicators_calculated=result.indicators_calculated,
+            total_duration_ms=result.total_duration_ms,
+            stages=[{
+                "name": s.stage_name,
+                "success": s.success,
+                "item_count": s.item_count,
+                "duration_ms": s.duration_ms,
+                "details": s.details
+            } for s in result.stages],
+            activity_level=result.layer2_output.activity_level if result.layer2_output else None,
+            overall_sentiment=result.layer2_output.overall_sentiment if result.layer2_output else None,
+            errors=result.errors
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Pipeline execution failed: {str(e)}")
+
+
+@router.get(
+    "/pipeline/indicators",
+    summary="Get Current Indicators",
+    description="Get the current calculated indicator values from the most recent pipeline run."
+)
+async def get_current_indicators():
+    """Get current indicator values."""
+    try:
+        from app.layer2.indicators.full_indicator_calculator import FullIndicatorCalculator
+        
+        calculator = FullIndicatorCalculator()
+        
+        return {
+            "total_indicators": len(calculator.indicators),
+            "indicators_by_category": _group_indicators_by_category(calculator.indicators),
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get indicators: {str(e)}")
+
+
+def _group_indicators_by_category(indicators: Dict) -> Dict[str, int]:
+    """Group indicators by category."""
+    categories = {}
+    for ind in indicators.values():
+        cat = ind.get('category', 'Unknown')
+        categories[cat] = categories.get(cat, 0) + 1
+    return categories
+
+
+@router.get(
+    "/pipeline/layer2-output",
+    summary="Get Layer2 Output for Layer3",
+    description="Get the most recent Layer2Output that can be passed to Layer 3."
+)
+async def get_layer2_output_for_layer3(
+    article_limit: int = Query(default=50, ge=1, le=500),
+    store_results: bool = Query(default=False)
+):
+    """
+    Generate and return a Layer2Output ready for Layer 3.
+    
+    This is useful for testing the L2→L3 integration.
+    """
+    try:
+        from app.layer2.pipeline_orchestrator import Layer2PipelineOrchestrator
+        
+        orchestrator = Layer2PipelineOrchestrator()
+        
+        result = await orchestrator.run_full_pipeline(
+            article_limit=article_limit,
+            store_results=store_results
+        )
+        
+        if result.success and result.layer2_output:
+            return result.layer2_output.model_dump()
+        else:
+            raise HTTPException(
+                status_code=500, 
+                detail=f"Pipeline failed: {result.errors}"
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate Layer2Output: {str(e)}")

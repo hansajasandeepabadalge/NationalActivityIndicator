@@ -9,6 +9,8 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func, desc, and_, or_
+from pymongo import MongoClient
+from pymongo.database import Database
 
 # Layer 2 models
 from app.models.indicator_models import IndicatorDefinition, IndicatorValue
@@ -32,10 +34,26 @@ class DashboardService:
     """
     Service for dashboard data aggregation.
     Reads from Layers 2-4 and formats for dashboard display.
+
+    PostgreSQL: Layer 2 indicators, Layer 4 insights
+    MongoDB: Layer 3 operational indicators
     """
-    
-    def __init__(self, db: Session):
+
+    def __init__(
+        self,
+        db: Session,
+        mongo_client: Optional[MongoClient] = None,
+        mongo_db_name: str = "national_indicator"
+    ):
         self.db = db
+        self.mongo_client = mongo_client
+        self.mongo_db_name = mongo_db_name
+
+        # Initialize MongoDB connection if provided
+        if mongo_client:
+            self.mongo_db: Database = mongo_client[mongo_db_name]
+        else:
+            self.mongo_db = None
     
     # ============== National Indicators (Layer 2) ==============
     
@@ -132,7 +150,172 @@ class DashboardService:
             .limit(1)
         )
         return result.scalar_one_or_none()
-    
+
+    # ============== Operational Indicators (Layer 3) ==============
+
+    def get_operational_indicators(
+        self,
+        company_id: Optional[str] = None,
+        limit: int = 20
+    ) -> OperationalIndicatorListResponse:
+        """
+        Get operational indicators for a company from Layer 3 (MongoDB).
+
+        Args:
+            company_id: Company identifier (None = fetch from all companies for admin)
+            limit: Maximum number of indicators to return
+
+        Returns:
+            List of operational indicators with current values
+        """
+        if not self.mongo_db:
+            # Return empty response if MongoDB not connected
+            return OperationalIndicatorListResponse(
+                company_id=company_id or "all",
+                indicators=[],
+                total=0,
+                critical_count=0
+            )
+
+        try:
+            # Build query filter
+            query_filter = {}
+            if company_id:
+                query_filter["company_id"] = company_id
+
+            # Fetch latest operational calculations from MongoDB
+            calculations = list(
+                self.mongo_db.operational_calculations.find(
+                    query_filter
+                ).sort("calculation_timestamp", -1).limit(limit)
+            )
+
+            indicators = []
+            critical_count = 0
+
+            for calc in calculations:
+                # Extract values from calculation
+                indicator_code = calc.get("operational_indicator_code", "")
+                calc_details = calc.get("calculation_details", {})
+                interpretation = calc.get("interpretation", {})
+                context = calc.get("context", {})
+
+                # Get current and baseline values
+                current_value = calc_details.get("final_value") or calc_details.get("rounded_value")
+                baseline = context.get("industry_average")
+
+                # Calculate deviation
+                deviation = None
+                if current_value is not None and baseline is not None:
+                    deviation = ((current_value - baseline) / baseline) * 100 if baseline != 0 else 0
+
+                # Determine trend
+                trend = TrendDirection.STABLE
+                trend_dir = context.get("trend_direction", "").lower()
+                if trend_dir == "up" or trend_dir == "increasing":
+                    trend = TrendDirection.UP
+                elif trend_dir == "down" or trend_dir == "decreasing":
+                    trend = TrendDirection.DOWN
+
+                # Check if critical
+                is_critical = interpretation.get("requires_attention", False)
+                if is_critical:
+                    critical_count += 1
+
+                # Map indicator code to human-readable name
+                indicator_name = self._get_operational_indicator_name(indicator_code)
+                category = self._get_operational_indicator_category(indicator_code)
+
+                # Determine impact score (-1 to 1)
+                impact_score = 0.0
+                severity_score = interpretation.get("severity_score", 0)
+                if severity_score:
+                    # Convert severity (0-10) to impact (-1 to 1)
+                    # Higher severity = more negative impact
+                    impact_score = (severity_score - 5) / 5
+
+                # Create response object
+                indicators.append(OperationalIndicatorResponse(
+                    indicator_id=indicator_code,
+                    indicator_name=indicator_name,
+                    category=category,
+                    current_value=current_value,
+                    baseline_value=baseline,
+                    deviation=deviation,
+                    impact_score=impact_score,
+                    trend=trend,
+                    is_above_threshold=interpretation.get("level", "").lower() in ["high", "critical"],
+                    is_below_threshold=interpretation.get("level", "").lower() == "low",
+                    company_id=calc.get("company_id", company_id),
+                    calculated_at=calc.get("calculation_timestamp")
+                ))
+
+            return OperationalIndicatorListResponse(
+                company_id=company_id or "all",
+                indicators=indicators,
+                total=len(indicators),
+                critical_count=critical_count
+            )
+
+        except Exception as e:
+            # Log error and return empty response
+            print(f"Error fetching operational indicators: {e}")
+            import traceback
+            traceback.print_exc()
+            return OperationalIndicatorListResponse(
+                company_id=company_id or "all",
+                indicators=[],
+                total=0,
+                critical_count=0
+            )
+
+    def _get_operational_indicator_name(self, code: str) -> str:
+        """Convert operational indicator code to human-readable name"""
+        name_mapping = {
+            "OPS_SUPPLY_CHAIN": "Supply Chain Health",
+            "OPS_TRANSPORT_AVAIL": "Transportation Availability",
+            "OPS_LOGISTICS_COST": "Logistics Cost Index",
+            "OPS_IMPORT_FLOW": "Import Flow Status",
+            "OPS_WORKFORCE_AVAIL": "Workforce Availability",
+            "OPS_LABOR_COST": "Labor Cost Index",
+            "OPS_PRODUCTIVITY": "Productivity Index",
+            "OPS_POWER_RELIABILITY": "Power Reliability",
+            "OPS_FUEL_AVAIL": "Fuel Availability",
+            "OPS_WATER_SUPPLY": "Water Supply Status",
+            "OPS_INTERNET_CONNECTIVITY": "Internet Connectivity",
+            "OPS_COST_PRESSURE": "Cost Pressure Index",
+            "OPS_RAW_MATERIAL_COST": "Raw Material Cost",
+            "OPS_ENERGY_COST": "Energy Cost Index",
+            "OPS_DEMAND_LEVEL": "Demand Level",
+            "OPS_COMPETITION_INTENSITY": "Competition Intensity",
+            "OPS_PRICING_POWER": "Pricing Power",
+            "OPS_CASH_FLOW": "Cash Flow Health",
+            "OPS_CREDIT_AVAIL": "Credit Availability",
+            "OPS_PAYMENT_DELAYS": "Payment Delay Index",
+            "OPS_REGULATORY_BURDEN": "Regulatory Burden",
+            "OPS_COMPLIANCE_COST": "Compliance Cost"
+        }
+        return name_mapping.get(code, code.replace("_", " ").title())
+
+    def _get_operational_indicator_category(self, code: str) -> str:
+        """Get category for operational indicator"""
+        if code.startswith("OPS_SUPPLY") or code.startswith("OPS_TRANSPORT") or code.startswith("OPS_LOGISTICS") or code.startswith("OPS_IMPORT"):
+            return "Supply Chain & Logistics"
+        elif code.startswith("OPS_WORKFORCE") or code.startswith("OPS_LABOR") or code.startswith("OPS_PRODUCTIVITY"):
+            return "Workforce & Operations"
+        elif code.startswith("OPS_POWER") or code.startswith("OPS_FUEL") or code.startswith("OPS_WATER") or code.startswith("OPS_INTERNET"):
+            return "Infrastructure & Resources"
+        elif code.startswith("OPS_COST") or code.startswith("OPS_RAW") or code.startswith("OPS_ENERGY"):
+            return "Cost Pressures"
+        elif code.startswith("OPS_DEMAND") or code.startswith("OPS_COMPETITION") or code.startswith("OPS_PRICING"):
+            return "Market Conditions"
+        elif code.startswith("OPS_CASH") or code.startswith("OPS_CREDIT") or code.startswith("OPS_PAYMENT"):
+            return "Financial Operations"
+        elif code.startswith("OPS_REGULATORY") or code.startswith("OPS_COMPLIANCE"):
+            return "Regulatory & Compliance"
+        else:
+            return "Other"
+
     # ============== Business Insights (Layer 4) ==============
     
     def get_business_insights(
@@ -289,9 +472,9 @@ class DashboardService:
             trend=TrendDirection.STABLE
         )
         
-        # Get key indicators (placeholder - would need Layer 3 operational indicators)
-        key_indicators: List[OperationalIndicatorResponse] = []
-        
+        # Get operational indicators from Layer 3
+        key_indicators = self.get_operational_indicators(company_id, limit=10).indicators
+
         return DashboardHomeResponse(
             company_id=company_id,
             company_name=company.company_name,
@@ -372,8 +555,16 @@ class DashboardService:
         # Count active users (placeholder - would need user count)
         total_active_users = 0
         
+        # Count total national indicators (Layer 2)
+        indicator_count = self.db.execute(
+            select(func.count(IndicatorDefinition.indicator_id))
+            .where(IndicatorDefinition.is_active == True)
+        )
+        total_indicators = indicator_count.scalar() or 0
+        
         # Get all insights
         all_insights = self.get_business_insights(limit=1000)
+        total_insights = all_insights.total
         
         # Get industries
         industry_result = self.db.execute(
@@ -391,6 +582,8 @@ class DashboardService:
         return AdminDashboardResponse(
             total_companies=total_companies,
             total_active_users=total_active_users,
+            total_indicators=total_indicators,
+            total_insights=total_insights,
             total_active_risks=all_insights.risks_count,
             total_active_opportunities=all_insights.opportunities_count,
             critical_alerts=all_insights.critical_count,

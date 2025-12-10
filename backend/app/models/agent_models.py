@@ -229,37 +229,96 @@ class SourceConfig(Base):
     
     Stores static configuration for the 26+ sources, including
     scraper settings, priority, and categorization.
+    
+    The 'selectors' JSONB field enables universal configurable scraping:
+    {
+        "list_url": "https://example.com/news",
+        "article_link_pattern": "/news/\\d+",
+        "title": "h1.article-title",
+        "body": "div.article-content",
+        "date": "span.publish-date",
+        "author": "span.author-name",
+        "image": "div.article-content img"
+    }
     """
     __tablename__ = "source_configs"
     
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), unique=True, nullable=False, index=True)
-    display_name = Column(String(200), nullable=True)
+    source_name = Column(String(100), unique=True, nullable=False, index=True)  # Primary identifier
     
     # Source details
     base_url = Column(String(500), nullable=False)
     source_type = Column(String(50), default="news")  # news, government, social, financial
     language = Column(String(10), default="en")  # en, si, ta
+    country = Column(String(10), default="LK")  # Country code
     
     # Categorization
-    category = Column(String(50), nullable=True)  # political, economic, social, etc.
-    priority_level = Column(String(20), default="medium")
+    categories = Column(ARRAY(String), nullable=True)  # Array of categories
+    reliability_tier = Column(String(20), default="standard")  # standard, trusted, premium
     
     # Scraper configuration
-    scraper_class = Column(String(100), nullable=True)  # e.g., "AdaDeranaScraper"
-    scraper_config = Column(JSONB, default={})  # Additional scraper settings
+    scraper_class = Column(String(100), nullable=True)  # e.g., "AdaDeranaScraper" or "ConfigurableScraper"
     
-    # Default scheduling
-    default_frequency_minutes = Column(Integer, default=60)
+    # Universal scraper selectors (CSS selectors for extracting content)
+    selectors = Column(JSONB, nullable=True)  # CSS selectors for title, body, date, etc.
+    
+    # Rate limiting
+    rate_limit_requests = Column(Integer, default=10)  # Max requests per period
+    rate_limit_period = Column(Integer, default=60)  # Period in seconds
+    
+    # JavaScript rendering requirement
+    requires_javascript = Column(Boolean, default=False)
     
     # Status
     is_active = Column(Boolean, default=True)
-    requires_auth = Column(Boolean, default=False)
     
-    # Metadata
-    notes = Column(Text, nullable=True)
+    # Additional config stored as JSON (note: 'metadata' is reserved in SQLAlchemy)
+    config_metadata = Column('metadata', JSONB, nullable=True)  # Maps to 'metadata' column in DB
+    
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+    # Convenience properties
+    @property
+    def name(self) -> str:
+        """Alias for source_name for backward compatibility."""
+        return self.source_name
+    
+    @property
+    def display_name(self) -> str:
+        """Get display name from config_metadata or use source_name."""
+        if self.config_metadata and "display_name" in self.config_metadata:
+            return self.config_metadata["display_name"]
+        return self.source_name.replace("_", " ").title()
+    
+    @property
+    def priority_level(self) -> str:
+        """Get priority level from config_metadata."""
+        if self.config_metadata and "priority_level" in self.config_metadata:
+            return self.config_metadata["priority_level"]
+        return "medium"
+    
+    @property
+    def category(self) -> str:
+        """Get first category or None."""
+        if self.categories:
+            return self.categories[0]
+        return None
+    
     def __repr__(self):
-        return f"<SourceConfig {self.name}: {self.source_type}>"
+        return f"<SourceConfig {self.source_name}: {self.source_type}>"
+    
+    def get_selectors(self) -> dict:
+        """Get selectors with defaults."""
+        default_selectors = {
+            "list_url": None,
+            "article_link_pattern": None,
+            "title": "h1",
+            "body": "article, .content, .article-body, main",
+            "date": ".date, .publish-date, time",
+            "author": ".author, .byline",
+            "image": "article img, .content img"
+        }
+        if self.selectors:
+            default_selectors.update(self.selectors)
+        return default_selectors

@@ -96,6 +96,46 @@ def update_my_company(
     return CompanyProfileResponse.model_validate(company)
 
 
+# ============== Operational Indicators (Layer 3) ==============
+
+@router.get("/test-debug")
+def test_debug_endpoint():
+    """Debug test endpoint"""
+    return {"status": "working", "message": "Debug endpoint is accessible"}
+
+@router.get("/operational-indicators", response_model=OperationalIndicatorListResponse)
+def get_my_operational_indicators(
+    limit: int = Query(20, ge=1, le=100),
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Get operational indicators for user's company (Layer 3 data).
+    Admins can see aggregated indicators from all companies.
+    """
+    from pymongo import MongoClient
+    from app.core.config import settings
+
+    # Admin users: show all companies' operational indicators
+    # Regular users: show only their company's indicators
+    if current_user.role == "admin":
+        company_id = None  # None = fetch from all companies
+    else:
+        company_id = _get_user_company_id(current_user)
+
+    # Initialize MongoDB connection for Layer 3 data
+    mongo_client = MongoClient(settings.MONGODB_URL)
+    dashboard_service = DashboardService(db, mongo_client=mongo_client)
+
+    try:
+        return dashboard_service.get_operational_indicators(
+            company_id=company_id,
+            limit=limit
+        )
+    finally:
+        mongo_client.close()
+
+
 # ============== Business Insights ==============
 
 @router.get("/insights", response_model=BusinessInsightListResponse)

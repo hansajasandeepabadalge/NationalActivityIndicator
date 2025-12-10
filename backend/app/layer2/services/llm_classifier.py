@@ -271,7 +271,19 @@ Business Relevance:
 - low: General informational value
 - minimal: Limited business relevance
 
-Respond with a structured analysis."""
+RESPOND WITH ONLY A JSON OBJECT in this exact format:
+```json
+{{
+  "categories": [
+    {{"category": "economic", "confidence": 0.85, "sub_themes": ["inflation", "monetary_policy"], "reasoning": "Article discusses interest rate changes"}}
+  ],
+  "primary_category": "economic",
+  "urgency": "important",
+  "business_relevance": "high",
+  "key_entities": ["Central Bank", "Federal Reserve"],
+  "summary": "One sentence summary of the article."
+}}
+```"""
 
     SYSTEM_PROMPT = """You are an expert PESTEL analyst specializing in news classification for national activity indicators. 
 Your task is to accurately classify news articles and provide detailed analysis.
@@ -678,7 +690,7 @@ def create_llm_classifier(
         Configured LLMClassifier instance
     """
     llm_config = LLMConfig(
-        model="llama-3.1-70b-versatile",
+        model="llama-3.3-70b-versatile",
         temperature=0.2,
         max_tokens=2000
     )

@@ -86,14 +86,14 @@ class MasterOrchestrator:
         # Initialize tools
         self.scraper_manager = ScraperToolManager()
         
-        # Initialize Source Reputation System
+        # Initialize Source Reputation System (lazy initialization - requires DB session)
+        # QualityFilter and ReputationManager will be initialized per-session
+        self._has_reputation = HAS_REPUTATION
+        self.quality_filter = None
+        self.reputation_manager = None
         if HAS_REPUTATION:
-            self.quality_filter = QualityFilter()
-            self.reputation_manager = ReputationManager()
-            logger.info("Source Reputation System enabled")
+            logger.info("Source Reputation System available (lazy init)")
         else:
-            self.quality_filter = None
-            self.reputation_manager = None
             logger.warning("Source Reputation System not available")
         
         # Build the LangGraph workflow

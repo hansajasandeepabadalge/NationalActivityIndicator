@@ -6,7 +6,7 @@
 
 export const API_CONFIG = {
   // Base URL for the backend API
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
   
   // Token storage keys
   ACCESS_TOKEN_KEY: 'nai_access_token',

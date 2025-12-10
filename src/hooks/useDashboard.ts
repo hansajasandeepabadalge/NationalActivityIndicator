@@ -9,6 +9,7 @@ import type {
   Industry,
   DashboardHome,
   CompanyResponse,
+  OperationalIndicator,
 } from '@/lib/api/types';
 
 // Generic fetch state
@@ -60,7 +61,8 @@ export function useNationalIndicators(
     setError(null);
     try {
       const result = await dashboardService.getNationalIndicators(pestelCategory, limit, offset);
-      setData(result);
+      // API returns { indicators: [...], total, by_category } - extract the array
+      setData(result.indicators || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch indicators');
     } finally {
@@ -90,8 +92,13 @@ export function useBusinessInsights(
     setIsLoading(true);
     setError(null);
     try {
-      const result = await dashboardService.getAllInsights(companyId, insightType, severityLevel, limit);
-      setData(result);
+      const result = await dashboardService.getAllInsights({
+        insight_type: insightType as 'risk' | 'opportunity' | undefined,
+        severity: severityLevel,
+        limit: limit
+      });
+      // API returns { insights: [...], total, ... } - extract the array
+      setData(result.insights || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch insights');
     } finally {
@@ -232,6 +239,35 @@ export function useRelevantIndicators(): FetchState<NationalIndicator[]> {
       setIsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { data, isLoading, error, refetch: fetch };
+}
+
+// Hook for operational indicators (Layer 3)
+export function useOperationalIndicators(
+  limit: number = 20
+): FetchState<OperationalIndicator[]> {
+  const [data, setData] = useState<OperationalIndicator[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await dashboardService.getOperationalIndicators(limit);
+      // API returns { indicators: [...], total, ... } - extract the array
+      setData(result.indicators || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch operational indicators');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [limit]);
 
   useEffect(() => {
     fetch();

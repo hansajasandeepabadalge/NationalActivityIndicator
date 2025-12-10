@@ -53,7 +53,7 @@ except ImportError:
 
 # Import Layer 5 Dashboard endpoints
 try:
-    from app.layer5.api import auth_router, admin_router, user_router
+    from app.layer5.api import auth_router, admin_router, user_router, operations_router
     HAS_LAYER5 = True
 except ImportError:
     HAS_LAYER5 = False
@@ -135,4 +135,8 @@ if HAS_LAYER5:
     api_router.include_router(
         user_router,
         tags=["user", "layer5"]
+    )
+    api_router.include_router(
+        operations_router,
+        tags=["operations", "layer5"]
     )

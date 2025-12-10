@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth, ProtectedRoute } from '@/contexts/AuthContext';
-import { useAdminDashboard, useNationalIndicators, useBusinessInsights } from '@/hooks/useDashboard';
+import { useAdminDashboard, useNationalIndicators, useBusinessInsights, useOperationalIndicators } from '@/hooks/useDashboard';
 
 // Dashboard Stats Card Component
 function StatCard({ 
@@ -103,9 +103,30 @@ function LoadingSkeleton({ rows = 3 }: { rows?: number }) {
 function DashboardContent() {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const { data: dashboard, isLoading: dashboardLoading } = useAdminDashboard();
-  const { data: indicators, isLoading: indicatorsLoading } = useNationalIndicators(undefined, 10);
-  const { data: insights, isLoading: insightsLoading } = useBusinessInsights(undefined, undefined, undefined, 10);
+  const { data: dashboard, isLoading: dashboardLoading, error: dashboardError } = useAdminDashboard();
+  const { data: indicators, isLoading: indicatorsLoading, error: indicatorsError } = useNationalIndicators(undefined, 100);
+  const { data: insights, isLoading: insightsLoading, error: insightsError } = useBusinessInsights(undefined, undefined, undefined, 10);
+  const { data: operationalIndicators, isLoading: operationalLoading, error: operationalError } = useOperationalIndicators(20);
+
+  // Group indicators by PESTEL category
+  const indicatorsByCategory = React.useMemo(() => {
+    if (!indicators) return {};
+    return indicators.reduce((acc, indicator) => {
+      const category = indicator.pestel_category || 'Other';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(indicator);
+      return acc;
+    }, {} as Record<string, typeof indicators>);
+  }, [indicators]);
+
+  // Debug logging
+  React.useEffect(() => {
+    console.log('Dashboard state:', { 
+      dashboard, dashboardError,
+      indicators: indicators?.length, indicatorsError,
+      insights: insights?.length, insightsError 
+    });
+  }, [dashboard, dashboardError, indicators, indicatorsError, insights, insightsError]);
 
   const handleLogout = async () => {
     await logout();
@@ -172,69 +193,136 @@ function DashboardContent() {
                 color="purple"
               />
               <StatCard
-                title="Total Users"
-                value={dashboard?.total_users || 0}
-                icon={<span>👥</span>}
-                color="yellow"
+                title="Active Risks"
+                value={dashboard?.total_active_risks || 0}
+                icon={<span>⚠️</span>}
+                color="red"
               />
             </>
           )}
         </div>
 
-        {/* Two Column Layout */}
+        {/* National Indicators by PESTEL Category */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">National Indicators (Layer 2)</h2>
+
+          {indicatorsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <LoadingSkeleton rows={3} />
+              <LoadingSkeleton rows={3} />
+              <LoadingSkeleton rows={3} />
+            </div>
+          ) : indicators && indicators.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Object.entries(indicatorsByCategory).map(([category, categoryIndicators]) => (
+                <div key={category} className="bg-white rounded-xl shadow-lg p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <PestelBadge category={category} />
+                      <span className="text-sm text-gray-500">({categoryIndicators.length})</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {categoryIndicators.map((indicator) => (
+                      <div
+                        key={indicator.indicator_id}
+                        className="p-2 bg-gray-50 rounded hover:bg-gray-100 transition"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0 pr-2">
+                            <p className="text-sm font-medium text-gray-900 truncate" title={indicator.indicator_name}>
+                              {indicator.indicator_name}
+                            </p>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <p className="text-sm font-semibold text-gray-900">
+                              {indicator.current_value?.toFixed(1) || 'N/A'}
+                              <TrendArrow trend={indicator.trend || 'stable'} />
+                            </p>
+                          </div>
+                        </div>
+                        {indicator.change_percentage !== undefined && indicator.change_percentage !== null && (
+                          <p className={`text-xs mt-1 ${indicator.change_percentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {indicator.change_percentage >= 0 ? '+' : ''}{indicator.change_percentage.toFixed(1)}%
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 bg-white rounded-xl shadow-lg">
+              <p className="text-gray-500">No indicators found</p>
+              {indicatorsError && (
+                <p className="text-red-500 text-sm mt-2">Error: {indicatorsError}</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Two Column Layout for Operational & Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* National Indicators */}
+
+          {/* Operational Indicators (Layer 3) */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">National Indicators</h2>
-              <span className="text-sm text-gray-500">Latest 10</span>
+              <h2 className="text-xl font-semibold text-gray-900">Operational Indicators</h2>
+              <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded">Layer 3</span>
             </div>
-            
-            {indicatorsLoading ? (
-              <LoadingSkeleton rows={5} />
-            ) : indicators && indicators.length > 0 ? (
-              <div className="space-y-3">
-                {indicators.map((indicator) => (
+
+            {operationalLoading ? (
+              <LoadingSkeleton rows={8} />
+            ) : operationalIndicators && operationalIndicators.length > 0 ? (
+              <div className="space-y-2 max-h-[600px] overflow-y-auto">
+                {operationalIndicators.map((indicator) => (
                   <div
                     key={indicator.indicator_id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                    className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                   >
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{indicator.indicator_name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <PestelBadge category={indicator.pestel_category} />
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="font-medium text-gray-900 text-sm">{indicator.indicator_name}</p>
+                        <p className="text-xs text-gray-500 mt-1">{indicator.category}</p>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-semibold text-gray-900">
-                        {indicator.current_value?.toFixed(2) || 'N/A'}
-                        <TrendArrow trend={indicator.trend || 'stable'} />
-                      </p>
-                      {indicator.percent_change !== undefined && (
-                        <p className={`text-sm ${indicator.percent_change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {indicator.percent_change >= 0 ? '+' : ''}{indicator.percent_change.toFixed(1)}%
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-base font-semibold text-gray-900">
+                          {indicator.current_value?.toFixed(1) || 'N/A'}
+                          <TrendArrow trend={indicator.trend || 'stable'} />
                         </p>
-                      )}
+                        {indicator.deviation !== undefined && indicator.deviation !== null && (
+                          <p className={`text-xs mt-1 ${Math.abs(indicator.deviation) > 10 ? 'text-red-600 font-medium' : 'text-gray-600'}`}>
+                            {indicator.deviation >= 0 ? '+' : ''}{indicator.deviation.toFixed(1)}% baseline
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">No indicators found</p>
+              <div className="text-center py-8">
+                <p className="text-gray-500">No operational indicators found</p>
+                {operationalError && (
+                  <p className="text-red-500 text-sm mt-2">Error: {operationalError}</p>
+                )}
+              </div>
             )}
           </div>
 
           {/* Business Insights */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Business Insights</h2>
-              <span className="text-sm text-gray-500">Latest 10</span>
+              <h2 className="text-xl font-semibold text-gray-900">Business Insights</h2>
+              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">Layer 4</span>
             </div>
-            
+
             {insightsLoading ? (
-              <LoadingSkeleton rows={5} />
+              <LoadingSkeleton rows={8} />
             ) : insights && insights.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2 max-h-[600px] overflow-y-auto">
                 {insights.map((insight) => (
                   <div
                     key={insight.insight_id}
@@ -261,7 +349,12 @@ function DashboardContent() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">No insights found</p>
+              <div className="text-center py-8">
+                <p className="text-gray-500">No insights found</p>
+                {insightsError && (
+                  <p className="text-red-500 text-sm mt-2">Error: {insightsError}</p>
+                )}
+              </div>
             )}
           </div>
         </div>

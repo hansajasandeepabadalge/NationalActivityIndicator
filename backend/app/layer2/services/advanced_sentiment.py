@@ -296,7 +296,23 @@ Provide a detailed sentiment analysis covering:
 7. SENTIMENT DRIVERS: List key factors driving sentiment
    - For each: factor name, direction (positive/negative), strength (0-1), supporting quote
 
-Be precise and calibrated in your scores. Neutral articles should score near 0."""
+Be precise and calibrated in your scores. Neutral articles should score near 0.
+
+RESPOND WITH ONLY A JSON OBJECT in this exact format:
+```json
+{{
+  "overall": {{"score": 0.3, "level": "slightly_positive", "confidence": 0.85, "reasoning": "Brief explanation"}},
+  "business_confidence": {{"score": 0.2, "level": "slightly_positive", "confidence": 0.8}},
+  "public_mood": {{"score": 0.1, "level": "neutral", "confidence": 0.7}},
+  "economic_outlook": {{"score": 0.4, "level": "positive", "confidence": 0.75}},
+  "primary_emotion": "anticipation",
+  "secondary_emotions": ["trust"],
+  "tone": "optimistic",
+  "positive_drivers": [{{"factor": "job growth", "direction": "positive", "strength": 0.7, "quote": "..."}}],
+  "negative_drivers": [],
+  "summary": "One sentence summary."
+}}
+```"""
 
     SYSTEM_PROMPT = """You are an expert sentiment analyst specializing in economic and political news.
 Your analysis should be nuanced and multi-dimensional.
@@ -696,7 +712,7 @@ def create_advanced_sentiment_analyzer(
         Configured AdvancedSentimentAnalyzer instance
     """
     llm_config = LLMConfig(
-        model="llama-3.1-70b-versatile",
+        model="llama-3.3-70b-versatile",
         temperature=0.3,  # Slightly higher for nuanced sentiment
         max_tokens=1500
     )

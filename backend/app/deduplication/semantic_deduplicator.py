@@ -351,7 +351,7 @@ class SemanticDeduplicator:
             embedding=embedding,
             title=title,
             source_name=source_name,
-            word_count=word_count
+            metadata={"word_count": word_count} if word_count > 0 else None
         )
     
     async def check_duplicate(

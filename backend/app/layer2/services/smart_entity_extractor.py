@@ -366,7 +366,21 @@ INSTRUCTIONS:
 
 Entity Types: person, organization, location, government, company, political_party, institution, event, date, money, percentage, economic_indicator, policy, legislation, other
 
-Roles: subject, actor, target, source, reference, context"""
+Roles: subject, actor, target, source, reference, context
+
+RESPOND WITH ONLY A JSON OBJECT in this exact format:
+```json
+{{
+  "entities": [
+    {{"text": "Federal Reserve", "normalized": "Federal Reserve", "type": "government", "role": "actor", "importance": 0.9}},
+    {{"text": "Jerome Powell", "normalized": "Jerome Powell", "type": "person", "role": "subject", "importance": 0.85}}
+  ],
+  "relationships": [
+    {{"source_entity": "Jerome Powell", "target_entity": "Federal Reserve", "relation_type": "leads", "confidence": 0.95}}
+  ],
+  "primary_entities": ["Federal Reserve", "Jerome Powell"]
+}}
+```"""
 
     SYSTEM_PROMPT = """You are an expert entity extraction system specializing in economic and political news.
 Extract entities accurately with their full context.
@@ -738,7 +752,7 @@ def create_smart_entity_extractor(
         Configured SmartEntityExtractor instance
     """
     llm_config = LLMConfig(
-        model="llama-3.1-70b-versatile",
+        model="llama-3.3-70b-versatile",
         temperature=0.1,  # Low temperature for precise extraction
         max_tokens=2000
     )

@@ -12,6 +12,7 @@ import type {
   AdminDashboard,
   IndustryOverview,
   CompanyProfile,
+  OperationalIndicatorList,
 } from './types';
 
 export const dashboardService = {
@@ -162,6 +163,13 @@ export const dashboardService = {
    */
   async getMyOpportunities(limit: number = 20): Promise<BusinessInsightList> {
     return apiClient.get<BusinessInsightList>(`/user/opportunities?limit=${limit}`);
+  },
+
+  /**
+   * Get operational indicators (Layer 3)
+   */
+  async getOperationalIndicators(limit: number = 20): Promise<OperationalIndicatorList> {
+    return apiClient.get<OperationalIndicatorList>(`/user/operations-data?limit=${limit}`);
   },
   
   /**

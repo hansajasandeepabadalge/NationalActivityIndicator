@@ -18,7 +18,7 @@ import hashlib
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
-from langchain.tools import Tool
+from langchain_core.tools import Tool
 
 from app.cleaning.cleaner import DataCleaner
 from app.models.raw_article import RawArticle

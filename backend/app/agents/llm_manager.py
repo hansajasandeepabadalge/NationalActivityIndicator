@@ -3,6 +3,7 @@ LLM Manager - Handles LLM initialization, selection, and fallbacks.
 
 Provides a unified interface to multiple LLM providers:
 - Groq (FREE - Primary)
+- DeepSeek (Very affordable - Secondary)
 - Together.ai (FREE credits - Fallback)
 - OpenAI (Paid - Optional)
 """
@@ -29,6 +30,7 @@ class UsageStats:
     """Track API usage statistics"""
     date: date = field(default_factory=date.today)
     groq_requests: int = 0
+    deepseek_requests: int = 0
     together_requests: int = 0
     openai_requests: int = 0
     total_tokens: int = 0
@@ -39,6 +41,7 @@ class UsageStats:
         if date.today() != self.date:
             self.date = date.today()
             self.groq_requests = 0
+            self.deepseek_requests = 0
             self.together_requests = 0
             self.openai_requests = 0
             self.total_tokens = 0
@@ -49,7 +52,7 @@ class LLMManager:
     """
     Manages LLM instances with automatic fallback and usage tracking.
     
-    Prioritizes FREE Groq API, falls back to Together.ai if rate limited,
+    Prioritizes FREE Groq API, falls back to DeepSeek or Together.ai if rate limited,
     and optionally uses OpenAI for premium quality if configured.
     """
     
@@ -66,10 +69,37 @@ class LLMManager:
         
         # Initialize LLMs lazily
         self._groq_llm: Optional[Any] = None
+        self._deepseek_llm: Optional[Any] = None
         self._together_llm: Optional[Any] = None
         self._openai_llm: Optional[Any] = None
         
         logger.info(f"LLMManager initialized. Primary provider: {self.config.primary_provider.value}")
+    
+    def _get_deepseek_llm(self, model_config: ModelConfig) -> Any:
+        """Get or create DeepSeek LLM instance (OpenAI-compatible API)"""
+        cache_key = f"deepseek_{model_config.model_name}"
+        
+        if cache_key not in self._llm_cache:
+            try:
+                from langchain_openai import ChatOpenAI
+                
+                self._llm_cache[cache_key] = ChatOpenAI(
+                    model=self.config.deepseek_model,
+                    temperature=model_config.temperature,
+                    max_tokens=model_config.max_tokens,
+                    api_key=self.config.deepseek_api_key,
+                    base_url=self.config.deepseek_base_url,
+                    request_timeout=model_config.timeout
+                )
+                logger.debug(f"Created DeepSeek LLM: {self.config.deepseek_model}")
+            except ImportError:
+                logger.error("langchain-openai not installed. Run: pip install langchain-openai")
+                raise
+            except Exception as e:
+                logger.error(f"Failed to create DeepSeek LLM: {e}")
+                raise
+        
+        return self._llm_cache[cache_key]
     
     def _get_groq_llm(self, model_config: ModelConfig) -> Any:
         """Get or create Groq LLM instance"""
@@ -197,18 +227,33 @@ class LLMManager:
         return self.usage.groq_requests >= limit_threshold
     
     def _get_fallback_llm(self, model_config: ModelConfig) -> Any:
-        """Get fallback LLM when primary is unavailable"""
+        """Get fallback LLM when primary (Groq) is unavailable"""
+        # First fallback: DeepSeek (very affordable)
+        if self.config.has_deepseek:
+            try:
+                logger.info("Using DeepSeek as fallback (affordable)")
+                return self._get_deepseek_llm(model_config)
+            except Exception as e:
+                logger.warning(f"DeepSeek fallback failed: {e}")
+        
+        # Second fallback: Together.ai (free credits)
         if self.config.has_together:
-            return self._get_together_llm(model_config)
-        elif self.config.has_openai:
-            logger.warning("Using paid OpenAI as fallback")
+            try:
+                logger.info("Using Together.ai as fallback")
+                return self._get_together_llm(model_config)
+            except Exception as e:
+                logger.warning(f"Together.ai fallback failed: {e}")
+        
+        # Last resort: OpenAI (paid)
+        if self.config.has_openai:
+            logger.warning("Using paid OpenAI as last resort fallback")
             return self._get_openai_llm(model_config)
-        else:
-            raise ValueError(
-                "No LLM provider available. "
-                "Set GROQ_API_KEY (FREE) in your .env file. "
-                "Get a key at https://console.groq.com"
-            )
+        
+        raise ValueError(
+            "No LLM provider available. "
+            "Set GROQ_API_KEY (FREE) or DEEPSEEK_API_KEY in your .env file. "
+            "Get a Groq key at https://console.groq.com"
+        )
     
     def track_usage(self, provider: LLMProvider, tokens: int = 0, cost: float = 0.0):
         """
@@ -223,6 +268,8 @@ class LLMManager:
         
         if provider == LLMProvider.GROQ:
             self.usage.groq_requests += 1
+        elif provider == LLMProvider.DEEPSEEK:
+            self.usage.deepseek_requests += 1
         elif provider == LLMProvider.TOGETHER:
             self.usage.together_requests += 1
         elif provider == LLMProvider.OPENAI:

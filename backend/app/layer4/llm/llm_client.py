@@ -194,13 +194,35 @@ class UnifiedLLMClient:
 # These will be None if API keys are not configured
 openai_client: Optional[UnifiedLLMClient] = None
 anthropic_client: Optional[UnifiedLLMClient] = None
+deepseek_client: Optional[UnifiedLLMClient] = None
 
 def _initialize_clients():
     """Initialize LLM clients if API keys are available"""
-    global openai_client, anthropic_client
+    global openai_client, anthropic_client, deepseek_client
     
     try:
         from app.core.config import settings
+        import os
+        
+        # Try DeepSeek first (affordable, OpenAI-compatible)
+        deepseek_key = os.getenv('DEEPSEEK_API_KEY', '')
+        if deepseek_key and OPENAI_AVAILABLE:
+            try:
+                deepseek_client = UnifiedLLMClient(LLMConfig(
+                    provider='openai',  # DeepSeek uses OpenAI-compatible API
+                    model='deepseek-chat',
+                    api_key=deepseek_key,
+                    temperature=0.3,
+                    max_tokens=2000
+                ))
+                # Override base URL for DeepSeek
+                deepseek_client.client = openai.OpenAI(
+                    api_key=deepseek_key,
+                    base_url="https://api.deepseek.com"
+                )
+                logger.info("DeepSeek client initialized successfully")
+            except Exception as e:
+                logger.warning(f"Failed to initialize DeepSeek client: {e}")
         
         # Try OpenAI
         openai_key = getattr(settings, 'OPENAI_API_KEY', None) or getattr(settings, 'OPENAI_KEY', '')

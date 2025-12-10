@@ -60,6 +60,9 @@ class StateManager:
         self.redis_url = redis_url or config.redis_url
         self._redis: Optional[redis.Redis] = None
         
+        # Fallback in-memory state when Redis is unavailable
+        self._memory_state: Dict[str, str] = {}
+        
         # State key prefix
         self.prefix = "agent_state:"
         
@@ -81,7 +84,6 @@ class StateManager:
                 logger.error(f"Failed to connect to Redis: {e}")
                 # Fall back to in-memory state
                 self._redis = None
-                self._memory_state: Dict[str, str] = {}
     
     async def disconnect(self) -> None:
         """Close Redis connection."""

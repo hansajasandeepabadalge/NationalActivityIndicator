@@ -18,6 +18,7 @@ class SeverityLevel(str, Enum):
 class InsightType(str, Enum):
     RISK = "risk"
     OPPORTUNITY = "opportunity"
+    RECOMMENDATION = "recommendation"
 
 
 class TrendDirection(str, Enum):
@@ -204,6 +205,34 @@ class DashboardHomeResponse(BaseModel):
     last_updated: datetime
 
 
+# ============== Recommendations ==============
+
+class RecommendationResponse(BaseModel):
+    """Schema for recommendation data"""
+    recommendation_id: int
+    insight_id: Optional[int] = None
+    category: Optional[str] = None  # 'immediate', 'short_term', 'medium_term'
+    priority: int
+    action_title: str
+    action_description: Optional[str] = None
+    responsible_role: Optional[str] = None
+    estimated_effort: Optional[str] = None
+    estimated_timeframe: Optional[str] = None
+    expected_benefit: Optional[str] = None
+    success_metrics: Optional[List[str]] = None
+    status: Optional[str] = None  # 'pending', 'in_progress', 'completed'
+    
+    class Config:
+        from_attributes = True
+
+
+class RecommendationListResponse(BaseModel):
+    """Schema for list of recommendations"""
+    recommendations: List[RecommendationResponse]
+    total: int
+    by_priority: Dict[str, int]
+
+
 # ============== Admin Dashboard ==============
 
 class IndustryIndicatorResponse(BaseModel):
@@ -245,6 +274,8 @@ class AdminDashboardResponse(BaseModel):
     """Admin dashboard overview"""
     total_companies: int
     total_active_users: int
+    total_indicators: int = 0  # Layer 2 indicators count
+    total_insights: int = 0  # Total business insights
     
     # System health
     total_active_risks: int

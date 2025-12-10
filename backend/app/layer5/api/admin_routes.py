@@ -16,7 +16,8 @@ from app.layer5.services.company_service import CompanyService
 from app.layer5.schemas.auth import UserResponse
 from app.layer5.schemas.dashboard import (
     NationalIndicatorListResponse, BusinessInsightListResponse,
-    AdminDashboardResponse, IndustryOverviewResponse
+    AdminDashboardResponse, IndustryOverviewResponse,
+    OperationalIndicatorListResponse
 )
 from app.layer5.schemas.company import CompanyProfileResponse
 
@@ -43,7 +44,7 @@ def get_admin_dashboard(
 @router.get("/indicators/national", response_model=NationalIndicatorListResponse)
 def get_national_indicators(
     category: Optional[str] = Query(None, description="Filter by PESTEL category"),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(100, ge=1, le=500),
     current_user: UserResponse = Depends(require_admin),
     db: Session = Depends(get_db)
 ):
@@ -68,6 +69,35 @@ def get_indicator_history(
     dashboard_service = DashboardService(db)
     history = dashboard_service.get_indicator_history(indicator_id, days)
     return {"indicator_id": indicator_id, "days": days, "history": history}
+
+
+# ============== Operational Indicators (Layer 3) ==============
+
+@router.get("/indicators/operational/{company_id}", response_model=OperationalIndicatorListResponse)
+def get_company_operational_indicators(
+    company_id: str,
+    limit: int = Query(20, ge=1, le=100),
+    current_user: UserResponse = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Get operational indicators for a specific company (Layer 3 data).
+    Admin-only endpoint to view any company's operational indicators.
+    """
+    from pymongo import MongoClient
+    from app.core.config import settings
+
+    # Initialize MongoDB connection for Layer 3 data
+    mongo_client = MongoClient(settings.MONGODB_URL)
+    dashboard_service = DashboardService(db, mongo_client=mongo_client)
+
+    try:
+        return dashboard_service.get_operational_indicators(
+            company_id=company_id,
+            limit=limit
+        )
+    finally:
+        mongo_client.close()
 
 
 # ============== Industry View ==============

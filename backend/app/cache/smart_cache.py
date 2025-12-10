@@ -108,7 +108,10 @@ class SmartCacheManager:
     async def _get_redis(self):
         """Lazy load Redis client"""
         if self.redis is None:
-            from app.db.redis_client import get_redis
+            from app.db.redis_client import redis_client, get_redis
+            # Ensure Redis is connected
+            if redis_client.client is None:
+                redis_client.connect()
             self.redis = get_redis()
         return self.redis
     
@@ -185,6 +188,17 @@ class SmartCacheManager:
         logger.info(f"[Cache] HIT for {source_name} - no scraping needed")
         await self._track_hit(source_name)
         return False, "cache_valid"
+    
+    # Alias for backwards compatibility
+    async def should_scrape(
+        self, 
+        source_name: str, 
+        url: str,
+        source_type: str = "news",
+        force: bool = False
+    ) -> Tuple[bool, str]:
+        """Alias for needs_scraping (backwards compatibility)."""
+        return await self.needs_scraping(source_name, url, source_type, force)
     
     async def get_cached_articles(self, source_name: str) -> Optional[List[Dict[str, Any]]]:
         """

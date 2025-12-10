@@ -705,7 +705,7 @@ def create_topic_modeler(
         Configured TopicModeler instance
     """
     llm_config = LLMConfig(
-        model="llama-3.1-70b-versatile",
+        model="llama-3.3-70b-versatile",
         temperature=0.3,
         max_tokens=1000
     )

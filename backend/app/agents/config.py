@@ -11,12 +11,17 @@ from dataclasses import dataclass, field
 from enum import Enum
 import logging
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 
 class LLMProvider(str, Enum):
     """Supported LLM providers"""
     GROQ = "groq"  # FREE - Primary
+    DEEPSEEK = "deepseek"  # Very affordable - Secondary
     TOGETHER = "together"  # FREE credits - Fallback
     OPENAI = "openai"  # Paid - Optional
 
@@ -49,11 +54,16 @@ class AgentConfig:
     
     # API Keys (loaded from environment)
     groq_api_key: Optional[str] = field(default_factory=lambda: os.getenv("GROQ_API_KEY"))
+    deepseek_api_key: Optional[str] = field(default_factory=lambda: os.getenv("DEEPSEEK_API_KEY"))
     together_api_key: Optional[str] = field(default_factory=lambda: os.getenv("TOGETHER_API_KEY"))
     openai_api_key: Optional[str] = field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
     
+    # DeepSeek configuration
+    deepseek_model: str = "deepseek-chat"  # DeepSeek V3 - very affordable
+    deepseek_base_url: str = "https://api.deepseek.com"
+    
     # Model configurations
-    primary_model: str = "llama-3.1-70b-versatile"  # Groq - strategic tasks
+    primary_model: str = "llama-3.3-70b-versatile"  # Groq - strategic tasks (upgraded from 3.1)
     fast_model: str = "llama-3.1-8b-instant"  # Groq - simple tasks
     fallback_model: str = "meta-llama/Llama-3.1-70B-Instruct-Turbo"  # Together.ai
     
@@ -74,6 +84,10 @@ class AgentConfig:
     # Logging
     log_decisions: bool = True
     log_level: str = "INFO"
+    
+    # Database URLs
+    redis_url: str = field(default_factory=lambda: os.getenv("REDIS_URL", "redis://localhost:6379/0"))
+    database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:postgres_secure_2024@127.0.0.1:15432/national_indicator"))
     
     # Feature flags
     enable_cost_tracking: bool = True
@@ -104,6 +118,11 @@ class AgentConfig:
         return bool(self.groq_api_key)
     
     @property
+    def has_deepseek(self) -> bool:
+        """Check if DeepSeek is configured"""
+        return bool(self.deepseek_api_key)
+    
+    @property
     def has_together(self) -> bool:
         """Check if Together.ai is configured"""
         return bool(self.together_api_key)
@@ -118,6 +137,8 @@ class AgentConfig:
         """Get the primary available provider"""
         if self.has_groq:
             return LLMProvider.GROQ
+        elif self.has_deepseek:
+            return LLMProvider.DEEPSEEK
         elif self.has_together:
             return LLMProvider.TOGETHER
         elif self.has_openai:

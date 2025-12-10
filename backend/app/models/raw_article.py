@@ -13,6 +13,7 @@ class ScrapeMetadata(BaseModel):
     scraper_version: str
 
 class RawContent(BaseModel):
+    url: Optional[str] = None
     html: Optional[str] = None
     title: Optional[str] = None
     body: Optional[str] = None

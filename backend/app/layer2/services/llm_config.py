@@ -47,7 +47,7 @@ class GroqSettings:
     api_key: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
     
     # Model settings
-    model: str = "llama-3.1-70b-versatile"  # Free tier
+    model: str = "llama-3.3-70b-versatile"  # Free tier (updated from decommissioned 3.1)
     temperature: float = 0.2
     max_tokens: int = 2000
     timeout: int = 30

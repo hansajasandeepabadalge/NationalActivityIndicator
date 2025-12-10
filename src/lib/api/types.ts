@@ -49,7 +49,7 @@ export interface PasswordChange {
 
 export type TrendDirection = 'up' | 'down' | 'stable';
 export type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
-export type InsightType = 'risk' | 'opportunity';
+export type InsightType = 'risk' | 'opportunity' | 'recommendation';
 
 export interface HealthScore {
   overall_score: number;
@@ -168,6 +168,8 @@ export interface IndustryOverview {
 export interface AdminDashboard {
   total_companies: number;
   total_active_users: number;
+  total_indicators: number;
+  total_insights: number;
   total_active_risks: number;
   total_active_opportunities: number;
   critical_alerts: number;

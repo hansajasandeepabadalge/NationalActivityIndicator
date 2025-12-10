@@ -166,15 +166,33 @@ class IntegrationPipeline:
             
             metrics.record_layer_time("layer4", (datetime.now() - layer4_start).total_seconds())
             
+            # Step 4: Store results in database if requested
+            stored_results = None
+            if options.get("store_results", False):
+                try:
+                    stored_results = await self._store_layer4_results(
+                        company_profile.get("company_id", "unknown"),
+                        layer4_output
+                    )
+                    logger.info(f"Stored L4 results: {stored_results}")
+                except Exception as store_error:
+                    logger.warning(f"Failed to store L4 results: {store_error}")
+                    metrics.add_warning(f"Storage failed: {store_error}")
+            
             metrics.stop()
             
-            return {
+            result = {
                 "success": True,
                 "layer2_output": layer2_output.dict(),
                 "layer3_output": layer3_output.dict(),
                 "layer4_output": layer4_output,
                 "metrics": metrics.to_dict(),
             }
+            
+            if stored_results:
+                result["stored_results"] = stored_results
+            
+            return result
             
         except Exception as e:
             logger.error(f"Pipeline execution failed: {e}")
@@ -470,6 +488,50 @@ class IntegrationPipeline:
                     recs = rec_engine.generate_recommendations(opp, company_profile)
                     recommendations.extend(recs)
                 
+                # Try to enhance with Groq LLM
+                llm_insights = None
+                llm_recommendations = []
+                try:
+                    from app.layer4.llm.groq_insight_service import groq_insight_service
+                    
+                    if groq_insight_service.is_available:
+                        logger.info("Using Groq LLM for enhanced recommendations...")
+                        
+                        # Prepare indicator dict for LLM
+                        indicator_dict = {
+                            "supply_chain_health": layer3_output.supply_chain_health,
+                            "workforce_health": layer3_output.workforce_health,
+                            "infrastructure_health": layer3_output.infrastructure_health,
+                            "cost_pressure": layer3_output.cost_pressure,
+                            "market_conditions": layer3_output.market_conditions,
+                            "financial_health": layer3_output.financial_health,
+                            "regulatory_burden": layer3_output.regulatory_burden,
+                            "overall_health": layer3_output.overall_operational_health,
+                        }
+                        
+                        # Generate LLM recommendations
+                        risks_dict = [r.model_dump() if hasattr(r, 'model_dump') else r.dict() for r in risks]
+                        opps_dict = [o.model_dump() if hasattr(o, 'model_dump') else o.dict() for o in opportunities]
+                        
+                        llm_recommendations = groq_insight_service.generate_recommendations(
+                            risks=risks_dict,
+                            opportunities=opps_dict,
+                            company_profile=company_profile,
+                            operational_health=layer3_output.overall_operational_health
+                        )
+                        
+                        if llm_recommendations:
+                            logger.info(f"Generated {len(llm_recommendations)} LLM recommendations")
+                        
+                except Exception as llm_error:
+                    logger.warning(f"LLM enhancement skipped: {llm_error}")
+                
+                # Combine recommendations (LLM first, then rule-based)
+                all_recommendations = llm_recommendations + [
+                    r.model_dump() if hasattr(r, 'model_dump') else r.dict() 
+                    for r in recommendations
+                ]
+                
                 return {
                     "timestamp": datetime.now().isoformat(),
                     "company_id": layer3_output.company_id,
@@ -480,12 +542,13 @@ class IntegrationPipeline:
                         "risk_level": "high" if len(risks) > 3 else "medium" if len(risks) > 0 else "low",
                         "risk_count": len(risks),
                         "opportunity_count": len(opportunities),
-                        "recommendation_count": len(recommendations),
+                        "recommendation_count": len(all_recommendations),
+                        "llm_enhanced": len(llm_recommendations) > 0,
                     },
                     "risks": [r.model_dump() if hasattr(r, 'model_dump') else r.dict() for r in risks],
                     "opportunities": [o.model_dump() if hasattr(o, 'model_dump') else o.dict() for o in opportunities],
-                    "recommendations": [r.model_dump() if hasattr(r, 'model_dump') else r.dict() for r in recommendations],
-                    "source": "layer4_engines",
+                    "recommendations": all_recommendations,
+                    "source": "layer4_engines" + ("_llm_enhanced" if llm_recommendations else ""),
                 }
                 
             except Exception as engine_error:
@@ -530,6 +593,40 @@ class IntegrationPipeline:
             "recommendations": [],
             "source": "minimal_layer4",
         }
+    
+    async def _store_layer4_results(
+        self,
+        company_id: str,
+        layer4_output: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Store Layer 4 results to the database.
+        
+        Args:
+            company_id: Company identifier
+            layer4_output: Layer 4 pipeline output
+            
+        Returns:
+            Summary of stored items
+        """
+        try:
+            from app.db.session import SessionLocal
+            from app.layer4.storage.insight_persistence import InsightPersistenceService
+            
+            db = SessionLocal()
+            try:
+                persistence = InsightPersistenceService(db)
+                result = persistence.store_pipeline_results(company_id, layer4_output)
+                return result
+            finally:
+                db.close()
+                
+        except ImportError as e:
+            logger.warning(f"Could not import persistence service: {e}")
+            return {"error": str(e)}
+        except Exception as e:
+            logger.error(f"Failed to store L4 results: {e}")
+            return {"error": str(e)}
 
 
 class PipelineBuilder:
