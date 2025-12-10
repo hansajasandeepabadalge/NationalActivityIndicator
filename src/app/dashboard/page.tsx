@@ -347,7 +347,20 @@ function DashboardContent() {
 
         {/* Layer 2-4: Indicators & Analysis Tab */}
         {activeTab === 'layer2' && (
-          <IndicatorAnalysis />
+          <div className="space-y-8">
+            <IndicatorAnalysis />
+
+            {/* Operational Indicators Section */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Operational Indicators (Layer 3)</h2>
+                  <p className="text-gray-500">Real-time operational impact analysis</p>
+                </div>
+              </div>
+              <OperationalOverview selectedCompanyId={selectedCompany} />
+            </div>
+          </div>
         )}
 
         {/* System Health Tab */}
