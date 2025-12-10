@@ -187,6 +187,7 @@ def get_all_insights(
     insight_type: Optional[str] = Query(None, description="Filter by 'risk' or 'opportunity'"),
     severity: Optional[str] = Query(None, description="Filter by severity level"),
     industry: Optional[str] = Query(None, description="Filter by industry"),
+    company_id: Optional[str] = Query(None, description="Filter by company ID"),
     status: str = Query("active"),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
@@ -204,6 +205,7 @@ def get_all_insights(
         insight_type=insight_type,
         severity=severity,
         status=status,
+        company_id=company_id,
         limit=limit,
         offset=offset
     )

@@ -79,7 +79,7 @@ export function useNationalIndicators(
 
 // Hook for business insights
 export function useBusinessInsights(
-  companyId?: number,
+  companyId?: string,
   insightType?: string,
   severityLevel?: string,
   limit: number = 50
@@ -95,6 +95,7 @@ export function useBusinessInsights(
       const result = await dashboardService.getAllInsights({
         insight_type: insightType as 'risk' | 'opportunity' | undefined,
         severity: severityLevel,
+        company_id: companyId,
         limit: limit
       });
       // API returns { insights: [...], total, ... } - extract the array
@@ -124,9 +125,35 @@ export function useIndustries(): FetchState<Industry[]> {
     setError(null);
     try {
       const result = await dashboardService.getIndustries();
-      setData(result);
+      setData(result.industries.map(name => ({ name, company_count: result.by_industry[name] || 0 })));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch industries');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  return { data, isLoading, error, refetch: fetch };
+}
+
+// Hook for companies (for admin selector)
+export function useCompanies(): FetchState<import('@/lib/api/types').CompanyProfile[]> {
+  const [data, setData] = useState<import('@/lib/api/types').CompanyProfile[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetch = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await dashboardService.getCompanies({ limit: 100 });
+      setData(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch companies');
     } finally {
       setIsLoading(false);
     }
