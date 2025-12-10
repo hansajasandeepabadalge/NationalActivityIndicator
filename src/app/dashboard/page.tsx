@@ -73,17 +73,38 @@ function DashboardContent() {
               </h1>
               <p className="text-sm text-gray-500">Admin Dashboard</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{user?.full_name || user?.email}</p>
-                <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+
+            <div className="flex items-center gap-6">
+              {/* Company Filter - Moved from Overview */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-700">Company:</span>
+                <select
+                  value={selectedCompany || ''}
+                  onChange={(e) => setSelectedCompany(e.target.value || undefined)}
+                  className="block w-48 pl-2 pr-8 py-1.5 text-sm border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                  disabled={companiesLoading}
+                >
+                  <option value="">All Companies</option>
+                  {companies?.map((company) => (
+                    <option key={company.id} value={company.id}>
+                      {company.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition"
-              >
-                Logout
-              </button>
+
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900">{user?.full_name || user?.email}</p>
+                  <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
 
@@ -116,34 +137,6 @@ function DashboardContent() {
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-8">
-            {/* Company Filter */}
-            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-gray-700">Filter by Company:</span>
-                <select
-                  value={selectedCompany || ''}
-                  onChange={(e) => setSelectedCompany(e.target.value || undefined)}
-                  className="block w-64 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-                  disabled={companiesLoading}
-                >
-                  <option value="">All Companies</option>
-                  {companies?.map((company) => (
-                    <option key={company.id} value={company.id}>
-                      {company.name} ({company.industry})
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {selectedCompany && (
-                <button
-                  onClick={() => setSelectedCompany(undefined)}
-                  className="text-sm text-blue-600 hover:text-blue-800"
-                >
-                  Clear Filter
-                </button>
-              )}
-            </div>
-
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {dashboardLoading ? (
