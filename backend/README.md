@@ -1,68 +1,92 @@
-# National Activity Indicator - Backend
+# National Activity Indicator - Layer 2
 
-This is the backend for the National Activity Indicator project, built with FastAPI.
+Real-time indicator calculation system with ML classification, entity extraction, trend analysis, and REST API.
 
-## Prerequisites
+## Features
 
-- Python 3.8 or higher
+- **Rule-Based Classification**: Keyword-based indicator matching
+- **ML Classification**: Logistic Regression/XGBoost with F1=0.926
+- **Entity Extraction**: spaCy NER (6.7s for 200 articles)
+- **Trend Analysis**: Multi-timeframe detection + forecasting
+- **Narrative Generation**: Auto-generated explanations with emojis
+- **REST API**: 7 endpoints for indicators, trends, anomalies
+- **Dashboard**: Real-time visualization
+- **Performance**: Redis caching, <2s response time
 
-## Setup
-
-1.  **Clone the repository** (if you haven't already):
-    ```bash
-    git clone <repository-url>
-    cd national_activity_indicator/backend
-    ```
-
-2.  **Create a virtual environment**:
-    ```bash
-    python -m venv venv
-    ```
-
-3.  **Activate the virtual environment**:
-    - On Windows:
-        ```bash
-        .\venv\Scripts\activate
-        ```
-    - On macOS/Linux:
-        ```bash
-        source venv/bin/activate
-        ```
-
-4.  **Install dependencies**:
-    Since `requirements.txt` might be empty initially, install the core dependencies directly:
-    ```bash
-    pip install fastapi uvicorn pydantic-settings
-    ```
-    
-    *If a `requirements.txt` file exists and is populated, you can run:*
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## Configuration
-
-1.  Create a `.env` file in the `backend` directory. You can copy the example below:
-
-    ```env
-    PROJECT_NAME="National Activity Indicator"
-    API_V1_STR="/api/v1"
-    # DATABASE_URL="sqlite:///./sql_app.db" # Uncomment and set if using a database
-    ```
-
-## Running the Application
-
-To start the server, run:
+## Quick Start
 
 ```bash
+# Install dependencies
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+
+# Start services
+docker-compose up -d
+
+# Run server
 uvicorn app.main:app --reload
+
+# Visit: http://localhost:8000
 ```
 
-The server will start at `http://127.0.0.1:8000`.
+## API Endpoints
 
-## API Documentation
+- `GET /api/v1/indicators` - List all indicators
+- `GET /api/v1/indicators/{id}` - Indicator details
+- `GET /api/v1/indicators/{id}/history` - Time series
+- `GET /api/v1/indicators/trends` - Trend detection
+- `GET /api/v1/indicators/anomalies` - Anomaly detection
+- `GET /api/v1/indicators/alerts` - Recent alerts
+- `GET /api/v1/indicators/composite` - Composite metrics
+- `GET /health` - Health check
+- `GET /docs` - API documentation
 
-Once the server is running, you can access the interactive API documentation at:
+## Project Structure
 
-- **Swagger UI**: [http://127.0.0.1:8000/api/v1/docs](http://127.0.0.1:8000/api/v1/docs)
-- **ReDoc**: [http://127.0.0.1:8000/api/v1/redoc](http://127.0.0.1:8000/api/v1/redoc)
+```
+backend/
+├── app/
+│   ├── api/v1/endpoints/        # API endpoints
+│   ├── layer2/
+│   │   ├── data_ingestion/      # Article loading
+│   │   ├── ml_classification/   # Rule-based + ML classifiers
+│   │   ├── nlp_processing/      # Entity extraction
+│   │   ├── indicator_calculation/ # Indicator calculators
+│   │   ├── analysis/            # Trend detection, forecasting
+│   │   └── narrative/           # Narrative generation
+│   ├── db/                      # Database connections
+│   ├── core/                    # Configuration
+│   └── static/                  # Dashboard
+├── data/                        # Historical data, mock articles
+├── tests/                       # Unit + integration tests
+└── scripts/                     # Pipelines
+```
+
+## Performance
+
+- **ML F1 Score**: 0.926 (Hybrid), 0.759 (ML-only)
+- **Entity Extraction**: ~30 articles/second
+- **Trend Analysis**: 24 indicators × 90 days
+- **API Response**: <2 seconds (cached)
+
+## Documentation
+
+- [API Documentation](docs/API.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
+- [Day 2 Complete](DAY2_COMPLETE.md)
+- [Day 3 Complete](DAY3_COMPLETE_WITH_ADAPTIVE_SCALING.md)
+- [Day 4 Complete](DAY4_COMPLETE.md)
+- [Day 5 Complete](DAY5_COMPLETE.md)
+- [Day 6 Complete](DAY6_COMPLETE.md)
+- [Day 7 Complete](DAY7_COMPLETE.md)
+
+## Technology Stack
+
+- **Backend**: FastAPI, Python 3.12
+- **Databases**: TimescaleDB (PostgreSQL), MongoDB, Redis
+- **ML/NLP**: scikit-learn, XGBoost, spaCy
+- **Deployment**: Docker Compose
+
+## Developer
+
+Developer A - Layer 2 Implementation

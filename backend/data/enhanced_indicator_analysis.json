@@ -1,0 +1,2948 @@
+{
+  "generated_at": "2025-12-03T14:47:16.487694+00:00",
+  "forecast_horizon": 7,
+  "indicators": {
+    "1": {
+      "indicator_id": 1,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.382,
+          "confidence": 0.6115,
+          "slope": -1.672264,
+          "r_squared": 0.4914,
+          "p_value": 0.079312,
+          "volatility": 3.4027,
+          "momentum": -20.11,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0065,
+          "confidence": 0.3489,
+          "slope": -0.086062,
+          "r_squared": 0.0081,
+          "p_value": 0.635833,
+          "volatility": 8.2333,
+          "momentum": 12.71,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            7
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0403,
+          "confidence": 0.6043,
+          "slope": 0.075065,
+          "r_squared": 0.0482,
+          "p_value": 0.037515,
+          "volatility": 8.6616,
+          "momentum": 12.71,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 33.1163,
+        "ma_14day": 32.0101,
+        "ma_30day": 32.3222,
+        "ma_60day": 31.5367,
+        "ma_90day": 30.0574,
+        "ema_7day": 31.3888,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.0246
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.32959414382543883,
+        "trend_direction": "stable",
+        "volatility": 8.2668880835408,
+        "last_value": 26.9003,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 29.7334,
+            "lower_bound": 19.52,
+            "upper_bound": 39.9468,
+            "confidence": 0.8793,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 29.6081,
+            "lower_bound": 15.7169,
+            "upper_bound": 43.4992,
+            "confidence": 0.8252,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 29.4827,
+            "lower_bound": 13.6872,
+            "upper_bound": 46.2321,
+            "confidence": 0.7704,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 29.3574,
+            "lower_bound": 12.6233,
+            "upper_bound": 48.5407,
+            "confidence": 0.7148,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 29.2321,
+            "lower_bound": 11.6531,
+            "upper_bound": 50.5782,
+            "confidence": 0.6586,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 29.1068,
+            "lower_bound": 11.2823,
+            "upper_bound": 52.4232,
+            "confidence": 0.6019,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 28.9815,
+            "lower_bound": 11.1038,
+            "upper_bound": 54.1223,
+            "confidence": 0.5448,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "2": {
+      "indicator_id": 2,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0277,
+          "confidence": 0.1945,
+          "slope": -1.429764,
+          "r_squared": 0.0394,
+          "p_value": 0.669775,
+          "volatility": 14.1264,
+          "momentum": 1.59,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0893,
+          "confidence": 0.6211,
+          "slope": -0.52647,
+          "r_squared": 0.117,
+          "p_value": 0.064338,
+          "volatility": 12.5207,
+          "momentum": -12.48,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0218,
+          "confidence": 0.5648,
+          "slope": 0.084865,
+          "r_squared": 0.0279,
+          "p_value": 0.115763,
+          "volatility": 13.02,
+          "momentum": -12.48,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 47.667,
+        "ma_14day": 43.7152,
+        "ma_30day": 48.7249,
+        "ma_60day": 49.0924,
+        "ma_90day": 45.9646,
+        "ema_7day": 44.0638,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9783
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "falling",
+        "volatility": 13.324124035065953,
+        "last_value": 37.8528,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 41.3295,
+            "lower_bound": 15.7969,
+            "upper_bound": 67.316,
+            "confidence": 0.8892,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 41.1082,
+            "lower_bound": 10.5423,
+            "upper_bound": 73.7922,
+            "confidence": 0.8307,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 40.8869,
+            "lower_bound": 9.3218,
+            "upper_bound": 78.0352,
+            "confidence": 0.7718,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 40.6657,
+            "lower_bound": 8.1038,
+            "upper_bound": 78.8348,
+            "confidence": 0.7125,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 40.4444,
+            "lower_bound": 6.8875,
+            "upper_bound": 79.6327,
+            "confidence": 0.6532,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 40.2231,
+            "lower_bound": 6.5203,
+            "upper_bound": 80.4294,
+            "confidence": 0.594,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 40.0019,
+            "lower_bound": 6.5104,
+            "upper_bound": 81.2253,
+            "confidence": 0.5351,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "3": {
+      "indicator_id": 3,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.1962,
+          "confidence": 0.4577,
+          "slope": 3.306396,
+          "r_squared": 0.2649,
+          "p_value": 0.237263,
+          "volatility": 11.0171,
+          "momentum": 53.76,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.008,
+          "confidence": 0.372,
+          "slope": 0.152218,
+          "r_squared": 0.011,
+          "p_value": 0.581126,
+          "volatility": 12.4889,
+          "momentum": 20.83,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            24
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0032,
+          "confidence": 0.3825,
+          "slope": -0.026567,
+          "r_squared": 0.0041,
+          "p_value": 0.547849,
+          "volatility": 10.7316,
+          "momentum": 20.83,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 39.0205,
+        "ma_14day": 34.2932,
+        "ma_30day": 34.7104,
+        "ma_60day": 36.2203,
+        "ma_90day": 36.7879,
+        "ema_7day": 40.2783,
+        "ma_signal": "bullish_crossover",
+        "ma_7_30_ratio": 1.1242
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "stable",
+        "volatility": 12.558164317997367,
+        "last_value": 56.5722,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 41.672,
+            "lower_bound": 17.3479,
+            "upper_bound": 65.9961,
+            "confidence": 0.778,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 42.7169,
+            "lower_bound": 12.9621,
+            "upper_bound": 73.7003,
+            "confidence": 0.7405,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 43.7618,
+            "lower_bound": 12.0429,
+            "upper_bound": 79.4227,
+            "confidence": 0.6976,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 44.8066,
+            "lower_bound": 11.1263,
+            "upper_bound": 81.5937,
+            "confidence": 0.6498,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 45.8515,
+            "lower_bound": 10.2114,
+            "upper_bound": 82.6256,
+            "confidence": 0.5984,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 46.8963,
+            "lower_bound": 10.1183,
+            "upper_bound": 83.6563,
+            "confidence": 0.5443,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 47.9412,
+            "lower_bound": 10.1076,
+            "upper_bound": 84.686,
+            "confidence": 0.4888,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "4": {
+      "indicator_id": 4,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0211,
+          "confidence": 0.1765,
+          "slope": 0.543332,
+          "r_squared": 0.0309,
+          "p_value": 0.706327,
+          "volatility": 6.089,
+          "momentum": 12.8,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0605,
+          "confidence": 0.5753,
+          "slope": 0.24091,
+          "r_squared": 0.0767,
+          "p_value": 0.138485,
+          "volatility": 7.2354,
+          "momentum": 7.23,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "weak_rising",
+          "strength": 0.1055,
+          "confidence": 0.6514,
+          "slope": 0.111237,
+          "r_squared": 0.1289,
+          "p_value": 0.000511,
+          "volatility": 7.5128,
+          "momentum": 7.23,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 66.2381,
+        "ma_14day": 60.7683,
+        "ma_30day": 59.5636,
+        "ma_60day": 57.7658,
+        "ma_90day": 56.07,
+        "ema_7day": 65.4291,
+        "ma_signal": "bullish_crossover",
+        "ma_7_30_ratio": 1.1121
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.691434889398231,
+        "trend_direction": "stable",
+        "volatility": 7.5298830103417504,
+        "last_value": 72.5085,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 66.6407,
+            "lower_bound": 54.2634,
+            "upper_bound": 79.018,
+            "confidence": 0.8859,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 66.9975,
+            "lower_bound": 51.0364,
+            "upper_bound": 82.9585,
+            "confidence": 0.8309,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 67.3542,
+            "lower_bound": 48.5423,
+            "upper_bound": 86.1661,
+            "confidence": 0.7755,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 67.711,
+            "lower_bound": 46.4276,
+            "upper_bound": 88.2647,
+            "confidence": 0.7196,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 68.0677,
+            "lower_bound": 44.5552,
+            "upper_bound": 88.8626,
+            "confidence": 0.6634,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 68.4244,
+            "lower_bound": 42.8552,
+            "upper_bound": 89.379,
+            "confidence": 0.6069,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 68.7812,
+            "lower_bound": 41.2855,
+            "upper_bound": 89.8946,
+            "confidence": 0.5501,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "5": {
+      "indicator_id": 5,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0853,
+          "confidence": 0.3166,
+          "slope": -0.729964,
+          "r_squared": 0.1205,
+          "p_value": 0.44555,
+          "volatility": 3.9442,
+          "momentum": -33.57,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.049,
+          "confidence": 0.5544,
+          "slope": -0.179836,
+          "r_squared": 0.0638,
+          "p_value": 0.177942,
+          "volatility": 5.9605,
+          "momentum": -15.48,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            3
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0098,
+          "confidence": 0.4908,
+          "slope": -0.028435,
+          "r_squared": 0.0129,
+          "p_value": 0.285877,
+          "volatility": 6.4538,
+          "momentum": -15.48,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 34.4619,
+        "ma_14day": 38.0381,
+        "ma_30day": 39.0625,
+        "ma_60day": 40.8057,
+        "ma_90day": 40.533,
+        "ema_7day": 34.5889,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.8822
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.6385760562560201,
+        "trend_direction": "stable",
+        "volatility": 6.160394684290393,
+        "last_value": 26.4346,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 32.4179,
+            "lower_bound": 7.8386,
+            "upper_bound": 56.9971,
+            "confidence": 0.8277,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 31.7821,
+            "lower_bound": 5.7516,
+            "upper_bound": 65.8572,
+            "confidence": 0.7773,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 31.1464,
+            "lower_bound": 5.1321,
+            "upper_bound": 72.5527,
+            "confidence": 0.726,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 30.5107,
+            "lower_bound": 4.5661,
+            "upper_bound": 78.1277,
+            "confidence": 0.6739,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 29.875,
+            "lower_bound": 4.0342,
+            "upper_bound": 82.9867,
+            "confidence": 0.621,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 29.2393,
+            "lower_bound": 3.6738,
+            "upper_bound": 87.2363,
+            "confidence": 0.5674,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 28.6036,
+            "lower_bound": 3.4509,
+            "upper_bound": 87.5528,
+            "confidence": 0.5132,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "6": {
+      "indicator_id": 6,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.4025,
+          "confidence": 0.6302,
+          "slope": 2.8855,
+          "r_squared": 0.5244,
+          "p_value": 0.065709,
+          "volatility": 5.4955,
+          "momentum": 47.66,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0106,
+          "confidence": 0.3933,
+          "slope": -0.124814,
+          "r_squared": 0.0142,
+          "p_value": 0.530951,
+          "volatility": 9.0105,
+          "momentum": 15.13,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            9
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0013,
+          "confidence": 0.3186,
+          "slope": -0.013646,
+          "r_squared": 0.0016,
+          "p_value": 0.705258,
+          "volatility": 8.7643,
+          "momentum": 15.13,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 55.893,
+        "ma_14day": 53.82,
+        "ma_30day": 54.9846,
+        "ma_60day": 54.6162,
+        "ma_90day": 53.9537,
+        "ema_7day": 58.0545,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.0165
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.7201314829481316,
+        "trend_direction": "stable",
+        "volatility": 9.075037433105532,
+        "last_value": 69.5974,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 57.8614,
+            "lower_bound": 38.4162,
+            "upper_bound": 77.3067,
+            "confidence": 0.8458,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 58.4969,
+            "lower_bound": 32.6962,
+            "upper_bound": 84.2975,
+            "confidence": 0.7945,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 59.1323,
+            "lower_bound": 28.3438,
+            "upper_bound": 89.5783,
+            "confidence": 0.7417,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 59.7677,
+            "lower_bound": 24.6993,
+            "upper_bound": 92.0933,
+            "confidence": 0.6878,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 60.4032,
+            "lower_bound": 21.5072,
+            "upper_bound": 92.5412,
+            "confidence": 0.6329,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 61.0386,
+            "lower_bound": 18.6365,
+            "upper_bound": 92.9887,
+            "confidence": 0.5774,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 61.6741,
+            "lower_bound": 16.0092,
+            "upper_bound": 93.436,
+            "confidence": 0.5215,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "7": {
+      "indicator_id": 7,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0505,
+          "confidence": 0.2522,
+          "slope": -0.666432,
+          "r_squared": 0.0727,
+          "p_value": 0.558836,
+          "volatility": 4.7617,
+          "momentum": 6.94,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0197,
+          "confidence": 0.4472,
+          "slope": 0.106528,
+          "r_squared": 0.0247,
+          "p_value": 0.406729,
+          "volatility": 5.7921,
+          "momentum": -4.79,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "weak_rising",
+          "strength": 0.3133,
+          "confidence": 0.7482,
+          "slope": 0.149457,
+          "r_squared": 0.3705,
+          "p_value": 0.0,
+          "volatility": 5.0615,
+          "momentum": -4.79,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 69.4116,
+        "ma_14day": 71.4724,
+        "ma_30day": 70.2327,
+        "ma_60day": 68.2319,
+        "ma_90day": 65.8893,
+        "ema_7day": 69.4809,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9883
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.9177187817871213,
+        "trend_direction": "stable",
+        "volatility": 5.865067306860169,
+        "last_value": 72.4278,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 71.3219,
+            "lower_bound": 60.0557,
+            "upper_bound": 82.588,
+            "confidence": 0.9247,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 71.3863,
+            "lower_bound": 57.4021,
+            "upper_bound": 85.3705,
+            "confidence": 0.8647,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 71.4508,
+            "lower_bound": 55.2534,
+            "upper_bound": 87.6482,
+            "confidence": 0.8047,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 71.5152,
+            "lower_bound": 53.3661,
+            "upper_bound": 89.6644,
+            "confidence": 0.7448,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 71.5797,
+            "lower_bound": 51.6458,
+            "upper_bound": 90.9777,
+            "confidence": 0.685,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 71.6442,
+            "lower_bound": 50.0442,
+            "upper_bound": 91.6236,
+            "confidence": 0.6253,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 71.7086,
+            "lower_bound": 48.5325,
+            "upper_bound": 92.2261,
+            "confidence": 0.5658,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "8": {
+      "indicator_id": 8,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.1026,
+          "confidence": 0.363,
+          "slope": 1.410993,
+          "r_squared": 0.1618,
+          "p_value": 0.370959,
+          "volatility": 6.4223,
+          "momentum": 32.76,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0783,
+          "confidence": 0.6103,
+          "slope": 0.393213,
+          "r_squared": 0.1056,
+          "p_value": 0.079742,
+          "volatility": 9.9048,
+          "momentum": 4.07,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0127,
+          "confidence": 0.5109,
+          "slope": -0.042206,
+          "r_squared": 0.0157,
+          "p_value": 0.238614,
+          "volatility": 8.6691,
+          "momentum": 4.07,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 49.7185,
+        "ma_14day": 45.341,
+        "ma_30day": 42.0675,
+        "ma_60day": 42.6224,
+        "ma_90day": 43.5346,
+        "ema_7day": 49.5704,
+        "ma_signal": "bullish_crossover",
+        "ma_7_30_ratio": 1.1819
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.1673727512289248,
+        "trend_direction": "rising",
+        "volatility": 10.47320332922974,
+        "last_value": 57.8532,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 50.1994,
+            "lower_bound": 27.4029,
+            "upper_bound": 72.4869,
+            "confidence": 0.8622,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 50.8515,
+            "lower_bound": 24.0883,
+            "upper_bound": 75.7886,
+            "confidence": 0.8111,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 51.5036,
+            "lower_bound": 22.1426,
+            "upper_bound": 78.6565,
+            "confidence": 0.7585,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 52.1558,
+            "lower_bound": 20.4214,
+            "upper_bound": 81.2998,
+            "confidence": 0.7046,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 52.8079,
+            "lower_bound": 18.8437,
+            "upper_bound": 83.7997,
+            "confidence": 0.6495,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 53.46,
+            "lower_bound": 17.3679,
+            "upper_bound": 85.8521,
+            "confidence": 0.5935,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 54.1122,
+            "lower_bound": 15.9694,
+            "upper_bound": 87.0282,
+            "confidence": 0.537,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "9": {
+      "indicator_id": 9,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0386,
+          "confidence": 0.2247,
+          "slope": 0.602525,
+          "r_squared": 0.0556,
+          "p_value": 0.61062,
+          "volatility": 4.9648,
+          "momentum": 21.69,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0227,
+          "confidence": 0.4696,
+          "slope": -0.121859,
+          "r_squared": 0.0304,
+          "p_value": 0.356429,
+          "volatility": 5.9521,
+          "momentum": -9.34,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "falling",
+          "strength": 0.5196,
+          "confidence": 0.848,
+          "slope": -0.384418,
+          "r_squared": 0.62,
+          "p_value": 0.0,
+          "volatility": 7.8192,
+          "momentum": -9.34,
+          "is_significant": true,
+          "seasonality_detected": true,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 21.5921,
+        "ma_14day": 22.8661,
+        "ma_30day": 24.4274,
+        "ma_60day": 27.4042,
+        "ma_90day": 34.2952,
+        "ema_7day": 21.9727,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.8839
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "stable",
+        "volatility": 6.044848725430053,
+        "last_value": 19.2029,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 21.8684,
+            "lower_bound": 9.4344,
+            "upper_bound": 34.3025,
+            "confidence": 0.8802,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 21.9656,
+            "lower_bound": 6.0698,
+            "upper_bound": 38.4215,
+            "confidence": 0.8209,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 22.0628,
+            "lower_bound": 5.7099,
+            "upper_bound": 41.6785,
+            "confidence": 0.761,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 22.1601,
+            "lower_bound": 5.3516,
+            "upper_bound": 44.4894,
+            "confidence": 0.701,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 22.2573,
+            "lower_bound": 4.9943,
+            "upper_bound": 47.0152,
+            "confidence": 0.6411,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 22.3545,
+            "lower_bound": 4.6378,
+            "upper_bound": 49.3385,
+            "confidence": 0.5817,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 22.4517,
+            "lower_bound": 4.2817,
+            "upper_bound": 51.5082,
+            "confidence": 0.5228,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "10": {
+      "indicator_id": 10,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0655,
+          "confidence": 0.2777,
+          "slope": -0.962232,
+          "r_squared": 0.0903,
+          "p_value": 0.512602,
+          "volatility": 6.1087,
+          "momentum": -9.67,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0191,
+          "confidence": 0.4484,
+          "slope": -0.13652,
+          "r_squared": 0.025,
+          "p_value": 0.404098,
+          "volatility": 7.3809,
+          "momentum": -3.26,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0151,
+          "confidence": 0.5256,
+          "slope": 0.053315,
+          "r_squared": 0.0182,
+          "p_value": 0.204366,
+          "volatility": 10.1613,
+          "momentum": -3.26,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 47.9926,
+        "ma_14day": 49.3223,
+        "ma_30day": 49.2536,
+        "ma_60day": 47.9585,
+        "ma_90day": 47.6663,
+        "ema_7day": 47.3742,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9744
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.648715286096704,
+        "trend_direction": "stable",
+        "volatility": 7.474854279252242,
+        "last_value": 43.4715,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 46.4949,
+            "lower_bound": 32.0551,
+            "upper_bound": 60.9346,
+            "confidence": 0.904,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 46.3295,
+            "lower_bound": 27.9057,
+            "upper_bound": 64.7532,
+            "confidence": 0.8484,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 46.1641,
+            "lower_bound": 24.5526,
+            "upper_bound": 67.7755,
+            "confidence": 0.7926,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 45.9987,
+            "lower_bound": 21.6117,
+            "upper_bound": 70.3857,
+            "confidence": 0.7364,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 45.8333,
+            "lower_bound": 20.2766,
+            "upper_bound": 72.7324,
+            "confidence": 0.6799,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 45.6679,
+            "lower_bound": 19.5781,
+            "upper_bound": 73.9215,
+            "confidence": 0.623,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 45.5025,
+            "lower_bound": 18.9544,
+            "upper_bound": 74.9574,
+            "confidence": 0.5658,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "11": {
+      "indicator_id": 11,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0044,
+          "confidence": 0.1043,
+          "slope": -0.407325,
+          "r_squared": 0.0066,
+          "p_value": 0.862543,
+          "volatility": 9.995,
+          "momentum": 8.82,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.007,
+          "confidence": 0.3597,
+          "slope": -0.140709,
+          "r_squared": 0.0094,
+          "p_value": 0.610118,
+          "volatility": 12.4969,
+          "momentum": -25.89,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            12
+          ]
+        },
+        "long_term": {
+          "direction": "falling",
+          "strength": 0.1523,
+          "confidence": 0.6774,
+          "slope": -0.262283,
+          "r_squared": 0.1935,
+          "p_value": 1.4e-05,
+          "volatility": 13.9106,
+          "momentum": -25.89,
+          "is_significant": true,
+          "seasonality_detected": true,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 22.1904,
+        "ma_14day": 20.6505,
+        "ma_30day": 24.2258,
+        "ma_60day": 22.8872,
+        "ma_90day": 28.366,
+        "ema_7day": 21.0524,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.916
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "stable",
+        "volatility": 12.556069024836379,
+        "last_value": 12.8876,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 18.5758,
+            "lower_bound": 3.8239,
+            "upper_bound": 37.8604,
+            "confidence": 0.7721,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 18.5795,
+            "lower_bound": 3.7786,
+            "upper_bound": 43.85,
+            "confidence": 0.7202,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 18.5833,
+            "lower_bound": 3.7439,
+            "upper_bound": 48.5779,
+            "confidence": 0.6674,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 18.587,
+            "lower_bound": 3.7147,
+            "upper_bound": 52.6526,
+            "confidence": 0.6142,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 18.5907,
+            "lower_bound": 3.6889,
+            "upper_bound": 56.3099,
+            "confidence": 0.5607,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 18.5945,
+            "lower_bound": 3.6656,
+            "upper_bound": 59.6707,
+            "confidence": 0.5074,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 18.5982,
+            "lower_bound": 3.6441,
+            "upper_bound": 61.6976,
+            "confidence": 0.4545,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "12": {
+      "indicator_id": 12,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.2551,
+          "confidence": 0.5134,
+          "slope": 1.517207,
+          "r_squared": 0.3378,
+          "p_value": 0.171117,
+          "volatility": 4.2482,
+          "momentum": 19.64,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0036,
+          "confidence": 0.315,
+          "slope": 0.089927,
+          "r_squared": 0.0048,
+          "p_value": 0.717325,
+          "volatility": 11.262,
+          "momentum": -5.47,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            12
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.063,
+          "confidence": 0.6271,
+          "slope": -0.132494,
+          "r_squared": 0.0762,
+          "p_value": 0.008441,
+          "volatility": 11.9832,
+          "momentum": -5.47,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 44.0538,
+        "ma_14day": 47.9998,
+        "ma_30day": 48.3042,
+        "ma_60day": 47.7385,
+        "ma_90day": 50.7584,
+        "ema_7day": 46.2052,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.912
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.5577477730532288,
+        "trend_direction": "stable",
+        "volatility": 11.288855473440758,
+        "last_value": 47.8584,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 46.3202,
+            "lower_bound": 29.4259,
+            "upper_bound": 63.2146,
+            "confidence": 0.8925,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 46.2645,
+            "lower_bound": 26.8473,
+            "upper_bound": 69.9055,
+            "confidence": 0.8298,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 46.2088,
+            "lower_bound": 25.7781,
+            "upper_bound": 71.7947,
+            "confidence": 0.7673,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 46.153,
+            "lower_bound": 24.8864,
+            "upper_bound": 72.9521,
+            "confidence": 0.7055,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 46.0973,
+            "lower_bound": 24.1083,
+            "upper_bound": 73.996,
+            "confidence": 0.6443,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 46.0415,
+            "lower_bound": 23.4108,
+            "upper_bound": 74.9593,
+            "confidence": 0.5839,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 45.9858,
+            "lower_bound": 22.7744,
+            "upper_bound": 75.8616,
+            "confidence": 0.5245,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "13": {
+      "indicator_id": 13,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.1867,
+          "confidence": 0.454,
+          "slope": -2.088521,
+          "r_squared": 0.2603,
+          "p_value": 0.242032,
+          "volatility": 7.0412,
+          "momentum": -0.93,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0419,
+          "confidence": 0.5387,
+          "slope": -0.227078,
+          "r_squared": 0.0558,
+          "p_value": 0.208946,
+          "volatility": 8.0867,
+          "momentum": -6.63,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            8
+          ]
+        },
+        "long_term": {
+          "direction": "weak_rising",
+          "strength": 0.2931,
+          "confidence": 0.7406,
+          "slope": 0.232949,
+          "r_squared": 0.3515,
+          "p_value": 0.0,
+          "volatility": 8.2204,
+          "momentum": -6.63,
+          "is_significant": true,
+          "seasonality_detected": true,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 58.6433,
+        "ma_14day": 56.2929,
+        "ma_30day": 59.3418,
+        "ma_60day": 55.608,
+        "ma_90day": 51.8993,
+        "ema_7day": 56.0693,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9882
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.4913613297717504,
+        "trend_direction": "stable",
+        "volatility": 8.322136337159268,
+        "last_value": 56.0914,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 55.9951,
+            "lower_bound": 39.5683,
+            "upper_bound": 72.4218,
+            "confidence": 0.9367,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 55.871,
+            "lower_bound": 34.5469,
+            "upper_bound": 77.1951,
+            "confidence": 0.8756,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 55.747,
+            "lower_bound": 30.5403,
+            "upper_bound": 80.9536,
+            "confidence": 0.8146,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 55.6229,
+            "lower_bound": 27.0589,
+            "upper_bound": 83.3675,
+            "confidence": 0.7537,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 55.4988,
+            "lower_bound": 23.9132,
+            "upper_bound": 84.7626,
+            "confidence": 0.6931,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 55.3748,
+            "lower_bound": 21.9637,
+            "upper_bound": 85.232,
+            "confidence": 0.6326,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 55.2507,
+            "lower_bound": 20.3627,
+            "upper_bound": 85.7007,
+            "confidence": 0.5723,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "14": {
+      "indicator_id": 14,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.2107,
+          "confidence": 0.4682,
+          "slope": 1.503336,
+          "r_squared": 0.2779,
+          "p_value": 0.224052,
+          "volatility": 4.8467,
+          "momentum": 31.13,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.025,
+          "confidence": 0.4778,
+          "slope": -0.127788,
+          "r_squared": 0.0328,
+          "p_value": 0.33837,
+          "volatility": 6.0086,
+          "momentum": -0.88,
+          "is_significant": false,
+          "seasonality_detected": true,
+          "change_points": [
+            21
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0035,
+          "confidence": 0.3862,
+          "slope": -0.014897,
+          "r_squared": 0.0043,
+          "p_value": 0.53887,
+          "volatility": 5.8845,
+          "momentum": -0.88,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 48.5612,
+        "ma_14day": 48.4933,
+        "ma_30day": 49.7466,
+        "ma_60day": 48.364,
+        "ma_90day": 48.73,
+        "ema_7day": 49.4108,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9762
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.6760706035002133,
+        "trend_direction": "stable",
+        "volatility": 6.109594642110064,
+        "last_value": 48.7602,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 48.6516,
+            "lower_bound": 36.665,
+            "upper_bound": 60.6382,
+            "confidence": 0.9233,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 48.7729,
+            "lower_bound": 33.849,
+            "upper_bound": 63.6967,
+            "confidence": 0.8602,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 48.8941,
+            "lower_bound": 31.5838,
+            "upper_bound": 66.2045,
+            "confidence": 0.7969,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 49.0154,
+            "lower_bound": 29.6037,
+            "upper_bound": 68.4272,
+            "confidence": 0.734,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 49.1367,
+            "lower_bound": 27.8057,
+            "upper_bound": 70.4676,
+            "confidence": 0.6717,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 49.2579,
+            "lower_bound": 26.1372,
+            "upper_bound": 72.3787,
+            "confidence": 0.6101,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 49.3792,
+            "lower_bound": 24.5667,
+            "upper_bound": 74.1917,
+            "confidence": 0.5492,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "15": {
+      "indicator_id": 15,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0214,
+          "confidence": 0.1745,
+          "slope": 0.451929,
+          "r_squared": 0.03,
+          "p_value": 0.710445,
+          "volatility": 5.1414,
+          "momentum": 24.49,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0078,
+          "confidence": 0.3634,
+          "slope": 0.056035,
+          "r_squared": 0.0099,
+          "p_value": 0.601314,
+          "volatility": 4.856,
+          "momentum": 13.4,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            5
+          ]
+        },
+        "long_term": {
+          "direction": "rising",
+          "strength": 0.2042,
+          "confidence": 0.6965,
+          "slope": 0.10265,
+          "r_squared": 0.2413,
+          "p_value": 1e-06,
+          "volatility": 4.7289,
+          "momentum": 13.4,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 71.0824,
+        "ma_14day": 73.2796,
+        "ma_30day": 72.6253,
+        "ma_60day": 70.0103,
+        "ma_90day": 68.6723,
+        "ema_7day": 72.3965,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 0.9788
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.9952293705122904,
+        "trend_direction": "stable",
+        "volatility": 4.880205131189556,
+        "last_value": 81.1322,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 75.0523,
+            "lower_bound": 65.9951,
+            "upper_bound": 84.1095,
+            "confidence": 0.8959,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 75.2355,
+            "lower_bound": 62.9602,
+            "upper_bound": 87.5109,
+            "confidence": 0.8393,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 75.4188,
+            "lower_bound": 60.6391,
+            "upper_bound": 90.1984,
+            "confidence": 0.7823,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 75.602,
+            "lower_bound": 58.6876,
+            "upper_bound": 91.9603,
+            "confidence": 0.7249,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 75.7853,
+            "lower_bound": 56.9723,
+            "upper_bound": 92.9456,
+            "confidence": 0.6673,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 75.9686,
+            "lower_bound": 55.4247,
+            "upper_bound": 93.185,
+            "confidence": 0.6095,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 76.1518,
+            "lower_bound": 54.0042,
+            "upper_bound": 93.3507,
+            "confidence": 0.5517,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "16": {
+      "indicator_id": 16,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0556,
+          "confidence": 0.2621,
+          "slope": -0.412446,
+          "r_squared": 0.0793,
+          "p_value": 0.540767,
+          "volatility": 2.8115,
+          "momentum": -45.07,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "weak_rising",
+          "strength": 0.1616,
+          "confidence": 0.6791,
+          "slope": 0.197337,
+          "r_squared": 0.2089,
+          "p_value": 0.011102,
+          "volatility": 3.3234,
+          "momentum": -9.17,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": [
+            4
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0166,
+          "confidence": 0.5386,
+          "slope": 0.022539,
+          "r_squared": 0.0209,
+          "p_value": 0.17427,
+          "volatility": 4.0103,
+          "momentum": -9.17,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 55.0411,
+        "ma_14day": 55.8087,
+        "ma_30day": 54.2471,
+        "ma_60day": 54.8988,
+        "ma_90day": 54.6204,
+        "ema_7day": 54.5068,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.0146
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 1.0,
+        "trend_direction": "rising",
+        "volatility": 3.7366617538474984,
+        "last_value": 48.8109,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 53.6822,
+            "lower_bound": 46.0592,
+            "upper_bound": 61.3053,
+            "confidence": 0.8871,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 53.4969,
+            "lower_bound": 42.9322,
+            "upper_bound": 64.0617,
+            "confidence": 0.8301,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 53.3116,
+            "lower_bound": 40.4755,
+            "upper_bound": 66.1478,
+            "confidence": 0.7729,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 53.1263,
+            "lower_bound": 38.3658,
+            "upper_bound": 67.8868,
+            "confidence": 0.7155,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 52.941,
+            "lower_bound": 36.4778,
+            "upper_bound": 69.4042,
+            "confidence": 0.6581,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 52.7557,
+            "lower_bound": 34.7474,
+            "upper_bound": 70.764,
+            "confidence": 0.6006,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 52.5704,
+            "lower_bound": 33.1363,
+            "upper_bound": 72.0045,
+            "confidence": 0.5432,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "17": {
+      "indicator_id": 17,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.167,
+          "confidence": 0.4297,
+          "slope": 1.123596,
+          "r_squared": 0.2318,
+          "p_value": 0.274053,
+          "volatility": 4.0915,
+          "momentum": 38.27,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0005,
+          "confidence": 0.2452,
+          "slope": 0.02441,
+          "r_squared": 0.0007,
+          "p_value": 0.887612,
+          "volatility": 7.8388,
+          "momentum": 20.85,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            15
+          ]
+        },
+        "long_term": {
+          "direction": "weak_falling",
+          "strength": 0.1013,
+          "confidence": 0.6505,
+          "slope": -0.130787,
+          "r_squared": 0.1269,
+          "p_value": 0.00057,
+          "volatility": 8.9136,
+          "momentum": 20.85,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 25.6364,
+        "ma_14day": 20.6432,
+        "ma_30day": 22.5539,
+        "ma_60day": 26.134,
+        "ma_90day": 27.6265,
+        "ema_7day": 25.7077,
+        "ma_signal": "bullish_crossover",
+        "ma_7_30_ratio": 1.1367
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "stable",
+        "volatility": 7.841677701271726,
+        "last_value": 34.0502,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 26.8323,
+            "lower_bound": 14.5061,
+            "upper_bound": 39.1585,
+            "confidence": 0.7898,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 27.091,
+            "lower_bound": 12.194,
+            "upper_bound": 42.334,
+            "confidence": 0.7474,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 27.3496,
+            "lower_bound": 11.5685,
+            "upper_bound": 44.9741,
+            "confidence": 0.7026,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 27.6083,
+            "lower_bound": 10.9461,
+            "upper_bound": 47.3369,
+            "confidence": 0.6558,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 27.8669,
+            "lower_bound": 10.5168,
+            "upper_bound": 49.5227,
+            "confidence": 0.607,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 28.1256,
+            "lower_bound": 10.5036,
+            "upper_bound": 51.5826,
+            "confidence": 0.5567,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 28.3842,
+            "lower_bound": 10.4915,
+            "upper_bound": 53.5471,
+            "confidence": 0.5052,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "18": {
+      "indicator_id": 18,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0562,
+          "confidence": 0.2654,
+          "slope": 0.535311,
+          "r_squared": 0.0815,
+          "p_value": 0.534752,
+          "volatility": 3.5932,
+          "momentum": -15.18,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0182,
+          "confidence": 0.4408,
+          "slope": 0.072843,
+          "r_squared": 0.0233,
+          "p_value": 0.42113,
+          "volatility": 4.0862,
+          "momentum": 4.3,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "weak_rising",
+          "strength": 0.1638,
+          "confidence": 0.6768,
+          "slope": 0.087514,
+          "r_squared": 0.192,
+          "p_value": 1.6e-05,
+          "volatility": 4.6642,
+          "momentum": 4.3,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 81.2958,
+        "ma_14day": 79.8403,
+        "ma_30day": 78.7973,
+        "ma_60day": 78.3786,
+        "ma_90day": 76.7302,
+        "ema_7day": 81.2252,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.0317
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.9656247034076207,
+        "trend_direction": "stable",
+        "volatility": 4.134567908942305,
+        "last_value": 78.6998,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 79.6324,
+            "lower_bound": 73.0633,
+            "upper_bound": 86.1112,
+            "confidence": 0.9307,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 79.4955,
+            "lower_bound": 70.7294,
+            "upper_bound": 87.9027,
+            "confidence": 0.8707,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 79.3586,
+            "lower_bound": 68.8725,
+            "upper_bound": 89.2791,
+            "confidence": 0.8105,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 79.2217,
+            "lower_bound": 67.2623,
+            "upper_bound": 90.4404,
+            "confidence": 0.7503,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 79.0848,
+            "lower_bound": 65.81,
+            "upper_bound": 91.4645,
+            "confidence": 0.69,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 78.9479,
+            "lower_bound": 64.4697,
+            "upper_bound": 92.391,
+            "confidence": 0.6298,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 78.8111,
+            "lower_bound": 63.2143,
+            "upper_bound": 92.5641,
+            "confidence": 0.5698,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "19": {
+      "indicator_id": 19,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "strong_falling",
+          "strength": 0.6309,
+          "confidence": 0.7453,
+          "slope": -4.299579,
+          "r_squared": 0.7574,
+          "p_value": 0.010841,
+          "volatility": 4.8668,
+          "momentum": -61.65,
+          "is_significant": true,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0693,
+          "confidence": 0.5913,
+          "slope": -0.278938,
+          "r_squared": 0.0886,
+          "p_value": 0.110217,
+          "volatility": 7.745,
+          "momentum": -23.75,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0169,
+          "confidence": 0.5399,
+          "slope": -0.043697,
+          "r_squared": 0.0212,
+          "p_value": 0.171288,
+          "volatility": 7.7207,
+          "momentum": -23.75,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 55.682,
+        "ma_14day": 56.7539,
+        "ma_30day": 59.6439,
+        "ma_60day": 59.7413,
+        "ma_90day": 60.1106,
+        "ema_7day": 51.7119,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.9336
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.6383360649570495,
+        "trend_direction": "stable",
+        "volatility": 8.112551099284367,
+        "last_value": 37.0418,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 50.3278,
+            "lower_bound": 34.5958,
+            "upper_bound": 66.0599,
+            "confidence": 0.8056,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 49.394,
+            "lower_bound": 28.7356,
+            "upper_bound": 70.0523,
+            "confidence": 0.759,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 48.4601,
+            "lower_bound": 24.0104,
+            "upper_bound": 73.0026,
+            "confidence": 0.7108,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 47.5263,
+            "lower_bound": 20.3672,
+            "upper_bound": 75.0282,
+            "confidence": 0.6611,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 46.5924,
+            "lower_bound": 17.0006,
+            "upper_bound": 76.6509,
+            "confidence": 0.61,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 45.6585,
+            "lower_bound": 16.4346,
+            "upper_bound": 78.0772,
+            "confidence": 0.5576,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 44.7247,
+            "lower_bound": 15.8983,
+            "upper_bound": 79.3547,
+            "confidence": 0.5041,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "20": {
+      "indicator_id": 20,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0728,
+          "confidence": 0.2913,
+          "slope": 2.154407,
+          "r_squared": 0.1003,
+          "p_value": 0.488838,
+          "volatility": 12.9029,
+          "momentum": 22.76,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0951,
+          "confidence": 0.6248,
+          "slope": -0.719107,
+          "r_squared": 0.1213,
+          "p_value": 0.059293,
+          "volatility": 16.753,
+          "momentum": 4.97,
+          "is_significant": false,
+          "seasonality_detected": true,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0185,
+          "confidence": 0.546,
+          "slope": -0.095593,
+          "r_squared": 0.0226,
+          "p_value": 0.157571,
+          "volatility": 16.3436,
+          "momentum": 4.97,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 27.8682,
+        "ma_14day": 36.9451,
+        "ma_30day": 38.3152,
+        "ma_60day": 41.1893,
+        "ma_90day": 40.8589,
+        "ema_7day": 32.3113,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.7273
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "falling",
+        "volatility": 17.8718425461382,
+        "last_value": 50.6952,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 32.8183,
+            "lower_bound": 7.1195,
+            "upper_bound": 65.0571,
+            "confidence": 0.7077,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 32.759,
+            "lower_bound": 7.0982,
+            "upper_bound": 72.5126,
+            "confidence": 0.6551,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 32.6997,
+            "lower_bound": 7.0819,
+            "upper_bound": 76.4185,
+            "confidence": 0.6017,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 32.6404,
+            "lower_bound": 7.0682,
+            "upper_bound": 79.0446,
+            "confidence": 0.5481,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 32.5811,
+            "lower_bound": 7.0561,
+            "upper_bound": 80.6036,
+            "confidence": 0.4949,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 32.5218,
+            "lower_bound": 7.0451,
+            "upper_bound": 81.904,
+            "confidence": 0.4426,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 32.4625,
+            "lower_bound": 7.035,
+            "upper_bound": 83.2036,
+            "confidence": 0.4,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "21": {
+      "indicator_id": 21,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.021,
+          "confidence": 0.1779,
+          "slope": -1.448943,
+          "r_squared": 0.0315,
+          "p_value": 0.703418,
+          "volatility": 16.0684,
+          "momentum": -10.72,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0727,
+          "confidence": 0.5983,
+          "slope": -0.691819,
+          "r_squared": 0.0944,
+          "p_value": 0.098581,
+          "volatility": 18.5442,
+          "momentum": -6.73,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0197,
+          "confidence": 0.5592,
+          "slope": -0.140991,
+          "r_squared": 0.0261,
+          "p_value": 0.128075,
+          "volatility": 22.367,
+          "momentum": -6.73,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 19.5809,
+        "ma_14day": 19.7281,
+        "ma_30day": 27.855,
+        "ma_60day": 32.9103,
+        "ma_90day": 33.5582,
+        "ema_7day": 16.5212,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.703
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "falling",
+        "volatility": 19.487005812285673,
+        "last_value": 0.0,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 11.2881,
+            "lower_bound": 0.0,
+            "upper_bound": 37.6263,
+            "confidence": 0.47,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 10.8033,
+            "lower_bound": 0.0,
+            "upper_bound": 45.287,
+            "confidence": 0.44,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 10.3186,
+            "lower_bound": 0.0,
+            "upper_bound": 51.2334,
+            "confidence": 0.41,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 9.8339,
+            "lower_bound": 0.0,
+            "upper_bound": 55.5784,
+            "confidence": 0.4,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 9.3491,
+            "lower_bound": 0.0,
+            "upper_bound": 58.3069,
+            "confidence": 0.4,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 8.8644,
+            "lower_bound": 0.0,
+            "upper_bound": 60.8161,
+            "confidence": 0.4,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 8.3797,
+            "lower_bound": 0.0,
+            "upper_bound": 62.3117,
+            "confidence": 0.4,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "22": {
+      "indicator_id": 22,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.1357,
+          "confidence": 0.4017,
+          "slope": 1.951711,
+          "r_squared": 0.2008,
+          "p_value": 0.313245,
+          "volatility": 7.7866,
+          "momentum": 1.61,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "weak_falling",
+          "strength": 0.2026,
+          "confidence": 0.699,
+          "slope": -0.715139,
+          "r_squared": 0.2521,
+          "p_value": 0.004693,
+          "volatility": 10.6606,
+          "momentum": 1.49,
+          "is_significant": true,
+          "seasonality_detected": true,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0008,
+          "confidence": 0.2956,
+          "slope": 0.016019,
+          "r_squared": 0.001,
+          "p_value": 0.761934,
+          "volatility": 12.8465,
+          "momentum": 1.49,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 18.1462,
+        "ma_14day": 26.4892,
+        "ma_30day": 30.2931,
+        "ma_60day": 32.4124,
+        "ma_90day": 31.1393,
+        "ema_7day": 22.1319,
+        "ma_signal": "bearish_crossover",
+        "ma_7_30_ratio": 0.599
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "falling",
+        "volatility": 12.327338824376852,
+        "last_value": 26.3551,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 21.3512,
+            "lower_bound": 8.2909,
+            "upper_bound": 42.5683,
+            "confidence": 0.782,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 20.8769,
+            "lower_bound": 7.186,
+            "upper_bound": 49.5763,
+            "confidence": 0.7115,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 20.4025,
+            "lower_bound": 7.1672,
+            "upper_bound": 54.9288,
+            "confidence": 0.6431,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 19.9282,
+            "lower_bound": 7.1514,
+            "upper_bound": 59.4244,
+            "confidence": 0.5768,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 19.4538,
+            "lower_bound": 7.1374,
+            "upper_bound": 63.3723,
+            "confidence": 0.5129,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 18.9795,
+            "lower_bound": 7.1248,
+            "upper_bound": 65.4585,
+            "confidence": 0.4513,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 18.5051,
+            "lower_bound": 7.1132,
+            "upper_bound": 66.4468,
+            "confidence": 0.4,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "23": {
+      "indicator_id": 23,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.3661,
+          "confidence": 0.5938,
+          "slope": 2.259321,
+          "r_squared": 0.4611,
+          "p_value": 0.093418,
+          "volatility": 4.8847,
+          "momentum": 53.98,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.0528,
+          "confidence": 0.5596,
+          "slope": -0.194971,
+          "r_squared": 0.0668,
+          "p_value": 0.167821,
+          "volatility": 6.3066,
+          "momentum": 12.7,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0031,
+          "confidence": 0.3756,
+          "slope": -0.012863,
+          "r_squared": 0.0038,
+          "p_value": 0.564733,
+          "volatility": 5.4236,
+          "momentum": 12.7,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 25.0707,
+        "ma_14day": 21.8084,
+        "ma_30day": 24.1232,
+        "ma_60day": 24.2245,
+        "ma_90day": 24.3588,
+        "ema_7day": 26.3708,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.0393
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.0,
+        "trend_direction": "stable",
+        "volatility": 6.5284560313854705,
+        "last_value": 36.6457,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 27.4047,
+            "lower_bound": 14.6325,
+            "upper_bound": 40.177,
+            "confidence": 0.7521,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 28.0583,
+            "lower_bound": 10.9092,
+            "upper_bound": 45.2074,
+            "confidence": 0.7104,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 28.7119,
+            "lower_bound": 8.9285,
+            "upper_bound": 49.2792,
+            "confidence": 0.6649,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 29.3654,
+            "lower_bound": 8.4043,
+            "upper_bound": 52.8547,
+            "confidence": 0.6166,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 30.019,
+            "lower_bound": 8.1,
+            "upper_bound": 56.1132,
+            "confidence": 0.566,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 30.6726,
+            "lower_bound": 7.8075,
+            "upper_bound": 59.1465,
+            "confidence": 0.5142,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 31.3262,
+            "lower_bound": 7.801,
+            "upper_bound": 62.009,
+            "confidence": 0.4617,
+            "method": "ensemble"
+          }
+        ]
+      }
+    },
+    "24": {
+      "indicator_id": 24,
+      "trend_analysis": {
+        "overall_outlook": "neutral",
+        "trend_alignment": false,
+        "short_term": {
+          "direction": "stable",
+          "strength": 0.0573,
+          "confidence": 0.2651,
+          "slope": -0.738343,
+          "r_squared": 0.0813,
+          "p_value": 0.535307,
+          "volatility": 4.963,
+          "momentum": -0.91,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": []
+        },
+        "medium_term": {
+          "direction": "stable",
+          "strength": 0.006,
+          "confidence": 0.3451,
+          "slope": -0.046032,
+          "r_squared": 0.0077,
+          "p_value": 0.644822,
+          "volatility": 4.5242,
+          "momentum": -5.1,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            24
+          ]
+        },
+        "long_term": {
+          "direction": "stable",
+          "strength": 0.0279,
+          "confidence": 0.5815,
+          "slope": 0.037897,
+          "r_squared": 0.0343,
+          "p_value": 0.080611,
+          "volatility": 5.2253,
+          "momentum": -5.1,
+          "is_significant": false,
+          "seasonality_detected": false,
+          "change_points": [
+            25
+          ]
+        }
+      },
+      "moving_averages": {
+        "ma_7day": 33.5234,
+        "ma_14day": 32.165,
+        "ma_30day": 32.6434,
+        "ma_60day": 31.7434,
+        "ma_90day": 30.9597,
+        "ema_7day": 32.2716,
+        "ma_signal": "neutral",
+        "ma_7_30_ratio": 1.027
+      },
+      "forecast": {
+        "method": "ensemble",
+        "model_quality": 0.6552858968086627,
+        "trend_direction": "stable",
+        "volatility": 4.5417287413849605,
+        "last_value": 31.8091,
+        "predictions": [
+          {
+            "days_ahead": 1,
+            "forecast_value": 31.959,
+            "lower_bound": 22.5427,
+            "upper_bound": 41.3752,
+            "confidence": 0.9341,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 2,
+            "forecast_value": 31.9191,
+            "lower_bound": 19.51,
+            "upper_bound": 44.3282,
+            "confidence": 0.8741,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 3,
+            "forecast_value": 31.8792,
+            "lower_bound": 17.1143,
+            "upper_bound": 46.6442,
+            "confidence": 0.8141,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 4,
+            "forecast_value": 31.8394,
+            "lower_bound": 15.0483,
+            "upper_bound": 48.6305,
+            "confidence": 0.7541,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 5,
+            "forecast_value": 31.7995,
+            "lower_bound": 13.3081,
+            "upper_bound": 50.406,
+            "confidence": 0.694,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 6,
+            "forecast_value": 31.7597,
+            "lower_bound": 12.6201,
+            "upper_bound": 52.0319,
+            "confidence": 0.634,
+            "method": "ensemble"
+          },
+          {
+            "days_ahead": 7,
+            "forecast_value": 31.7198,
+            "lower_bound": 12.3455,
+            "upper_bound": 53.5444,
+            "confidence": 0.5741,
+            "method": "ensemble"
+          }
+        ]
+      }
+    }
+  },
+  "summary": {
+    "total_indicators": 24,
+    "forecasted_indicators": 24,
+    "average_model_quality": 0.421,
+    "min_model_quality": 0.0,
+    "max_model_quality": 1.0,
+    "outlook_distribution": {
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 24
+    }
+  }
+}

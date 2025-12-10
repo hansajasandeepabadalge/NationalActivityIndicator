@@ -1,0 +1,16 @@
+{
+    "company_id": "mock_logistics_001",
+    "company_name": "XYZ Logistics (Mock)",
+    "industry": "logistics",
+    "sub_industry": "freight_cargo",
+    "business_scale": {
+        "size": "medium",
+        "employees": 150,
+        "fleet_size": 45
+    },
+    "critical_dependencies": {
+        "fuel": "critical",
+        "road_access": "critical",
+        "port_operations": "high"
+    }
+}

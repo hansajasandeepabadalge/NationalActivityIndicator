@@ -1,0 +1,812 @@
+[
+  {
+    "article_id": "env_000",
+    "content": {
+      "title": "Weather Alert: Drought warning issued",
+      "body": "Heavy rain expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-24T18:09:51.672207",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "drought",
+        "pollution"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 290,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_001",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-17T18:09:51.672224",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "rain",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.92,
+      "word_count": 407,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_002",
+    "content": {
+      "title": "Weather Alert: Drought warning issued",
+      "body": "Heavy weather expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-11T18:09:51.672230",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "pollution",
+        "landslide",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 209,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_003",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-10T18:09:51.672235",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "weather",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 473,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_004",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy weather expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-20T18:09:51.672239",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "flood",
+        "pollution"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 194,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_005",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy rain expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-08T18:09:51.672243",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "flood",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.89,
+      "word_count": 408,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_006",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy rain expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.85,
+      "publish_timestamp": "2025-11-30T18:09:51.672247",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "weather",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 216,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_007",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy landslide expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.77,
+      "publish_timestamp": "2025-11-10T18:09:51.672251",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "weather",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 406,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_008",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.74,
+      "publish_timestamp": "2025-11-19T18:09:51.672256",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "pollution",
+        "weather",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.91,
+      "word_count": 432,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_009",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-11-19T18:09:51.672260",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "weather",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 163,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_010",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-09T18:09:51.672264",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "weather",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.75,
+      "word_count": 447,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_011",
+    "content": {
+      "title": "Weather Alert: Drought warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-25T18:09:51.672268",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "rain",
+        "flood"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.86,
+      "word_count": 407,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_012",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.84,
+      "publish_timestamp": "2025-11-16T18:09:51.672272",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "landslide",
+        "drought",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.73,
+      "word_count": 131,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_013",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy landslide expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.8,
+      "publish_timestamp": "2025-11-08T18:09:51.672276",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "rain",
+        "pollution",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.93,
+      "word_count": 282,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_014",
+    "content": {
+      "title": "Weather Alert: Drought warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.87,
+      "publish_timestamp": "2025-11-24T18:09:51.672281",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "drought",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 105,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_015",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy weather expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.72,
+      "publish_timestamp": "2025-11-05T18:09:51.672284",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "drought",
+        "drought",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.94,
+      "word_count": 296,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_016",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.82,
+      "publish_timestamp": "2025-11-09T18:09:51.672288",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "rain",
+        "flood",
+        "rain"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.77,
+      "word_count": 289,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_017",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-07T18:09:51.672293",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "rain",
+        "rain",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.87,
+      "word_count": 282,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_018",
+    "content": {
+      "title": "Weather Alert: Rain warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.73,
+      "publish_timestamp": "2025-11-16T18:09:51.672297",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "drought",
+        "flood",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.72,
+      "word_count": 298,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_019",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.94,
+      "publish_timestamp": "2025-11-09T18:09:51.672301",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "weather",
+        "flood"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.84,
+      "word_count": 156,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_020",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-14T18:09:51.672305",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "landslide",
+        "flood",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.95,
+      "word_count": 197,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_021",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.89,
+      "publish_timestamp": "2025-11-02T18:09:51.672308",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "flood",
+        "landslide",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 172,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_022",
+    "content": {
+      "title": "Weather Alert: Weather warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.7,
+      "publish_timestamp": "2025-11-29T18:09:51.672312",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "drought",
+        "pollution",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.79,
+      "word_count": 209,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_023",
+    "content": {
+      "title": "Weather Alert: Rain warning issued",
+      "body": "Heavy weather expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-13T18:09:51.672317",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "landslide",
+        "landslide",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 442,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_024",
+    "content": {
+      "title": "Weather Alert: Landslide warning issued",
+      "body": "Heavy weather expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.76,
+      "publish_timestamp": "2025-11-05T18:09:51.672321",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "drought",
+        "flood",
+        "weather"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.85,
+      "word_count": 176,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_025",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy pollution expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Ada Derana",
+      "source_credibility": 0.92,
+      "publish_timestamp": "2025-11-14T18:09:51.672325",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "weather",
+        "flood"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 320,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_026",
+    "content": {
+      "title": "Weather Alert: Flood warning issued",
+      "body": "Heavy drought expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.78,
+      "publish_timestamp": "2025-11-21T18:09:51.672329",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "pollution",
+        "weather",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.8,
+      "word_count": 214,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_027",
+    "content": {
+      "title": "Weather Alert: Landslide warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "Daily Mirror",
+      "source_credibility": 0.88,
+      "publish_timestamp": "2025-11-04T18:09:51.672333",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "rain",
+        "drought",
+        "flood"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 235,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_028",
+    "content": {
+      "title": "Weather Alert: Pollution warning issued",
+      "body": "Heavy rain expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "The Island",
+      "source_credibility": 0.75,
+      "publish_timestamp": "2025-11-20T18:09:51.672337",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "pollution",
+        "weather",
+        "drought"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.71,
+      "word_count": 339,
+      "is_duplicate": false
+    }
+  },
+  {
+    "article_id": "env_029",
+    "content": {
+      "title": "Weather Alert: Rain warning issued",
+      "body": "Heavy flood expected in coming days. Disaster Management Center advises caution.",
+      "summary": "Placeholder Summary"
+    },
+    "metadata": {
+      "source": "NewsFirst",
+      "source_credibility": 0.9,
+      "publish_timestamp": "2025-11-30T18:09:51.672341",
+      "language_original": "en"
+    },
+    "initial_classification": {
+      "keywords": [
+        "weather",
+        "pollution",
+        "landslide"
+      ],
+      "detected_language": "en"
+    },
+    "quality": {
+      "credibility_score": 0.9,
+      "word_count": 186,
+      "is_duplicate": false
+    }
+  }
+]

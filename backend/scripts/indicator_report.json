@@ -1,0 +1,851 @@
+{
+  "timestamp": "2025-12-09T23:35:46.846861",
+  "national_activity_index": {
+    "value": 81.0,
+    "interpretation": "Very High Activity - Strong positive indicators across all dimensions",
+    "total_categories": 6,
+    "total_indicators": 105,
+    "indicators_with_data": 95
+  },
+  "category_composites": {
+    "Political": {
+      "composite_score": 81.7,
+      "total_indicators": 18,
+      "active_indicators": 17,
+      "avg_confidence": 0.4,
+      "total_articles": 98
+    },
+    "Economic": {
+      "composite_score": 78.0,
+      "total_indicators": 25,
+      "active_indicators": 24,
+      "avg_confidence": 0.63,
+      "total_articles": 177
+    },
+    "Social": {
+      "composite_score": 82.8,
+      "total_indicators": 17,
+      "active_indicators": 14,
+      "avg_confidence": 0.55,
+      "total_articles": 122
+    },
+    "Technological": {
+      "composite_score": 81.1,
+      "total_indicators": 14,
+      "active_indicators": 12,
+      "avg_confidence": 0.46,
+      "total_articles": 81
+    },
+    "Environmental": {
+      "composite_score": 86.5,
+      "total_indicators": 16,
+      "active_indicators": 16,
+      "avg_confidence": 0.6,
+      "total_articles": 149
+    },
+    "Legal": {
+      "composite_score": 76.3,
+      "total_indicators": 15,
+      "active_indicators": 12,
+      "avg_confidence": 0.31,
+      "total_articles": 79
+    }
+  },
+  "indicators_by_category": {
+    "Political": {
+      "subcategories": {
+        "Security Situation": [
+          {
+            "name": "Border Security Mentions",
+            "value": 75.0,
+            "confidence": 0.52,
+            "articles": 5
+          },
+          {
+            "name": "Internal Conflict Signals",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Law Order Incidents",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 13
+          }
+        ],
+        "Government Stability": [
+          {
+            "name": "Cabinet Changes Frequency",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 11
+          },
+          {
+            "name": "Coalition Cohesion Score",
+            "value": 75.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Leadership Approval Proxy",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 25
+          },
+          {
+            "name": "Policy Reversal Index",
+            "value": 65.0,
+            "confidence": 0.24,
+            "articles": 3
+          }
+        ],
+        "Election Activity": [
+          {
+            "name": "Campaign Intensity Score",
+            "value": 65.0,
+            "confidence": 0.24,
+            "articles": 3
+          },
+          {
+            "name": "Electoral Volatility Index",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Voter Sentiment Tracker",
+            "value": 75.0,
+            "confidence": 0.16,
+            "articles": 2
+          }
+        ],
+        "International Relations": [
+          {
+            "name": "Diplomatic Activity Index",
+            "value": 80.0,
+            "confidence": 0.48,
+            "articles": 6
+          },
+          {
+            "name": "Geopolitical Tension Score",
+            "value": 75.0,
+            "confidence": 0.4,
+            "articles": 5
+          },
+          {
+            "name": "Regional Cooperation Index",
+            "value": 65.0,
+            "confidence": 0.32,
+            "articles": 3
+          },
+          {
+            "name": "Trade Partnership Momentum",
+            "value": 90.0,
+            "confidence": 0.64,
+            "articles": 8
+          }
+        ],
+        "Civil Unrest": [
+          {
+            "name": "Protest Frequency Index",
+            "value": 80.0,
+            "confidence": 0.48,
+            "articles": 6
+          },
+          {
+            "name": "Public Dissatisfaction Index",
+            "value": 75.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Strike Activity Score",
+            "value": 55.0,
+            "confidence": 0.08,
+            "articles": 1
+          },
+          {
+            "name": "Violence Escalation Indicator",
+            "value": 55.0,
+            "confidence": 0.08,
+            "articles": 1
+          }
+        ]
+      },
+      "total_indicators": 18,
+      "composite_score": 81.7
+    },
+    "Economic": {
+      "subcategories": {
+        "Sectoral Performance": [
+          {
+            "name": "Agriculture Status",
+            "value": 75.0,
+            "confidence": 0.52,
+            "articles": 5
+          },
+          {
+            "name": "Construction Activity",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 25
+          },
+          {
+            "name": "Manufacturing Health",
+            "value": 75.0,
+            "confidence": 0.88,
+            "articles": 9
+          },
+          {
+            "name": "Services Sector Momentum",
+            "value": 75.0,
+            "confidence": 0.24,
+            "articles": 2
+          },
+          {
+            "name": "Tourism Activity Index",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 10
+          }
+        ],
+        "Financial Markets": [
+          {
+            "name": "Banking Sector Health",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 15
+          },
+          {
+            "name": "Interest Rate Trend",
+            "value": 75.0,
+            "confidence": 0.44,
+            "articles": 4
+          },
+          {
+            "name": "Investment Climate Score",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 10
+          },
+          {
+            "name": "Stock Market Sentiment",
+            "value": 75.0,
+            "confidence": 0.68,
+            "articles": 6
+          }
+        ],
+        "Consumer Behavior": [
+          {
+            "name": "Consumer Confidence Proxy",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 10
+          },
+          {
+            "name": "Retail Activity Indicator",
+            "value": 70.0,
+            "confidence": 0.32,
+            "articles": 4
+          },
+          {
+            "name": "Savings vs Spending Ratio",
+            "value": 75.0,
+            "confidence": 0.96,
+            "articles": 10
+          }
+        ],
+        "Macroeconomic Health": [
+          {
+            "name": "Currency Stability Indicator",
+            "value": 85.0,
+            "confidence": 0.84,
+            "articles": 7
+          },
+          {
+            "name": "Debt Concern Level",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 11
+          },
+          {
+            "name": "Fiscal Policy Direction",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 11
+          },
+          {
+            "name": "GDP Growth Sentiment",
+            "value": 75.0,
+            "confidence": 0.8,
+            "articles": 8
+          },
+          {
+            "name": "Inflation Pressure Index",
+            "value": 80.0,
+            "confidence": 0.92,
+            "articles": 6
+          }
+        ],
+        "Trade Commerce": [
+          {
+            "name": "Export Performance Index",
+            "value": 75.0,
+            "confidence": 0.32,
+            "articles": 4
+          },
+          {
+            "name": "Import Dependency Risk",
+            "value": 65.0,
+            "confidence": 0.32,
+            "articles": 3
+          },
+          {
+            "name": "Port Activity Indicator",
+            "value": 75.0,
+            "confidence": 0.48,
+            "articles": 5
+          },
+          {
+            "name": "Remittance Flow Indicator",
+            "value": 55.0,
+            "confidence": 0.08,
+            "articles": 1
+          },
+          {
+            "name": "Trade Balance Sentiment",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          }
+        ],
+        "Employment": [
+          {
+            "name": "Job Market Health",
+            "value": 75.0,
+            "confidence": 0.56,
+            "articles": 7
+          },
+          {
+            "name": "Skills Gap Indicator",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Wage Pressure Index",
+            "value": 60.0,
+            "confidence": 0.24,
+            "articles": 2
+          }
+        ]
+      },
+      "total_indicators": 25,
+      "composite_score": 78.0
+    },
+    "Social": {
+      "subcategories": {
+        "Public Mood": [
+          {
+            "name": "Anxiety Level Index",
+            "value": 90.0,
+            "confidence": 0.72,
+            "articles": 8
+          },
+          {
+            "name": "Optimism Indicator",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 20
+          },
+          {
+            "name": "Overall Public Sentiment",
+            "value": 75.0,
+            "confidence": 0.72,
+            "articles": 7
+          },
+          {
+            "name": "Social Media Mood",
+            "value": 75.0,
+            "confidence": 0.8,
+            "articles": 10
+          }
+        ],
+        "Community Cohesion": [
+          {
+            "name": "Civic Engagement Level",
+            "value": 85.0,
+            "confidence": 0.56,
+            "articles": 7
+          },
+          {
+            "name": "Inter Community Relations",
+            "value": 75.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Social Support Systems",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 21
+          }
+        ],
+        "Quality of Life": [
+          {
+            "name": "Cost of Living Burden",
+            "value": 75.0,
+            "confidence": 0.48,
+            "articles": 5
+          },
+          {
+            "name": "Education Disruption Level",
+            "value": 95.0,
+            "confidence": 1.0,
+            "articles": 9
+          },
+          {
+            "name": "Healthcare Access Index",
+            "value": 75.0,
+            "confidence": 0.68,
+            "articles": 7
+          },
+          {
+            "name": "Housing Affordability",
+            "value": 75.0,
+            "confidence": 0.64,
+            "articles": 8
+          }
+        ],
+        "Public Safety": [
+          {
+            "name": "Crime Rate Perception",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Public Space Safety",
+            "value": 75.0,
+            "confidence": 0.88,
+            "articles": 10
+          },
+          {
+            "name": "Traffic Safety Index",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          }
+        ],
+        "Demographics": [
+          {
+            "name": "Migration Intention Index",
+            "value": 70.0,
+            "confidence": 0.4,
+            "articles": 4
+          },
+          {
+            "name": "Population Mobility",
+            "value": 70.0,
+            "confidence": 0.32,
+            "articles": 4
+          },
+          {
+            "name": "Urbanization Trends",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          }
+        ]
+      },
+      "total_indicators": 17,
+      "composite_score": 82.8
+    },
+    "Technological": {
+      "subcategories": {
+        "Cybersecurity": [
+          {
+            "name": "Cyber Threat Level",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Digital Rights Issues",
+            "value": 100.0,
+            "confidence": 0.8,
+            "articles": 10
+          },
+          {
+            "name": "Privacy Concerns",
+            "value": 65.0,
+            "confidence": 0.24,
+            "articles": 3
+          }
+        ],
+        "Innovation": [
+          {
+            "name": "Digital Literacy Progress",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Digital Payment Adoption",
+            "value": 55.0,
+            "confidence": 0.08,
+            "articles": 1
+          },
+          {
+            "name": "E-Commerce Growth",
+            "value": 80.0,
+            "confidence": 0.48,
+            "articles": 6
+          },
+          {
+            "name": "Startup Ecosystem Health",
+            "value": 85.0,
+            "confidence": 0.64,
+            "articles": 7
+          },
+          {
+            "name": "Tech Investment Flow",
+            "value": 75.0,
+            "confidence": 0.4,
+            "articles": 5
+          }
+        ],
+        "Research Development": [
+          {
+            "name": "Innovation Output",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 14
+          },
+          {
+            "name": "Tech Collaboration",
+            "value": 75.0,
+            "confidence": 0.4,
+            "articles": 5
+          }
+        ],
+        "Digital Infrastructure": [
+          {
+            "name": "Internet Connectivity Status",
+            "value": 70.0,
+            "confidence": 0.4,
+            "articles": 4
+          },
+          {
+            "name": "Power Infrastructure Health",
+            "value": 70.0,
+            "confidence": 0.4,
+            "articles": 4
+          },
+          {
+            "name": "Telecom Service Quality",
+            "value": 75.0,
+            "confidence": 0.64,
+            "articles": 7
+          },
+          {
+            "name": "Transport Infrastructure",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 15
+          }
+        ]
+      },
+      "total_indicators": 14,
+      "composite_score": 81.1
+    },
+    "Environmental": {
+      "subcategories": {
+        "Agriculture Land": [
+          {
+            "name": "Agricultural Productivity",
+            "value": 75.0,
+            "confidence": 0.96,
+            "articles": 10
+          },
+          {
+            "name": "Crop Health Indicator",
+            "value": 75.0,
+            "confidence": 0.56,
+            "articles": 6
+          },
+          {
+            "name": "Land Use Changes",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 15
+          }
+        ],
+        "Climate Action": [
+          {
+            "name": "Carbon Reduction Efforts",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Climate Policy Activity",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Sustainability Initiatives",
+            "value": 75.0,
+            "confidence": 0.4,
+            "articles": 5
+          }
+        ],
+        "Environmental Quality": [
+          {
+            "name": "Deforestation Activity",
+            "value": 55.0,
+            "confidence": 0.16,
+            "articles": 1
+          },
+          {
+            "name": "Pollution Concern Level",
+            "value": 70.0,
+            "confidence": 0.4,
+            "articles": 4
+          },
+          {
+            "name": "Wildlife Conservation Status",
+            "value": 75.0,
+            "confidence": 0.16,
+            "articles": 2
+          }
+        ],
+        "Natural Disasters": [
+          {
+            "name": "Disaster Frequency",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 20
+          },
+          {
+            "name": "Disaster Impact Severity",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 18
+          },
+          {
+            "name": "Recovery Progress Index",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 22
+          }
+        ],
+        "Weather Climate": [
+          {
+            "name": "Drought Concern Index",
+            "value": 70.0,
+            "confidence": 0.4,
+            "articles": 4
+          },
+          {
+            "name": "Flood Risk Level",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 13
+          },
+          {
+            "name": "Storm Activity Indicator",
+            "value": 100.0,
+            "confidence": 1.0,
+            "articles": 22
+          },
+          {
+            "name": "Weather Severity Index",
+            "value": 65.0,
+            "confidence": 0.24,
+            "articles": 3
+          }
+        ]
+      },
+      "total_indicators": 16,
+      "composite_score": 86.5
+    },
+    "Legal": {
+      "subcategories": {
+        "Contract Law": [
+          {
+            "name": "Bankruptcy Activity",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Contract Enforcement Quality",
+            "value": 75.0,
+            "confidence": 0.32,
+            "articles": 4
+          }
+        ],
+        "Business Regulation": [
+          {
+            "name": "Business Ease Index",
+            "value": 75.0,
+            "confidence": 0.08,
+            "articles": 1
+          },
+          {
+            "name": "Labor Law Changes",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "Tax Policy Direction",
+            "value": 75.0,
+            "confidence": 0.48,
+            "articles": 5
+          },
+          {
+            "name": "Trade Regulations",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          }
+        ],
+        "Compliance Enforcement": [
+          {
+            "name": "Compliance Burden Score",
+            "value": 75.0,
+            "confidence": 0.32,
+            "articles": 3
+          },
+          {
+            "name": "Penalty Severity Trend",
+            "value": 60.0,
+            "confidence": 0.16,
+            "articles": 2
+          },
+          {
+            "name": "Regulatory Strictness Index",
+            "value": 55.0,
+            "confidence": 0.16,
+            "articles": 1
+          }
+        ],
+        "Legislative Activity": [
+          {
+            "name": "Court Decision Impact",
+            "value": 90.0,
+            "confidence": 0.72,
+            "articles": 8
+          },
+          {
+            "name": "Legal Reform Momentum",
+            "value": 75.0,
+            "confidence": 0.08,
+            "articles": 1
+          },
+          {
+            "name": "New Laws Frequency",
+            "value": 90.0,
+            "confidence": 0.84,
+            "articles": 8
+          },
+          {
+            "name": "Regulatory Changes Rate",
+            "value": 70.0,
+            "confidence": 0.32,
+            "articles": 4
+          }
+        ],
+        "Intellectual Property": [
+          {
+            "name": "IP Dispute Frequency",
+            "value": 50.0,
+            "confidence": 0.0,
+            "articles": 0
+          },
+          {
+            "name": "IP Protection Strength",
+            "value": 75.0,
+            "confidence": 1.0,
+            "articles": 40
+          }
+        ]
+      },
+      "total_indicators": 15,
+      "composite_score": 76.3
+    }
+  },
+  "top_indicators": [
+    {
+      "name": "Cabinet Changes Frequency",
+      "category": "Political",
+      "value": 100.0,
+      "articles": 11
+    },
+    {
+      "name": "Law Order Incidents",
+      "category": "Political",
+      "value": 100.0,
+      "articles": 13
+    },
+    {
+      "name": "Construction Activity",
+      "category": "Economic",
+      "value": 100.0,
+      "articles": 25
+    },
+    {
+      "name": "Debt Concern Level",
+      "category": "Economic",
+      "value": 100.0,
+      "articles": 11
+    },
+    {
+      "name": "Optimism Indicator",
+      "category": "Social",
+      "value": 100.0,
+      "articles": 20
+    },
+    {
+      "name": "Social Support Systems",
+      "category": "Social",
+      "value": 100.0,
+      "articles": 21
+    },
+    {
+      "name": "Digital Rights Issues",
+      "category": "Technological",
+      "value": 100.0,
+      "articles": 10
+    },
+    {
+      "name": "Innovation Output",
+      "category": "Technological",
+      "value": 100.0,
+      "articles": 14
+    },
+    {
+      "name": "Disaster Frequency",
+      "category": "Environmental",
+      "value": 100.0,
+      "articles": 20
+    },
+    {
+      "name": "Disaster Impact Severity",
+      "category": "Environmental",
+      "value": 100.0,
+      "articles": 18
+    }
+  ],
+  "concerning_indicators": [],
+  "summary_stats": {
+    "total_indicators": 105,
+    "indicators_with_data": 95,
+    "avg_confidence": 0.5,
+    "total_article_matches": 706
+  }
+}

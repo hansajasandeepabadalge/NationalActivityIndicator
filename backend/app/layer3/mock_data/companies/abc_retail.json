@@ -1,0 +1,55 @@
+{
+    "company_id": "mock_retail_001",
+    "company_name": "ABC Supermarkets (Mock)",
+    "industry": "retail",
+    "sub_industry": "grocery_supermarkets",
+    "business_scale": {
+        "size": "large",
+        "employees": 450,
+        "annual_revenue_lkr": 5000000000,
+        "locations_count": 8
+    },
+    "locations": [
+        {
+            "location_id": "mock_loc_col_001",
+            "name": "Colombo Main Branch",
+            "city": "Colombo",
+            "district": "Colombo",
+            "coordinates": {
+                "lat": 6.9271,
+                "lon": 79.8612
+            },
+            "daily_footfall_avg": 2500
+        },
+        {
+            "location_id": "mock_loc_kan_001",
+            "name": "Kandy Branch",
+            "city": "Kandy",
+            "district": "Kandy",
+            "coordinates": {
+                "lat": 7.2906,
+                "lon": 80.6337
+            },
+            "daily_footfall_avg": 1200
+        }
+    ],
+    "supply_chain": {
+        "import_dependency": 0.60,
+        "local_sourcing": 0.40
+    },
+    "critical_dependencies": {
+        "fuel": "high",
+        "power": "high",
+        "transport_access": "high"
+    },
+    "alert_thresholds": {
+        "supply_chain_risk": {
+            "high": 70,
+            "critical": 85
+        },
+        "foot_traffic_impact": {
+            "high": -25,
+            "critical": -40
+        }
+    }
+}
