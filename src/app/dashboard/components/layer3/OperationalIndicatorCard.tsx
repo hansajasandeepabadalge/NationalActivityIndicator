@@ -1,15 +1,5 @@
 import React from 'react';
-
-interface OperationalIndicator {
-    indicator_id: string;
-    indicator_name: string;
-    current_value: number;
-    baseline_value?: number;
-    trend?: string;
-    is_above_threshold?: boolean;
-    impact_score?: number;
-    category?: string;
-}
+import { OperationalIndicator } from '../../../services/operationalService';
 
 interface Props {
     indicator: OperationalIndicator;

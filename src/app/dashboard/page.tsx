@@ -212,7 +212,7 @@ function DashboardContent() {
                                 </p>
                               </div>
                             </div>
-                            {indicator.change_percentage != null && (
+                            {indicator.change_percentage !== undefined && indicator.change_percentage !== null && (
                               <p className={`text-xs mt-1 ${indicator.change_percentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {indicator.change_percentage >= 0 ? '+' : ''}{indicator.change_percentage.toFixed(1)}%
                               </p>

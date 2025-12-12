@@ -20,6 +20,14 @@ from app.models.agent_models import (
     SourceConfig
 )
 
+# Layer 2 AI Enhancement Models
+from app.models.processed_article_model import ProcessedArticleModel
+from app.models.entity_models import (
+    EntityMaster,
+    ArticleEntity,
+    TopicTrend
+)
+
 # Developer A models (comprehensive with relationships and ENUMs)
 from app.models.indicator_models import (
     IndicatorDefinition,
@@ -123,4 +131,9 @@ __all__ = [
     "ReputationTier",
     "FilterAction",
     "DEFAULT_THRESHOLDS",
+    # Layer 2: AI Enhancement
+    "ProcessedArticleModel",
+    "EntityMaster",
+    "ArticleEntity",
+    "TopicTrend",
 ]

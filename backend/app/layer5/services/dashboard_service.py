@@ -168,7 +168,7 @@ class DashboardService:
         Returns:
             List of operational indicators with current values
         """
-        if self.mongo_client is None:
+        if self.mongo_db is None:
             # Return empty response if MongoDB not connected
             return OperationalIndicatorListResponse(
                 company_id=company_id or "all",

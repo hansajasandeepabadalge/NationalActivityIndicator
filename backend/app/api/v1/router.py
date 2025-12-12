@@ -58,6 +58,13 @@ try:
 except ImportError:
     HAS_LAYER5 = False
 
+# Import Layer 1 Admin Dashboard endpoints
+try:
+    from app.api.v1.endpoints import admin
+    HAS_ADMIN = True
+except ImportError:
+    HAS_ADMIN = False
+
 api_router = APIRouter()
 
 
@@ -139,4 +146,12 @@ if HAS_LAYER5:
     api_router.include_router(
         operations_router,
         tags=["operations", "layer5"]
+    )
+
+# Include Layer 1 Admin Dashboard endpoints
+if HAS_ADMIN:
+    api_router.include_router(
+        admin.router,
+        prefix="/admin",
+        tags=["admin", "layer1", "dashboard"]
     )

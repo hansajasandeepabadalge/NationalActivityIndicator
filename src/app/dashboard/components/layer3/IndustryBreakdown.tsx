@@ -1,17 +1,6 @@
 import React from 'react';
+import { OperationalIndicator } from '../../../services/operationalService';
 import { OperationalIndicatorCard } from './OperationalIndicatorCard';
-
-interface OperationalIndicator {
-    indicator_id: string;
-    indicator_name: string;
-    current_value: number;
-    baseline_value?: number;
-    trend?: string;
-    is_above_threshold?: boolean;
-    impact_score?: number;
-    category?: string;
-    company_id?: string;
-}
 
 interface Props {
     indicators: OperationalIndicator[];

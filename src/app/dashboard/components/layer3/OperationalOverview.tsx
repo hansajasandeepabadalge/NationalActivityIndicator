@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useOperationalIndicators } from '@/hooks/useDashboard';
+import { operationalService } from '../../../services/operationalService';
 import { OperationalIndicatorCard } from './OperationalIndicatorCard';
 import { IndustryBreakdown } from './IndustryBreakdown';
 import { LoadingSkeleton } from '../shared/LoadingSkeleton';
@@ -16,9 +17,7 @@ export function OperationalOverview({ selectedCompanyId }: { selectedCompanyId?:
 
     // Calculate Health Score
     const overallHealth = useMemo(() => {
-        if (!filteredIndicators || filteredIndicators.length === 0) return 0;
-        const sum = filteredIndicators.reduce((acc, ind) => acc + (ind.current_value || 0), 0);
-        return sum / filteredIndicators.length;
+        return operationalService.calculateOverallHealth(filteredIndicators);
     }, [filteredIndicators]);
 
     if (isLoading) return <LoadingSkeleton variant="card" rows={3} />;
