@@ -5,7 +5,8 @@
       "Bash(cat:*)",
       "Bash(git add:*)",
       "Bash(python:*)",
-      "Bash(git -C \"C:\\Users\\user\\Desktop\\National_Indicator\\NationalActivityIndicator\" log --oneline -20)"
+      "Bash(git -C \"C:\\Users\\user\\Desktop\\National_Indicator\\NationalActivityIndicator\" log --oneline -20)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

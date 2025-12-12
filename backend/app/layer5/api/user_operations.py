@@ -17,6 +17,29 @@ from app.core.config import settings
 router = APIRouter(prefix="/user", tags=["user", "layer5", "operations"])
 
 
+@router.get("/test-db")
+def test_db_connection(db: Session = Depends(get_db)):
+    """Test database connection"""
+    try:
+        # Try to execute a simple query
+        db.execute("SELECT 1")
+        return {"status": "ok", "message": "Database connection works"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.get("/test-simple")
+def test_simple():
+    """Simplest possible test"""
+    return {"status": "ok", "message": "Simple endpoint works"}
+
+
+@router.get("/test-auth")
+def test_auth(current_user: UserResponse = Depends(get_current_user)):
+    """Test auth dependency"""
+    return {"status": "ok", "user": current_user.email, "role": current_user.role}
+
+
 def _get_user_company_id(user: UserResponse) -> str:
     """Get company ID for user, raise error if not linked to a company"""
     from fastapi import HTTPException
@@ -38,21 +61,32 @@ def get_operational_indicators(
     Get operational indicators for user's company (Layer 3 data).
     Admins can see aggregated indicators from all companies.
     """
-    # Admin users: show all companies' operational indicators
-    # Regular users: show only their company's indicators
-    if current_user.role == "admin":
-        company_id = None  # None = fetch from all companies
-    else:
-        company_id = _get_user_company_id(current_user)
-
-    # Initialize MongoDB connection for Layer 3 data
-    mongo_client = MongoClient(settings.MONGODB_URL)
-    dashboard_service = DashboardService(db, mongo_client=mongo_client)
+    import traceback
+    from fastapi import HTTPException
 
     try:
-        return dashboard_service.get_operational_indicators(
-            company_id=company_id,
-            limit=limit
-        )
-    finally:
-        mongo_client.close()
+        # Admin users: show all companies' operational indicators
+        # Regular users: show only their company's indicators
+        if current_user.role == "admin":
+            company_id = None  # None = fetch from all companies
+        else:
+            company_id = _get_user_company_id(current_user)
+
+        # Initialize MongoDB connection for Layer 3 data
+        mongo_client = MongoClient(settings.MONGODB_URL)
+        dashboard_service = DashboardService(db, mongo_client=mongo_client)
+
+        try:
+            result = dashboard_service.get_operational_indicators(
+                company_id=company_id,
+                limit=limit
+            )
+            return result
+        finally:
+            mongo_client.close()
+    except Exception as e:
+        error_msg = f"!!! ERROR in get_operational_indicators endpoint: {type(e).__name__}: {str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        with open("C:/temp/endpoint_error.txt", "w") as f:
+            f.write(error_msg)
+        raise HTTPException(status_code=500, detail=f"Error fetching operational indicators: {str(e)}")

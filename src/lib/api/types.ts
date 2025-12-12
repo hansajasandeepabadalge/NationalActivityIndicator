@@ -147,9 +147,24 @@ export interface OperationalIndicator {
   indicator_id: string;
   indicator_name: string;
   category: string;
-  current_value: number | null;
+  current_value: number;
+  baseline_value?: number;
+  deviation?: number;
+  impact_score?: number;
   trend: TrendDirection;
-  status: string;
+  is_above_threshold?: boolean;
+  is_below_threshold?: boolean;
+  company_id?: string;
+  calculated_at?: string | Date;
+  status?: string;
+}
+
+export interface OperationalIndicatorListResponse {
+  company_id: string;
+  indicators: OperationalIndicator[];
+  total: number;
+  critical_count: number;
+  warning_count: number;
 }
 
 // ============== Admin Types ==============

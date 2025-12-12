@@ -31,6 +31,7 @@ export type {
   OpportunitySummary,
   DashboardHome,
   OperationalIndicator,
+  OperationalIndicatorListResponse,
   
   // Admin types
   IndustryOverview,

@@ -91,7 +91,7 @@ export function NationalIndicatorList() {
                                     </div>
                                     <div className="flex items-center justify-end gap-1">
                                         <TrendArrow trend={indicator.trend || 'stable'} />
-                                        {indicator.change_percentage !== undefined && (
+                                        {indicator.change_percentage != null && (
                                             <span className={`text-xs font-medium ${(indicator.change_percentage || 0) >= 0 ? 'text-green-600' : 'text-red-600'
                                                 }`}>
                                                 {indicator.change_percentage > 0 ? '+' : ''}{indicator.change_percentage.toFixed(1)}%

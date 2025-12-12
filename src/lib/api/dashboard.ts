@@ -12,7 +12,7 @@ import type {
   AdminDashboard,
   IndustryOverview,
   CompanyProfile,
-  OperationalIndicatorList,
+  OperationalIndicatorListResponse,
 } from './types';
 
 export const dashboardService = {
@@ -168,8 +168,8 @@ export const dashboardService = {
   /**
    * Get operational indicators (Layer 3)
    */
-  async getOperationalIndicators(limit: number = 20): Promise<OperationalIndicatorList> {
-    return apiClient.get<OperationalIndicatorList>(`/user/operations-data?limit=${limit}`);
+  async getOperationalIndicators(limit: number = 20): Promise<OperationalIndicatorListResponse> {
+    return apiClient.get<OperationalIndicatorListResponse>(`/user/operations-data?limit=${limit}`);
   },
   
   /**

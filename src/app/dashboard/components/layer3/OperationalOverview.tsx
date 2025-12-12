@@ -1,41 +1,24 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { OperationalService, OperationalIndicator, operationalService } from '../../../services/operationalService';
+import React, { useMemo } from 'react';
+import { useOperationalIndicators } from '@/hooks/useDashboard';
 import { OperationalIndicatorCard } from './OperationalIndicatorCard';
 import { IndustryBreakdown } from './IndustryBreakdown';
 import { LoadingSkeleton } from '../shared/LoadingSkeleton';
 
 export function OperationalOverview({ selectedCompanyId }: { selectedCompanyId?: string }) {
-    const [indicators, setIndicators] = useState<OperationalIndicator[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                // In a real app, you might get this token from context or a hook
-                // For now, we assume standard flow or mock if auth not set up
-                const response = await operationalService.getOperationalIndicators();
-                setIndicators(response.indicators);
-            } catch (err) {
-                console.error("Failed to load operational indicators", err);
-                setError("Failed to load data");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadData();
-    }, []);
+    const { data: indicators, isLoading, error } = useOperationalIndicators(20);
 
     // Filter indicators
     const filteredIndicators = useMemo(() => {
+        if (!indicators) return [];
         if (!selectedCompanyId) return indicators;
-        return indicators.filter(ind => ind.company_id === selectedCompanyId);
+        return indicators.filter(ind => (ind as any).company_id === selectedCompanyId);
     }, [indicators, selectedCompanyId]);
 
     // Calculate Health Score
     const overallHealth = useMemo(() => {
-        return operationalService.calculateOverallHealth(filteredIndicators);
+        if (!filteredIndicators || filteredIndicators.length === 0) return 0;
+        const sum = filteredIndicators.reduce((acc, ind) => acc + (ind.current_value || 0), 0);
+        return sum / filteredIndicators.length;
     }, [filteredIndicators]);
 
     if (isLoading) return <LoadingSkeleton variant="card" rows={3} />;

@@ -168,13 +168,14 @@ class DashboardService:
         Returns:
             List of operational indicators with current values
         """
-        if not self.mongo_db:
+        if self.mongo_client is None:
             # Return empty response if MongoDB not connected
             return OperationalIndicatorListResponse(
                 company_id=company_id or "all",
                 indicators=[],
                 total=0,
-                critical_count=0
+                critical_count=0,
+                warning_count=0
             )
 
         try:
@@ -190,8 +191,13 @@ class DashboardService:
                 ).sort("calculation_timestamp", -1).limit(limit)
             )
 
+            # DEVELOPMENT: If no data in MongoDB, use mock data
+            if not calculations:
+                return self._get_mock_operational_indicators(company_id, limit)
+
             indicators = []
             critical_count = 0
+            warning_count = 0
 
             for calc in calculations:
                 # Extract values from calculation
@@ -217,10 +223,14 @@ class DashboardService:
                 elif trend_dir == "down" or trend_dir == "decreasing":
                     trend = TrendDirection.DOWN
 
-                # Check if critical
+                # Check if critical or warning
                 is_critical = interpretation.get("requires_attention", False)
-                if is_critical:
+                severity_level = interpretation.get("level", "").lower()
+
+                if is_critical or severity_level in ["critical", "high"]:
                     critical_count += 1
+                elif severity_level == "medium":
+                    warning_count += 1
 
                 # Map indicator code to human-readable name
                 indicator_name = self._get_operational_indicator_name(indicator_code)
@@ -254,7 +264,8 @@ class DashboardService:
                 company_id=company_id or "all",
                 indicators=indicators,
                 total=len(indicators),
-                critical_count=critical_count
+                critical_count=critical_count,
+                warning_count=warning_count
             )
 
         except Exception as e:
@@ -266,7 +277,8 @@ class DashboardService:
                 company_id=company_id or "all",
                 indicators=[],
                 total=0,
-                critical_count=0
+                critical_count=0,
+                warning_count=0
             )
 
     def _get_operational_indicator_name(self, code: str) -> str:
@@ -315,6 +327,63 @@ class DashboardService:
             return "Regulatory & Compliance"
         else:
             return "Other"
+
+    def _get_mock_operational_indicators(self, company_id: Optional[str], limit: int) -> OperationalIndicatorListResponse:
+        """Return mock operational indicators for development"""
+        from datetime import datetime
+        import random
+
+        mock_indicators = [
+            ("OPS_SUPPLY_CHAIN", "Supply Chain Disruption", 72, 65, "Supply Chain & Logistics", 0.3),
+            ("OPS_TRANSPORT_AVAIL", "Transportation Availability", 88, 90, "Supply Chain & Logistics", -0.1),
+            ("OPS_WORKFORCE_AVAIL", "Workforce Availability", 76, 80, "Workforce & Operations", 0.2),
+            ("OPS_LABOR_COST", "Labor Cost Index", 115, 100, "Cost Pressures", 0.6),
+            ("OPS_POWER_RELIABILITY", "Power Reliability", 92, 95, "Infrastructure & Resources", -0.2),
+            ("OPS_FUEL_AVAIL", "Fuel Availability", 68, 75, "Infrastructure & Resources", 0.4),
+            ("OPS_COST_PRESSURE", "Cost Pressure Index", 118, 100, "Cost Pressures", 0.7),
+            ("OPS_DEMAND_LEVEL", "Demand Level", 82, 85, "Market Conditions", -0.1),
+            ("OPS_CASH_FLOW", "Cash Flow Health", 71, 80, "Financial Operations", 0.3),
+            ("OPS_REGULATORY_BURDEN", "Regulatory Burden", 65, 60, "Regulatory & Compliance", 0.2),
+        ]
+
+        indicators = []
+        critical_count = 0
+        warning_count = 0
+
+        for code, name, current, baseline, category, impact in random.sample(mock_indicators, min(limit, len(mock_indicators))):
+            deviation = ((current - baseline) / baseline) * 100 if baseline != 0 else 0
+            is_critical = abs(impact) > 0.5
+            is_warning = 0.2 < abs(impact) <= 0.5
+
+            if is_critical:
+                critical_count += 1
+            elif is_warning:
+                warning_count += 1
+
+            trend = TrendDirection.UP if current > baseline else TrendDirection.DOWN if current < baseline else TrendDirection.STABLE
+
+            indicators.append(OperationalIndicatorResponse(
+                indicator_id=code,
+                indicator_name=name,
+                category=category,
+                current_value=float(current),
+                baseline_value=float(baseline),
+                deviation=deviation,
+                impact_score=impact,
+                trend=trend,
+                is_above_threshold=current > baseline * 1.1,
+                is_below_threshold=current < baseline * 0.9,
+                company_id=company_id or "MOCK_COMPANY_001",
+                calculated_at=datetime.now()
+            ))
+
+        return OperationalIndicatorListResponse(
+            company_id=company_id or "all",
+            indicators=indicators,
+            total=len(indicators),
+            critical_count=critical_count,
+            warning_count=warning_count
+        )
 
     # ============== Business Insights (Layer 4) ==============
     

@@ -1,4 +1,5 @@
 import os
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from typing import Optional
 
@@ -108,11 +109,11 @@ class Settings(BaseSettings):
     LLM_MAX_TOKENS: int = 2000
     LLM_CACHE_TTL: int = 3600  # 1 hour cache for LLM responses
 
-    model_config = {
-        "env_file": ".env",
-        "case_sensitive": False,
-        "extra": "ignore"
-    }
+    model_config = ConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        extra="ignore"
+    )
 
 
 settings = Settings()

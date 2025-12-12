@@ -85,7 +85,7 @@ class OperationalIndicatorResponse(BaseModel):
     is_below_threshold: bool = False
     
     # Context
-    company_id: str
+    company_id: Optional[str] = None
     calculated_at: Optional[datetime] = None
     
     class Config:
