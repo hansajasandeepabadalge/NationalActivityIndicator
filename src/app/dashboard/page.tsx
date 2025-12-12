@@ -85,9 +85,15 @@ function DashboardContent() {
                   disabled={companiesLoading}
                 >
                   <option value="">All Companies</option>
+<<<<<<< Updated upstream
                   {companies?.map((company, index) => (
                     <option key={company.id || `company-${index}`} value={company.id}>
                       {company.name}
+=======
+                  {companies?.map((company) => (
+                    <option key={company.company_id} value={company.company_id}>
+                      {company.company_name}
+>>>>>>> Stashed changes
                     </option>
                   ))}
                 </select>

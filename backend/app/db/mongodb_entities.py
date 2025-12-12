@@ -6,19 +6,35 @@ from app.layer2.nlp_processing.entity_schemas import ExtractedEntities
 
 class MongoDBEntityStorage:
     def __init__(self):
-        self.client = MongoClient(settings.MONGODB_URL)
-        self.db = self.client[settings.MONGODB_DB_NAME]
+        self.client = None
+        self.db = None
+        self.entity_extractions = None
+        self.indicator_calculations = None
+        self.narratives = None
+        self._initialized = False
 
-        self.entity_extractions = self.db["entity_extractions"]
-        self.indicator_calculations = self.db["indicator_calculations"]
-        self.narratives = self.db["narratives"]
-
+    def _ensure_connection(self):
+        """Lazy initialization of MongoDB connection"""
+        if self._initialized:
+            return
+        
         try:
+            self.client = MongoClient(settings.MONGODB_URL, serverSelectionTimeoutMS=5000)
+            self.db = self.client[settings.MONGODB_DB_NAME]
+            
+            self.entity_extractions = self.db["entity_extractions"]
+            self.indicator_calculations = self.db["indicator_calculations"]
+            self.narratives = self.db["narratives"]
+            
+            # Test connection
             self.client.admin.command('ping')
+            self._create_indexes()
+            self._initialized = True
         except Exception as e:
-            raise ConnectionError(f"MongoDB connection failed: {e}")
+            print(f"⚠️  MongoDB connection failed: {e}")
+            print("   MongoDB features will be unavailable until connection is restored")
+            # Don't raise - allow the app to start without MongoDB
 
-        self._create_indexes()
 
     def _create_indexes(self):
         """Create indexes for performance"""
@@ -38,6 +54,9 @@ class MongoDBEntityStorage:
 
     def store_entities(self, entities: ExtractedEntities) -> bool:
         """Store extracted entities"""
+        self._ensure_connection()
+        if not self._initialized:
+            return False
         try:
             self.entity_extractions.replace_one(
                 {"article_id": entities.article_id},
@@ -57,6 +76,9 @@ class MongoDBEntityStorage:
         method: str = "entity_based"
     ) -> bool:
         """Store entity-based indicator calculation"""
+        self._ensure_connection()
+        if not self._initialized:
+            return False
         try:
             doc = {
                 "article_id": article_id,
@@ -73,6 +95,9 @@ class MongoDBEntityStorage:
 
     def get_entities(self, article_id: str) -> Optional[ExtractedEntities]:
         """Retrieve entities for an article"""
+        self._ensure_connection()
+        if not self._initialized:
+            return None
         doc = self.entity_extractions.find_one({"article_id": article_id})
         if doc:
             return ExtractedEntities(**doc)
@@ -96,6 +121,9 @@ class MongoDBEntityStorage:
 
     def store_narrative(self, narrative) -> bool:
         """Store generated narrative"""
+        self._ensure_connection()
+        if not self._initialized:
+            return False
         try:
             self.narratives.replace_one(
                 {

@@ -1,4 +1,5 @@
-import { API_BASE_URL } from '../config';
+import { apiClient } from '../../lib/api/client';
+import { API_CONFIG } from '../../lib/api/config';
 
 export interface OperationalIndicator {
     indicator_id: string;
@@ -37,20 +38,8 @@ export class OperationalService {
 
     public async getOperationalIndicators(limit: number = 20): Promise<OperationalIndicatorListResponse> {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_BASE_URL}/api/v1/user/operations-data?limit=${limit}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch operational indicators: ${response.statusText}`);
-            }
-
-            return await response.json();
+            // Use apiClient which handles token automatically
+            return await apiClient.get<OperationalIndicatorListResponse>(`/user/operations-data?limit=${limit}`);
         } catch (error) {
             console.error('Error fetching operational indicators:', error);
             throw error;
@@ -58,7 +47,7 @@ export class OperationalService {
     }
 
     public calculateOverallHealth(indicators: OperationalIndicator[]): number {
-        if (indicators.length === 0) return 100;
+        if (!indicators || indicators.length === 0) return 100;
 
         // Calculate health based on average impact score
         // Impact score ranges from -1 (good) to 1 (bad). We only care about positive (bad) impact.
