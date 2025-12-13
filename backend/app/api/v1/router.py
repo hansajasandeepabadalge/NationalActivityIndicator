@@ -52,11 +52,9 @@ except ImportError:
     HAS_REPUTATION = False
 
 # Import Layer 5 Dashboard endpoints
-try:
-    from app.layer5.api import auth_router, admin_router, user_router, operations_router
-    HAS_LAYER5 = True
-except ImportError:
-    HAS_LAYER5 = False
+# TEMPORARILY REMOVED TRY/EXCEPT TO DEBUG IMPORT ERROR
+from app.layer5.api import auth_router, admin_router, user_router, operations_router, ops_v2_router, ops_clean_router, indicator_history_router, stock_router
+HAS_LAYER5 = True
 
 # Import Layer 1 Admin Dashboard endpoints
 try:
@@ -72,6 +70,17 @@ api_router = APIRouter()
 @api_router.get("/health")
 def health_check():
     return {"status": "ok", "version": "1.0.0", "layer": "Full-Stack-L12345"}
+
+# System Health Monitoring endpoints
+try:
+    from app.api.v1.endpoints import health as health_endpoints
+    api_router.include_router(
+        health_endpoints.router,
+        tags=["health", "monitoring", "system"]
+    )
+    HAS_HEALTH = True
+except ImportError:
+    HAS_HEALTH = False
 
 
 # Include Layer 1 AI Agent endpoints
@@ -146,6 +155,21 @@ if HAS_LAYER5:
     api_router.include_router(
         operations_router,
         tags=["operations", "layer5"]
+    )
+    # NEW: Clean operational indicators endpoint
+    api_router.include_router(
+        ops_v2_router,
+        tags=["operations", "layer3", "layer5"]
+    )
+    # PLAN B: Clean endpoint at different path
+    api_router.include_router(
+        ops_clean_router,
+        tags=["operations", "layer3", "clean"]
+    )
+    # Historical indicator data endpoints
+    api_router.include_router(
+        indicator_history_router,
+        tags=["indicators", "history", "layer3"]
     )
 
 # Include Layer 1 Admin Dashboard endpoints

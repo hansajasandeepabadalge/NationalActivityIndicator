@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from app.core.config import settings
 from app.api.v1.router import api_router
+from app.db.mongodb_entities import MongoDBEntityStorage
+from app.api.v1.endpoints.cache import cache
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -43,9 +45,6 @@ def create_app() -> FastAPI:
     async def health_check():
         """Health check for monitoring"""
         try:
-            from app.db.mongodb_entities import MongoDBEntityStorage
-            from app.api.v1.endpoints.cache import cache
-
             mongo = MongoDBEntityStorage()
             mongo.client.admin.command('ping')
 

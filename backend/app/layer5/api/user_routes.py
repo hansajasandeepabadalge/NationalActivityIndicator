@@ -99,9 +99,76 @@ def update_my_company(
 # ============== Operational Indicators (Layer 3) ==============
 
 @router.get("/test-debug")
-def test_debug_endpoint():
-    """Debug test endpoint"""
-    return {"status": "working", "message": "Debug endpoint is accessible"}
+def test_debug_endpoint(
+    limit: int = Query(20, ge=1, le=100),
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    WORKING ENDPOINT - Returns operational indicators
+    Modified to return operational indicators data.
+    """
+    try:
+        from pymongo import MongoClient
+        from app.core.config import settings
+        
+        print(f"✅ WORKING test-debug endpoint called by: {current_user.email}")
+        
+        # Determine company_id
+        if current_user.role == "admin":
+            company_id = None
+        else:
+            company_id = current_user.company_id if hasattr(current_user, 'company_id') else None
+        
+        # Connect to MongoDB
+        mongo_client = MongoClient(settings.MONGODB_URL)
+        try:
+            dashboard_service = DashboardService(
+                db=db,
+                mongo_client=mongo_client,
+                mongo_db_name=settings.MONGODB_DB_NAME
+            )
+            
+            result = dashboard_service.get_operational_indicators(
+                company_id=company_id,
+                limit=limit
+            )
+            
+            print(f"✅ Returning {result.total} indicators")
+            
+            # Convert to simple dict
+            indicators_list = []
+            for ind in result.indicators:
+                indicators_list.append({
+                    "indicator_id": ind.indicator_id,
+                    "indicator_name": ind.indicator_name,
+                    "category": ind.category,
+                    "current_value": float(ind.current_value) if ind.current_value is not None else None,
+                    "baseline_value": float(ind.baseline_value) if ind.baseline_value is not None else None,
+                    "deviation": float(ind.deviation) if ind.deviation is not None else None,
+                    "impact_score": float(ind.impact_score) if ind.impact_score is not None else None,
+                    "trend": str(ind.trend.value) if ind.trend else "stable",
+                    "is_above_threshold": bool(ind.is_above_threshold),
+                    "is_below_threshold": bool(ind.is_below_threshold),
+                    "company_id": str(ind.company_id) if ind.company_id else None,
+                    "calculated_at": ind.calculated_at.isoformat() if ind.calculated_at else None
+                })
+            
+            return {
+                "company_id": str(result.company_id),
+                "total": int(result.total),
+                "critical_count": int(result.critical_count),
+                "warning_count": int(result.warning_count),
+                "indicators": indicators_list
+            }
+        finally:
+            mongo_client.close()
+    except Exception as e:
+        print(f"❌ Error in test-debug: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": str(e), "indicators": [], "total": 0}
+
 
 @router.get("/operational-indicators", response_model=OperationalIndicatorListResponse)
 def get_my_operational_indicators(

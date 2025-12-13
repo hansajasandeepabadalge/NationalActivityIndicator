@@ -60,7 +60,8 @@ class DashboardService:
     def get_national_indicators(
         self,
         category: Optional[str] = None,
-        limit: int = 20
+        limit: int = 20,
+        sort_by: Optional[str] = None
     ) -> NationalIndicatorListResponse:
         """
         Get national indicators (Layer 2 data).
@@ -118,12 +119,33 @@ class DashboardService:
                 source_count=latest_value.source_count if latest_value else None
             ))
         
+        # Sort indicators if requested
+        if sort_by:
+            if sort_by == "value":
+                indicators.sort(key=lambda x: x.current_value or 0, reverse=True)
+            elif sort_by == "confidence":
+                indicators.sort(key=lambda x: x.confidence or 0, reverse=True)
+            elif sort_by == "change":
+                indicators.sort(key=lambda x: abs(x.change_percentage or 0), reverse=True)
+            elif sort_by == "impact":
+                # Calculate impact score = abs(deviation from midpoint) * confidence
+                def get_impact_score(ind):
+                    if ind.current_value is not None and ind.confidence is not None:
+                        if ind.threshold_high and ind.threshold_low:
+                            midpoint = (ind.threshold_high + ind.threshold_low) / 2
+                            deviation = abs(ind.current_value - midpoint)
+                            return deviation * ind.confidence
+                        else:
+                            return abs(ind.current_value) * (ind.confidence or 1.0)
+                    return 0.0
+                indicators.sort(key=get_impact_score, reverse=True)
+
         # Count by category
         category_counts = {}
         for ind in indicators:
             cat = ind.pestel_category
             category_counts[cat] = category_counts.get(cat, 0) + 1
-        
+
         return NationalIndicatorListResponse(
             indicators=indicators,
             total=len(indicators),
@@ -724,16 +746,16 @@ class DashboardService:
     ) -> List[Dict[str, Any]]:
         """Get historical values for an indicator"""
         cutoff = datetime.utcnow() - timedelta(days=days)
-        
+
         result = self.db.execute(
             select(IndicatorValue)
             .where(IndicatorValue.indicator_id == indicator_id)
             .where(IndicatorValue.timestamp >= cutoff)
             .order_by(IndicatorValue.timestamp)
         )
-        
+
         values = result.scalars().all()
-        
+
         return [
             {
                 "timestamp": v.timestamp.isoformat() if v.timestamp else None,
@@ -743,3 +765,41 @@ class DashboardService:
             }
             for v in values
         ]
+
+    def get_indicator_history_batch(
+        self,
+        indicator_ids: List[str],
+        days: int = 30
+    ) -> Dict[str, Dict[str, Any]]:
+        """Get historical values for multiple indicators in a single query"""
+        cutoff = datetime.utcnow() - timedelta(days=days)
+
+        # Batch query for all indicators
+        result = self.db.execute(
+            select(IndicatorValue, IndicatorDefinition)
+            .join(IndicatorDefinition, IndicatorValue.indicator_id == IndicatorDefinition.indicator_id)
+            .where(IndicatorValue.indicator_id.in_(indicator_ids))
+            .where(IndicatorValue.timestamp >= cutoff)
+            .order_by(IndicatorValue.indicator_id, IndicatorValue.timestamp)
+        )
+
+        # Group values by indicator_id
+        grouped_data: Dict[str, Dict[str, Any]] = {}
+
+        for value, definition in result:
+            if value.indicator_id not in grouped_data:
+                grouped_data[value.indicator_id] = {
+                    "indicator_id": value.indicator_id,
+                    "indicator_name": definition.indicator_name,
+                    "days": days,
+                    "history": []
+                }
+
+            grouped_data[value.indicator_id]["history"].append({
+                "timestamp": value.timestamp.isoformat() if value.timestamp else None,
+                "value": value.value,
+                "confidence": value.confidence,
+                "source_count": value.source_count
+            })
+
+        return grouped_data

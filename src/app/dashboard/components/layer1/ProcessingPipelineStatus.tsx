@@ -3,6 +3,7 @@
 import React from 'react';
 import { LayerBadge, StatusBadge } from '../shared/Badge';
 import { LoadingSkeleton } from '../shared/LoadingSkeleton';
+import { CheckCircle2, AlertTriangle, Clock, TrendingUp } from 'lucide-react';
 
 interface PipelineStage {
     name: string;
@@ -85,104 +86,158 @@ export function ProcessingPipelineStatus({ stages, isLoading }: ProcessingPipeli
         return <LoadingSkeleton variant="card" rows={5} />;
     }
 
+    const getStageAccentColor = (index: number) => {
+        const colors = [
+            { border: 'border-blue-200', bg: 'bg-blue-50', text: 'text-blue-700', accent: 'bg-blue-500' },
+            { border: 'border-indigo-200', bg: 'bg-indigo-50', text: 'text-indigo-700', accent: 'bg-indigo-500' },
+            { border: 'border-purple-200', bg: 'bg-purple-50', text: 'text-purple-700', accent: 'bg-purple-500' },
+            { border: 'border-pink-200', bg: 'bg-pink-50', text: 'text-pink-700', accent: 'bg-pink-500' },
+            { border: 'border-rose-200', bg: 'bg-rose-50', text: 'text-rose-700', accent: 'bg-rose-500' }
+        ];
+        return colors[index % colors.length];
+    };
+
     return (
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
             {/* Header */}
-            <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between mb-4">
+            <div className="p-6 border-b border-gray-100">
+                <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <h3 className="text-lg font-semibold text-gray-900">Processing Pipeline Status</h3>
-                        <LayerBadge layer={1} />
+                        <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
+                            <TrendingUp className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900">Processing Pipeline Status</h3>
+                            <p className="text-sm text-gray-500">Real-time data flow monitoring</p>
+                        </div>
                     </div>
-                    <StatusBadge status={stats.overall_success_rate >= 95 ? 'active' : 'pending'} label="Pipeline Health" />
+                    <LayerBadge layer={1} />
                 </div>
 
-                {/* Overall Stats */}
+                {/* Overall Stats - Clean White Cards with Subtle Accents */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-blue-50 rounded-lg p-3">
-                        <p className="text-xs text-blue-600 font-medium">Overall Success</p>
-                        <p className="text-2xl font-bold text-blue-700 mt-1">
-                            {stats.overall_success_rate.toFixed(1)}%
+                    <div className="bg-white border-2 border-blue-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="p-1.5 bg-blue-50 rounded-lg">
+                                <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                            </div>
+                            <p className="text-xs text-gray-600 font-medium">Overall Success</p>
+                        </div>
+                        <p className="text-3xl font-bold text-gray-900">
+                            {stats.overall_success_rate.toFixed(1)}<span className="text-lg text-blue-600">%</span>
                         </p>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-3">
-                        <p className="text-xs text-green-600 font-medium">Throughput</p>
-                        <p className="text-2xl font-bold text-green-700 mt-1">
-                            {stats.current_throughput}/hr
+
+                    <div className="bg-white border-2 border-green-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="p-1.5 bg-green-50 rounded-lg">
+                                <TrendingUp className="w-4 h-4 text-green-600" />
+                            </div>
+                            <p className="text-xs text-gray-600 font-medium">Throughput</p>
+                        </div>
+                        <p className="text-3xl font-bold text-gray-900">
+                            {stats.current_throughput}<span className="text-lg text-green-600">/hr</span>
                         </p>
                     </div>
-                    <div className="bg-yellow-50 rounded-lg p-3">
-                        <p className="text-xs text-yellow-600 font-medium">Avg Processing</p>
-                        <p className="text-2xl font-bold text-yellow-700 mt-1">
-                            {stats.avg_processing_time.toFixed(1)}s
+
+                    <div className="bg-white border-2 border-amber-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="p-1.5 bg-amber-50 rounded-lg">
+                                <Clock className="w-4 h-4 text-amber-600" />
+                            </div>
+                            <p className="text-xs text-gray-600 font-medium">Avg Processing</p>
+                        </div>
+                        <p className="text-3xl font-bold text-gray-900">
+                            {stats.avg_processing_time.toFixed(1)}<span className="text-lg text-amber-600">s</span>
                         </p>
                     </div>
-                    <div className="bg-red-50 rounded-lg p-3">
-                        <p className="text-xs text-red-600 font-medium">Total Errors</p>
-                        <p className="text-2xl font-bold text-red-700 mt-1">
+
+                    <div className="bg-white border-2 border-red-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="p-1.5 bg-red-50 rounded-lg">
+                                <AlertTriangle className="w-4 h-4 text-red-600" />
+                            </div>
+                            <p className="text-xs text-gray-600 font-medium">Total Errors</p>
+                        </div>
+                        <p className="text-3xl font-bold text-gray-900">
                             {stats.total_errors.toLocaleString()}
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* Pipeline Funnel Visualization */}
-            <div className="p-6">
-                <div className="space-y-4">
+            {/* Pipeline Stages - Clean White Design */}
+            <div className="p-6 bg-gray-50">
+                <div className="space-y-3">
                     {displayStages.map((stage, index) => {
                         const prevStage = index > 0 ? displayStages[index - 1] : null;
                         const dropoff = prevStage ? prevStage.count - stage.count : 0;
                         const dropoff_percentage = prevStage ? (dropoff / prevStage.count) * 100 : 0;
                         const width_percentage = (stage.count / displayStages[0].count) * 100;
+                        const colors = getStageAccentColor(index);
 
                         return (
                             <div key={stage.name} className="relative">
-                                {/* Stage Card */}
+                                {/* Clean White Stage Card */}
                                 <div
-                                    className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-4 text-white transition-all hover:shadow-lg"
-                                    style={{ width: `${width_percentage}%`, minWidth: '60%' }}
+                                    className={`relative bg-white border-2 ${colors.border} rounded-xl p-5 hover:shadow-lg transition-all duration-300`}
+                                    style={{ width: `${Math.max(width_percentage, 70)}%` }}
                                 >
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h4 className="font-semibold text-lg">{stage.name}</h4>
-                                        <div className="flex items-center gap-4 text-sm">
-                                            <span className="bg-white/20 px-2 py-1 rounded">
-                                                {stage.count.toLocaleString()} articles
-                                            </span>
-                                            <span className="bg-white/20 px-2 py-1 rounded">
-                                                {stage.processing_rate}/hr
-                                            </span>
-                                        </div>
-                                    </div>
+                                    {/* Accent bar on left */}
+                                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${colors.accent} rounded-l-xl`}></div>
 
-                                    {/* Stage Stats */}
-                                    <div className="grid grid-cols-3 gap-3 text-sm">
-                                        <div>
-                                            <p className="text-blue-100 text-xs">Success Rate</p>
-                                            <p className="font-medium">{stage.success_rate.toFixed(1)}%</p>
+                                    <div className="pl-3">
+                                        {/* Header */}
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-10 h-10 ${colors.bg} backdrop-blur-sm rounded-lg flex items-center justify-center border ${colors.border}`}>
+                                                    <span className={`text-lg font-bold ${colors.text}`}>{index + 1}</span>
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-lg text-gray-900">{stage.name}</h4>
+                                                    <p className="text-sm text-gray-600">{stage.count.toLocaleString()} articles</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className={`${colors.bg} border ${colors.border} px-3 py-1.5 rounded-lg`}>
+                                                    <p className={`text-sm font-semibold ${colors.text}`}>{stage.processing_rate}/hr</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-blue-100 text-xs">Avg Time</p>
-                                            <p className="font-medium">{stage.avg_processing_time.toFixed(1)}s</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-blue-100 text-xs">Errors</p>
-                                            <p className="font-medium">{stage.error_count.toLocaleString()}</p>
-                                        </div>
-                                    </div>
 
-                                    {/* Progress Bar */}
-                                    <div className="mt-3 bg-white/20 rounded-full h-2 overflow-hidden">
-                                        <div
-                                            className="bg-white h-full rounded-full transition-all"
-                                            style={{ width: `${stage.success_rate}%` }}
-                                        ></div>
+                                        {/* Stats Grid */}
+                                        <div className="grid grid-cols-3 gap-4 mb-3">
+                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                                <p className="text-xs text-gray-500 mb-1">Success Rate</p>
+                                                <p className="text-xl font-bold text-gray-900">{stage.success_rate.toFixed(1)}%</p>
+                                            </div>
+                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                                <p className="text-xs text-gray-500 mb-1">Avg Time</p>
+                                                <p className="text-xl font-bold text-gray-900">{stage.avg_processing_time.toFixed(1)}s</p>
+                                            </div>
+                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                                <p className="text-xs text-gray-500 mb-1">Errors</p>
+                                                <p className="text-xl font-bold text-gray-900">{stage.error_count.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Progress Bar */}
+                                        <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
+                                            <div
+                                                className={`${colors.accent} h-full rounded-full transition-all duration-500`}
+                                                style={{ width: `${stage.success_rate}%` }}
+                                            ></div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Dropoff Indicator */}
                                 {dropoff > 0 && (
-                                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-medium border border-red-200">
-                                        ↓ {dropoff.toLocaleString()} ({dropoff_percentage.toFixed(1)}%) dropped
+                                    <div className="flex items-center justify-center mt-2 mb-1">
+                                        <div className="bg-white border-2 border-red-200 text-red-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm flex items-center gap-2">
+                                            <span className="text-red-500">↓</span>
+                                            {dropoff.toLocaleString()} dropped ({dropoff_percentage.toFixed(1)}%)
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -190,14 +245,16 @@ export function ProcessingPipelineStatus({ stages, isLoading }: ProcessingPipeli
                     })}
                 </div>
 
-                {/* Bottleneck Alert */}
+                {/* Bottleneck Alert - Clean Design */}
                 {stats.overall_success_rate < 95 && (
-                    <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <div className="flex items-start gap-3">
-                            <span className="text-2xl">⚠️</span>
-                            <div>
-                                <h4 className="font-semibold text-yellow-900 mb-1">Pipeline Bottleneck Detected</h4>
-                                <p className="text-sm text-yellow-700">
+                    <div className="mt-6 bg-white border-2 border-amber-200 rounded-xl p-5 shadow-sm">
+                        <div className="flex items-start gap-4">
+                            <div className="p-2 bg-amber-50 rounded-lg border border-amber-200">
+                                <AlertTriangle className="w-6 h-6 text-amber-600" />
+                            </div>
+                            <div className="flex-1">
+                                <h4 className="font-bold text-gray-900 mb-2 text-lg">Pipeline Bottleneck Detected</h4>
+                                <p className="text-sm text-gray-600 leading-relaxed">
                                     Overall success rate is below 95%. Check individual stage error counts and processing times for optimization opportunities.
                                 </p>
                             </div>

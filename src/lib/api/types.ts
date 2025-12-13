@@ -213,6 +213,32 @@ export interface CompanyProfileUpdate {
   description?: string;
 }
 
+// ============== Chart Types ==============
+
+export interface PestelDistribution {
+  category: string;
+  count: number;
+  color: string;
+}
+
+export interface IndicatorHistoryPoint {
+  timestamp: string;
+  value: number;
+  confidence: number;
+  source_count: number;
+}
+
+export interface IndicatorHistory {
+  indicator_id: string;
+  indicator_name: string;
+  days: number;
+  history: IndicatorHistoryPoint[];
+}
+
+export interface IndicatorHistoryBatch {
+  [indicator_id: string]: IndicatorHistory;
+}
+
 // ============== API Error ==============
 
 export interface ApiError {

@@ -1,7 +1,7 @@
 """
 Layer 5: Dashboard Schemas
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer, ConfigDict
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from decimal import Decimal
@@ -88,8 +88,11 @@ class OperationalIndicatorResponse(BaseModel):
     company_id: Optional[str] = None
     calculated_at: Optional[datetime] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+    
+    @field_serializer('calculated_at')
+    def serialize_datetime(self, value: Optional[datetime]) -> Optional[str]:
+        return value.isoformat() if value else None
 
 
 class OperationalIndicatorListResponse(BaseModel):

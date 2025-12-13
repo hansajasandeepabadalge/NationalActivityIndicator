@@ -28,10 +28,11 @@ export const dashboardService = {
   /**
    * Get all national indicators (Layer 2)
    */
-  async getNationalIndicators(category?: string, limit: number = 20): Promise<NationalIndicatorList> {
+  async getNationalIndicators(category?: string, limit: number = 20, sort_by?: string): Promise<NationalIndicatorList> {
     const params = new URLSearchParams();
     if (category) params.append('category', category);
     params.append('limit', limit.toString());
+    if (sort_by) params.append('sort_by', sort_by);
     return apiClient.get<NationalIndicatorList>(`/admin/indicators/national?${params}`);
   },
 
@@ -44,6 +45,16 @@ export const dashboardService = {
     history: Array<{ timestamp: string; value: number; confidence: number; source_count: number }>;
   }> {
     return apiClient.get(`/admin/indicators/national/${indicatorId}/history?days=${days}`);
+  },
+
+  /**
+   * Get indicator history for multiple indicators in batch
+   */
+  async getIndicatorHistoryBatch(indicatorIds: string[], days: number = 30): Promise<IndicatorHistoryBatch> {
+    return apiClient.post<IndicatorHistoryBatch>('/admin/indicators/national/history/batch', {
+      indicator_ids: indicatorIds,
+      days
+    });
   },
 
   /**

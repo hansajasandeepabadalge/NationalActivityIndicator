@@ -8,6 +8,17 @@ import { LoadingSkeleton } from '../shared/LoadingSkeleton';
 export function OperationalOverview({ selectedCompanyId }: { selectedCompanyId?: string }) {
     const { data: indicators, isLoading, error } = useOperationalIndicators(20);
 
+    // DEBUG: Log the data we receive
+    React.useEffect(() => {
+        console.log('🔍 OperationalOverview - Data received:', {
+            indicators,
+            isLoading,
+            error,
+            indicatorsCount: indicators?.length,
+            selectedCompanyId
+        });
+    }, [indicators, isLoading, error, selectedCompanyId]);
+
     // Filter indicators
     const filteredIndicators = useMemo(() => {
         if (!indicators) return [];

@@ -9,6 +9,18 @@ import { useAdminDashboard, useNationalIndicators, useBusinessInsights, useOpera
 import { StatCard } from './components/shared/StatCard';
 import { PestelBadge, SeverityBadge, TrendArrow } from './components/shared/Badge';
 import { LoadingSkeleton } from './components/shared/LoadingSkeleton';
+import { PestelDonutChart } from '@/components/charts/PestelDonutChart';
+import { IndicatorTrendGrid } from '@/components/charts/IndicatorTrendGrid';
+import { TopIndicatorsBarChart } from '@/components/charts/TopIndicatorsBarChart';
+import { InsightsSeverityChart } from '@/components/charts/InsightsSeverityChart';
+import { RiskOpportunityPieChart } from '@/components/charts/RiskOpportunityPieChart';
+import { OperationalMetricsChart } from '@/components/charts/OperationalMetricsChart';
+import { InsightsCategoryChart } from '@/components/charts/InsightsCategoryChart';
+import { SriLankaWeatherMap } from '@/components/maps/SriLankaWeatherMap';
+import { SriLankaTrafficMap } from '@/components/maps/SriLankaTrafficMap';
+import { ColomboStockExchangeWidget } from '@/components/widgets/ColomboStockExchangeWidget';
+import { SystemHealthDashboard } from '@/components/health/SystemHealthDashboard';
+import { IndustryOperationalDashboard } from '@/components/operational/IndustryOperationalDashboard';
 
 // Layer 1 Components
 import { DataSourcesMonitor } from './components/layer1/DataSourcesMonitor';
@@ -85,15 +97,9 @@ function DashboardContent() {
                   disabled={companiesLoading}
                 >
                   <option value="">All Companies</option>
-<<<<<<< Updated upstream
-                  {companies?.map((company, index) => (
-                    <option key={company.id || `company-${index}`} value={company.id}>
-                      {company.name}
-=======
                   {companies?.map((company) => (
                     <option key={company.company_id} value={company.company_id}>
                       {company.company_name}
->>>>>>> Stashed changes
                     </option>
                   ))}
                 </select>
@@ -178,6 +184,135 @@ function DashboardContent() {
               )}
             </div>
 
+            {/* PESTEL Distribution & Indicator Trends - 2 Column Layout */}
+            {indicators && indicators.length > 0 && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* PESTEL Distribution Chart - Left */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    Indicator Distribution by PESTEL Category
+                  </h2>
+                  <PestelDonutChart
+                    data={Object.entries(indicatorsByCategory).reduce((acc, [category, indicators]) => {
+                      acc[category] = indicators.length;
+                      return acc;
+                    }, {} as Record<string, number>)}
+                    onCategoryClick={(category) => {
+                      console.log('Filter by category:', category);
+                    }}
+                    height={350}
+                  />
+                </div>
+
+                {/* Indicator Trends - Right */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <div className="mb-4">
+                    <h2 className="text-xl font-semibold text-gray-900">Indicator Trends (30 Days)</h2>
+                    <p className="text-sm text-gray-500">Real-time trend visualization with auto-refresh</p>
+                  </div>
+                  <div className="overflow-y-auto" style={{ maxHeight: '500px' }}>
+                    <IndicatorTrendGrid
+                      indicators={indicators.slice(0, 6)}
+                      days={30}
+                      pollingInterval={30000}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Colombo Stock Exchange Widget */}
+            <ColomboStockExchangeWidget />
+
+            {/* Business Insights Analytics - 2x2 Grid Layout */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Business Insights Analytics</h2>
+
+              {/* 2x2 Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Top Left: Insights Distribution (Pie Chart) */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Insights Distribution
+                  </h3>
+                  <RiskOpportunityPieChart
+                    insightsData={insights ? {
+                      insights: insights,
+                      total: insights.length,
+                      risks_count: insights.filter(i => i.insight_type === 'risk').length,
+                      opportunities_count: insights.filter(i => i.insight_type === 'opportunity').length,
+                      critical_count: insights.filter(i => i.severity_level === 'critical').length,
+                      by_category: insights.reduce((acc, i) => {
+                        acc[i.category] = (acc[i.category] || 0) + 1;
+                        return acc;
+                      }, {} as Record<string, number>)
+                    } : null}
+                    height={320}
+                  />
+                </div>
+
+                {/* Top Right: Insights by Category (Bar Chart) */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Insights by Category
+                  </h3>
+                  <div className="mt-8">
+                    <InsightsCategoryChart
+                      insightsData={insights ? {
+                        insights: insights,
+                        total: insights.length,
+                        risks_count: insights.filter(i => i.insight_type === 'risk').length,
+                        opportunities_count: insights.filter(i => i.insight_type === 'opportunity').length,
+                        critical_count: insights.filter(i => i.severity_level === 'critical').length,
+                        by_category: insights.reduce((acc, i) => {
+                          acc[i.category] = (acc[i.category] || 0) + 1;
+                          return acc;
+                        }, {} as Record<string, number>)
+                      } : null}
+                      height={320}
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom Left: Severity Distribution (Grouped Bar Chart) */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Severity Distribution: Risks vs Opportunities
+                  </h3>
+                  <InsightsSeverityChart
+                    insightsData={insights ? {
+                      insights: insights,
+                      total: insights.length,
+                      risks_count: insights.filter(i => i.insight_type === 'risk').length,
+                      opportunities_count: insights.filter(i => i.insight_type === 'opportunity').length,
+                      critical_count: insights.filter(i => i.severity_level === 'critical').length,
+                      by_category: insights.reduce((acc, i) => {
+                        acc[i.category] = (acc[i.category] || 0) + 1;
+                        return acc;
+                      }, {} as Record<string, number>)
+                    } : null}
+                    height={320}
+                  />
+                </div>
+
+                {/* Bottom Right: Operational Metrics (Area Chart) */}
+                {operationalIndicators && operationalIndicators.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">Operational Metrics Analysis</h3>
+                      <p className="text-sm text-gray-500">Current vs Baseline Performance</p>
+                    </div>
+                    <div className="mt-8">
+                      <OperationalMetricsChart
+                        indicators={operationalIndicators.slice(0, 10)}
+                        height={280}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* National Indicators by PESTEL Category */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">National Indicators (Layer 2)</h2>
@@ -249,9 +384,9 @@ function DashboardContent() {
                   <LoadingSkeleton rows={8} />
                 ) : operationalIndicators && operationalIndicators.length > 0 ? (
                   <div className="space-y-2 max-h-[600px] overflow-y-auto">
-                    {operationalIndicators.map((indicator) => (
+                    {operationalIndicators.map((indicator, index) => (
                       <div
-                        key={indicator.indicator_id}
+                        key={`${indicator.indicator_id}-${indicator.company_id || ''}-${index}`}
                         className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                       >
                         <div className="flex items-start justify-between">
@@ -319,6 +454,15 @@ function DashboardContent() {
                 )}
               </div>
             </div>
+
+            {/* Industry-Wise Operational Indicators */}
+            <div>
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Industry-Wise Operational Analysis</h2>
+                <p className="text-sm text-gray-600">Analyze operational indicators across 6 key industries</p>
+              </div>
+              <IndustryOperationalDashboard />
+            </div>
           </div>
         )}
 
@@ -335,6 +479,12 @@ function DashboardContent() {
 
             {/* Processing Pipeline Status */}
             <ProcessingPipelineStatus />
+
+            {/* Sri Lanka Weather Map */}
+            <SriLankaWeatherMap />
+
+            {/* Sri Lanka Traffic Map */}
+            <SriLankaTrafficMap />
 
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -356,15 +506,17 @@ function DashboardContent() {
           <div className="space-y-8">
             <IndicatorAnalysis />
 
-            {/* Operational Indicators Section */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Operational Indicators (Layer 3)</h2>
-                  <p className="text-gray-500">Real-time operational impact analysis</p>
-                </div>
+            {/* Top Indicators Bar Chart */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Top Indicators by Impact</h2>
+                <p className="text-sm text-gray-500">Sortable view of highest-impact indicators</p>
               </div>
-              <OperationalOverview selectedCompanyId={selectedCompany} />
+              <TopIndicatorsBarChart
+                limit={10}
+                height={500}
+                pollingInterval={60000}
+              />
             </div>
           </div>
         )}
@@ -377,14 +529,8 @@ function DashboardContent() {
               <p className="text-gray-600">Overall system status and performance metrics</p>
             </div>
 
-            {/* Placeholder for system health components */}
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-8 text-center">
-              <div className="text-4xl mb-4">🏥</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">System Health Dashboard Coming Soon</h3>
-              <p className="text-gray-600">
-                This section will display system health metrics, database status, API performance, and error logs.
-              </p>
-            </div>
+            {/* System Health Dashboard */}
+            <SystemHealthDashboard />
           </div>
         )}
       </main>

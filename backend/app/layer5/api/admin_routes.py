@@ -20,6 +20,7 @@ from app.layer5.schemas.dashboard import (
     OperationalIndicatorListResponse
 )
 from app.layer5.schemas.company import CompanyProfileResponse
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/admin", tags=["admin", "layer5"])
 
@@ -45,15 +46,41 @@ def get_admin_dashboard(
 def get_national_indicators(
     category: Optional[str] = Query(None, description="Filter by PESTEL category"),
     limit: int = Query(100, ge=1, le=500),
+    sort_by: Optional[str] = Query(None, description="Sort by: value, confidence, change, impact"),
     current_user: UserResponse = Depends(require_admin),
     db: Session = Depends(get_db)
 ):
     """
     Get all national indicators (Layer 2 data).
     Shows the 20 national-level economic indicators.
+    Supports sorting by value, confidence, change percentage, or impact score.
     """
     dashboard_service = DashboardService(db)
-    return dashboard_service.get_national_indicators(category=category, limit=limit)
+    return dashboard_service.get_national_indicators(category=category, limit=limit, sort_by=sort_by)
+
+
+class IndicatorHistoryBatchRequest(BaseModel):
+    """Request model for batch indicator history"""
+    indicator_ids: List[str]
+    days: int = 30
+
+
+@router.post("/indicators/national/history/batch")
+def get_indicator_history_batch(
+    request: IndicatorHistoryBatchRequest,
+    current_user: UserResponse = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Get historical values for multiple indicators in a single request.
+    Optimized for dashboard trend grid visualization.
+    """
+    dashboard_service = DashboardService(db)
+    batch_data = dashboard_service.get_indicator_history_batch(
+        request.indicator_ids,
+        request.days
+    )
+    return batch_data
 
 
 @router.get("/indicators/national/{indicator_id}/history")

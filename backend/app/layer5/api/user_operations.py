@@ -51,7 +51,7 @@ def _get_user_company_id(user: UserResponse) -> str:
     return user.company_id
 
 
-@router.get("/operations-data")  # , response_model=OperationalIndicatorListResponse)
+@router.get("/operations-data")
 def get_operational_indicators(
     limit: int = Query(20, ge=1, le=100),
     current_user: UserResponse = Depends(get_current_user),
@@ -60,31 +60,16 @@ def get_operational_indicators(
     """
     Get operational indicators for user's company (Layer 3 data).
     Admins can see aggregated indicators from all companies.
+    
+    SIMPLIFIED VERSION: Returns dict instead of Pydantic model to avoid serialization issues.
     """
-<<<<<<< Updated upstream
-    import traceback
-    from fastapi import HTTPException
-
-    try:
-=======
     try:
         print(f"🔍 Operations endpoint called by: {current_user.email}, role: {current_user.role}")
-        
->>>>>>> Stashed changes
+
         # Admin users: show all companies' operational indicators
         # Regular users: show only their company's indicators
         if current_user.role == "admin":
             company_id = None  # None = fetch from all companies
-<<<<<<< Updated upstream
-        else:
-            company_id = _get_user_company_id(current_user)
-
-        # Initialize MongoDB connection for Layer 3 data
-        mongo_client = MongoClient(settings.MONGODB_URL)
-        dashboard_service = DashboardService(db, mongo_client=mongo_client)
-
-        try:
-=======
             print(f"   Admin user - fetching all companies")
         else:
             company_id = _get_user_company_id(current_user)
@@ -94,35 +79,51 @@ def get_operational_indicators(
         print(f"   Connecting to MongoDB: {settings.MONGODB_URL}")
         mongo_client = MongoClient(settings.MONGODB_URL)
         dashboard_service = DashboardService(
-            db, 
-            mongo_client=mongo_client, 
+            db,
+            mongo_client=mongo_client,
             mongo_db_name=settings.MONGODB_DB_NAME
         )
 
         try:
             print(f"   Calling dashboard_service.get_operational_indicators(company_id={company_id}, limit={limit})")
->>>>>>> Stashed changes
             result = dashboard_service.get_operational_indicators(
                 company_id=company_id,
                 limit=limit
             )
-<<<<<<< Updated upstream
-            return result
-        finally:
-            mongo_client.close()
-    except Exception as e:
-        error_msg = f"!!! ERROR in get_operational_indicators endpoint: {type(e).__name__}: {str(e)}\n{traceback.format_exc()}"
-        print(error_msg)
-        with open("C:/temp/endpoint_error.txt", "w") as f:
-            f.write(error_msg)
-        raise HTTPException(status_code=500, detail=f"Error fetching operational indicators: {str(e)}")
-=======
-            print(f"   ✅ Success! Returning {result.total} indicators")
-            return result
+            print(f"   ✅ Success! Got {result.total} indicators")
+            
+            # Convert Pydantic model to dict manually to avoid serialization issues
+            response_dict = {
+                "company_id": result.company_id,
+                "total": result.total,
+                "critical_count": result.critical_count,
+                "warning_count": result.warning_count,
+                "indicators": [
+                    {
+                        "indicator_id": ind.indicator_id,
+                        "indicator_name": ind.indicator_name,
+                        "category": ind.category,
+                        "current_value": ind.current_value,
+                        "baseline_value": ind.baseline_value,
+                        "deviation": ind.deviation,
+                        "impact_score": ind.impact_score,
+                        "trend": ind.trend.value if ind.trend else "stable",
+                        "is_above_threshold": ind.is_above_threshold,
+                        "is_below_threshold": ind.is_below_threshold,
+                        "company_id": ind.company_id,
+                        "calculated_at": ind.calculated_at.isoformat() if ind.calculated_at else None
+                    }
+                    for ind in result.indicators
+                ]
+            }
+            
+            print(f"   ✅ Returning response dict with {len(response_dict['indicators'])} indicators")
+            return response_dict
+            
         finally:
             mongo_client.close()
             print(f"   MongoDB connection closed")
-            
+
     except Exception as e:
         print(f"❌ ERROR in get_operational_indicators endpoint:")
         print(f"   Error type: {type(e).__name__}")
@@ -132,5 +133,3 @@ def get_operational_indicators(
             status_code=500,
             detail=f"Error fetching operational indicators: {str(e)}"
         )
-
->>>>>>> Stashed changes

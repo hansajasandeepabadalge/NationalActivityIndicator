@@ -1,5 +1,8 @@
 import React from 'react';
+import { TrendingUp, TrendingDown, Minus, Activity, ChevronRight } from 'lucide-react';
 import { OperationalIndicator } from '../../../services/operationalService';
+import { SparklineChart } from '@/components/charts/SparklineChart';
+import { useIndicatorHistory } from '@/hooks/useIndicatorHistory';
 
 interface Props {
     indicator: OperationalIndicator;
@@ -7,6 +10,7 @@ interface Props {
 
 export function OperationalIndicatorCard({ indicator }: Props) {
     const {
+        indicator_id,
         indicator_name,
         current_value,
         baseline_value,
@@ -16,11 +20,14 @@ export function OperationalIndicatorCard({ indicator }: Props) {
         category
     } = indicator;
 
+    // Fetch 7-day history for sparkline
+    const { data: historyData, isLoading: historyLoading } = useIndicatorHistory(indicator_id, 7);
+
     // Status color mapping based on threshold and impact
     let statusLabel = 'healthy';
     let statusInfo = 'Normal';
 
-    if (is_above_threshold) { // Logic: Above threshold usually means bad (e.g. high cost, delay) or depends on context, but schema implies 'requires attention'
+    if (is_above_threshold) {
         statusLabel = 'critical';
         statusInfo = 'Attention';
     } else if (impact_score > 0.5) {
@@ -41,50 +48,95 @@ export function OperationalIndicatorCard({ indicator }: Props) {
 
     // Trend icon mapping
     const TrendIcon = () => {
-        if (trend === 'up') return <span className="text-red-500">↑</span>; // Assuming Up is bad usually for operational costs/delays, but could be good for productivity. 
-        // Logic: The API TrendDirection.UP logic. 
-        // Let's assume neutral for now or rely on specific indicator knowledge? 
-        // Actually, schema just gives 'up'/'down'. 
-        // Let's use generic arrows.
-        if (trend === 'up') return <span className="text-gray-600">↑</span>;
-        if (trend === 'down') return <span className="text-gray-600">↓</span>;
-        return <span className="text-gray-400">→</span>;
+        const trendValue = historyData?.trend_summary?.trend || trend;
+        if (trendValue === 'increasing' || trendValue === 'up') {
+            return <TrendingUp className="w-4 h-4 text-green-500" />;
+        }
+        if (trendValue === 'decreasing' || trendValue === 'down') {
+            return <TrendingDown className="w-4 h-4 text-red-500" />;
+        }
+        return <Minus className="w-4 h-4 text-gray-400" />;
     };
 
+    // Get change percentage
+    const getChangeText = () => {
+        if (historyData?.trend_summary) {
+            const change = historyData.trend_summary.change_percent;
+            const sign = change > 0 ? '+' : '';
+            return `${sign}${change.toFixed(1)}%`;
+        }
+        return '—';
+    };
+
+    // Prepare sparkline data
+    const sparklineData = historyData?.history
+        ? historyData.history.map(point => ({
+            timestamp: point.timestamp,
+            value: point.value
+        }))
+        : [];
+
     return (
-        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+        <div className="relative bg-white rounded-lg border border-gray-200 p-3 shadow-sm hover:shadow-lg transition-all group cursor-pointer">
             <div className="flex justify-between items-start mb-2">
-                <div>
-                    <h4 className="font-semibold text-gray-800 text-sm uppercase tracking-wide">
-                        {indicator_name}
-                    </h4>
-                    <span className="text-xs text-gray-500 block truncate max-w-[150px]">{category}</span>
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                        <Activity className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                        <h4 className="font-semibold text-gray-800 text-xs uppercase tracking-wide truncate">
+                            {indicator_name}
+                        </h4>
+                    </div>
+                    <span className="text-[10px] text-gray-500 block truncate">{category}</span>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColor}`}>
-                    {statusInfo}
-                </span>
+                <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium border ${statusColor} whitespace-nowrap`}>
+                        {statusInfo}
+                    </span>
+                    <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                </div>
             </div>
 
-            <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-3xl font-bold text-gray-900">
+            <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-2xl font-bold text-gray-900">
                     {Math.round(current_value)}
                 </span>
-                {/* Assuming scale is usually relevant to base 100 or just value. Removing /100 fixed text unless valid */}
 
-                <span className="ml-auto text-sm font-medium flex items-center gap-1">
+                <span className="ml-auto text-xs font-medium flex items-center gap-1">
                     <TrendIcon />
-                    <span className="text-gray-500 capitalize">{trend}</span>
+                    <span className="text-gray-600">{getChangeText()}</span>
                 </span>
             </div>
 
-            <div className="space-y-2 mt-4 pt-3 border-t border-gray-100">
-                <div className="flex justify-between text-xs">
-                    <span className="text-gray-500">Industry Avg:</span>
+            {/* Sparkline Chart */}
+            <div className="mb-2 relative">
+                {historyLoading ? (
+                    <div className="h-10 bg-gray-100 rounded animate-pulse" />
+                ) : sparklineData.length > 0 ? (
+                    <div>
+                        <div className="text-[10px] text-gray-500 mb-1 font-medium">Last 7 Days</div>
+                        <div className="relative z-0">
+                            <SparklineChart
+                                data={sparklineData}
+                                trend={historyData?.trend_summary?.trend}
+                                height={40}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="h-10 flex items-center justify-center text-[10px] text-gray-400 bg-gray-50 rounded">
+                        No historical data
+                    </div>
+                )}
+            </div>
+
+            <div className="space-y-1 pt-2 border-t border-gray-100">
+                <div className="flex justify-between text-[10px]">
+                    <span className="text-gray-500">Baseline:</span>
                     <span className="font-medium text-gray-700">{Math.round(baseline_value)}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                    <span className="text-gray-500">Impact Score:</span>
-                    <span className="font-medium text-gray-700">{impact_score.toFixed(2)}</span>
+                <div className="flex justify-between text-[10px]">
+                    <span className="text-gray-500">Impact:</span>
+                    <span className="font-medium text-gray-700">{impact_score.toFixed(1)}/10</span>
                 </div>
             </div>
         </div>

@@ -23,21 +23,21 @@ export function IndicatorAnalysis() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 h-[calc(100vh-250px)] min-h-[800px]">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
                 {/* Left Column: National Indicators (L2) - 5 cols */}
-                <div className="xl:col-span-5 h-full">
+                <div className="xl:col-span-5">
                     <NationalIndicatorList />
                 </div>
 
                 {/* Right Column: Split Top/Bottom - 7 cols */}
-                <div className="xl:col-span-7 flex flex-col gap-6 h-full">
+                <div className="xl:col-span-7 flex flex-col gap-6">
                     {/* Top: Operational Metrics (L3) */}
-                    <div className="flex-1 min-h-0">
+                    <div>
                         <OperationalMetricsGrid />
                     </div>
 
                     {/* Bottom: Business Insights (L4) */}
-                    <div className="flex-1 min-h-0">
+                    <div>
                         <BusinessInsightsPanel />
                     </div>
                 </div>
