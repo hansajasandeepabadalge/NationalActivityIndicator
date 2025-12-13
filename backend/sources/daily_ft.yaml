@@ -1,0 +1,101 @@
+metadata:
+  name: "Daily FT"
+  source_type: "news"
+  base_url: "https://www.ft.lk"
+  language: "en"
+  credibility_score: 0.88
+  update_frequency_minutes: 30
+
+scraping:
+  method: "html"
+  
+  entry_points:
+    - url: "https://www.ft.lk/news"
+      type: "article_list"
+      pagination:
+        enabled: true
+        pattern: "https://www.ft.lk/news?page={page}"
+        max_pages: 3
+  
+  selectors:
+    article_list:
+      container: "div.article-list"
+      item: "div.article-item"
+      link: "a.article-title::attr(href)"
+      
+    article_detail:
+      title:
+        selectors:
+          - "h1.article-title::text"
+          - "//h1[contains(@class,'title')]/text()"
+        fallback: "meta[property='og:title']::attr(content)"
+      
+      body:
+        selectors:
+          - "div.article-content"
+          - "div.story-content"
+        cleanup:
+          remove_tags: ["script", "style", "iframe"]
+          remove_classes: [".advertisement", ".social-share"]
+      
+      publish_date:
+        selectors:
+          - "span.date::text"
+          - "//time/@datetime"
+        format: "%Y-%m-%d"
+        fallback: "meta[property='article:published_time']::attr(content)"
+      
+      author:
+        selectors:
+          - "span.author::text"
+        default: "FT Staff"
+      
+      category:
+        selectors:
+          - "nav.breadcrumb a:last-child::text"
+        mapping_required: true
+
+  headers:
+    User-Agent: "Mozilla/5.0 (Compatible; BusinessIntelBot/1.0)"
+    Accept-Language: "en"
+
+  rate_limiting:
+    requests_per_minute: 20
+    delay_between_requests: 3
+    respect_robots_txt: true
+
+  validation:
+    min_word_count: 50
+    required_fields: ["title", "body"]
+    url_pattern: "^https://www\\.ft\\.lk/"
+
+preprocessing:
+  language_detection:
+    enabled: false
+    fallback_language: "en"
+  
+  initial_cleaning:
+    remove_urls: true
+    remove_emails: true
+    normalize_whitespace: true
+    remove_html_entities: true
+
+categorization:
+  has_source_categories: true
+  category_mappings:
+    "Top Story": "GENERAL"
+    "Front Page": "GENERAL"
+    "Opinion": "POLITICAL"
+    "Business": "ECONOMIC"
+    "Financial Markets": "ECONOMIC.FINANCIAL_MARKETS"
+    "Economy": "ECONOMIC"
+    "Politics": "POLITICAL"
+    "International": "GENERAL"
+
+error_handling:
+  max_retries: 3
+  retry_delay: 60
+  timeout: 30
+  on_failure:
+    notify: true
+    fallback_to_rss: false

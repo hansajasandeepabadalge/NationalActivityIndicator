@@ -40,6 +40,22 @@ try:
 except ImportError:
     HAS_REPUTATION = False
 
+# Deduplication system imports
+try:
+    from app.deduplication import SemanticDeduplicator
+    HAS_DEDUPLICATION = True
+except ImportError:
+    HAS_DEDUPLICATION = False
+    SemanticDeduplicator = None
+
+# Metrics recording imports
+try:
+    from app.services.metrics_recorder import MetricsRecorder, get_metrics_recorder
+    HAS_METRICS = True
+except ImportError:
+    HAS_METRICS = False
+    MetricsRecorder = None
+
 logger = logging.getLogger(__name__)
 
 
@@ -95,6 +111,32 @@ class MasterOrchestrator:
             logger.info("Source Reputation System available (lazy init)")
         else:
             logger.warning("Source Reputation System not available")
+        
+        # Initialize Deduplication System
+        self._has_deduplication = HAS_DEDUPLICATION
+        self.deduplicator = None
+        if HAS_DEDUPLICATION:
+            try:
+                self.deduplicator = SemanticDeduplicator()
+                logger.info("SemanticDeduplicator initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize SemanticDeduplicator: {e}")
+                self._has_deduplication = False
+        else:
+            logger.warning("Deduplication System not available")
+        
+        # Initialize Metrics Recorder
+        self._has_metrics = HAS_METRICS
+        self.metrics_recorder = None
+        if HAS_METRICS:
+            try:
+                self.metrics_recorder = get_metrics_recorder()
+                logger.info("MetricsRecorder initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize MetricsRecorder: {e}")
+                self._has_metrics = False
+        else:
+            logger.warning("Metrics Recording not available")
         
         # Build the LangGraph workflow
         self.graph = self._build_graph()
@@ -572,6 +614,29 @@ class MasterOrchestrator:
                         "article_url": article.get("url", "unknown"),
                         "error": str(e)
                     })
+            # Record metrics to TimescaleDB if available
+            if self.metrics_recorder and self._has_metrics:
+                try:
+                    # Group articles by source for metrics
+                    source_counts: Dict[str, int] = {}
+                    for article in stored_articles:
+                        source = article.get("source_name", "unknown")
+                        source_counts[source] = source_counts.get(source, 0) + 1
+                    
+                    # Record health metrics for each source
+                    for source_name, count in source_counts.items():
+                        await self.metrics_recorder.record_scrape_cycle(
+                            source_name=source_name,
+                            source_id=hash(source_name) % 1000,
+                            duration_seconds=0,  # Not tracked at this level
+                            articles_found=count,
+                            articles_new=count,
+                            errors=len([e for e in errors if e.get("phase") == "store_articles"])
+                        )
+                    
+                    logger.debug(f"Recorded metrics for {len(source_counts)} sources")
+                except Exception as me:
+                    logger.warning(f"Failed to record metrics: {me}")
             
             return {
                 "stored_articles": stored_articles,

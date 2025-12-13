@@ -1,0 +1,103 @@
+metadata:
+  name: "Ada Derana"
+  source_type: "news"
+  base_url: "https://www.adaderana.lk"
+  language: "multi"
+  credibility_score: 0.90
+  update_frequency_minutes: 15
+
+scraping:
+  method: "html"
+  
+  entry_points:
+    - url: "https://www.adaderana.lk/news.php"
+      type: "article_list"
+      pagination:
+        enabled: true
+        pattern: "https://www.adaderana.lk/news.php?page={page}"
+        max_pages: 3
+  
+  selectors:
+    article_list:
+      container: "div.news-list"
+      item: "div.news-item"
+      link: "a.news-title::attr(href)"
+      
+    article_detail:
+      title:
+        selectors:
+          - "h1.news-title::text"
+          - "//h1[@class='news-title']/text()"
+        fallback: "meta[property='og:title']::attr(content)"
+      
+      body:
+        selectors:
+          - "div.article-body"
+          - "//div[@class='article-body']"
+        cleanup:
+          remove_tags: ["script", "style", "iframe", "ads"]
+          remove_classes: [".advertisement", ".related-news"]
+      
+      publish_date:
+        selectors:
+          - "span.publish-date::text"
+          - "//time[@class='published']/@datetime"
+        format: "%d %B %Y %H:%M"
+        fallback: "meta[property='article:published_time']::attr(content)"
+      
+      author:
+        selectors:
+          - "span.author-name::text"
+        default: "Staff Reporter"
+      
+      category:
+        selectors:
+          - "nav.breadcrumb li:nth-child(2) a::text"
+        mapping_required: true
+      
+      images:
+        selectors:
+          - "div.article-body img::attr(src)"
+        caption_selector: "img::attr(alt)"
+
+  headers:
+    User-Agent: "Mozilla/5.0 (Compatible; BusinessIntelBot/1.0)"
+    Accept-Language: "en,si;q=0.9"
+
+  rate_limiting:
+    requests_per_minute: 30
+    delay_between_requests: 2
+    respect_robots_txt: true
+
+  validation:
+    min_word_count: 50
+    required_fields: ["title", "body", "publish_date"]
+    url_pattern: "^https://www\\.adaderana\\.lk/news/"
+
+preprocessing:
+  language_detection:
+    enabled: true
+    fallback_language: "en"
+  
+  initial_cleaning:
+    remove_urls: true
+    remove_emails: true
+    normalize_whitespace: true
+    remove_html_entities: true
+
+categorization:
+  has_source_categories: true
+  category_mappings:
+    "Local News": "SOCIAL"
+    "Breaking News": "GENERAL"
+    "Business News": "ECONOMIC"
+    "Political News": "POLITICAL"
+    "Sports": "SPORTS"
+
+error_handling:
+  max_retries: 3
+  retry_delay: 60
+  timeout: 30
+  on_failure:
+    notify: true
+    fallback_to_rss: false
