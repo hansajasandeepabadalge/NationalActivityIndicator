@@ -218,7 +218,7 @@ class ArticleBatchProcessor(AsyncBatchProcessor):
     @property
     def entity_extractor(self):
         if self._entity_extractor is None:
-            from app.layer2.nlp_processing.entity_extractor import EntityExtractor
+            from app.layer2.nlp.entity_extractor import EntityExtractor
             self._entity_extractor = EntityExtractor()
         return self._entity_extractor
     

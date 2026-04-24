@@ -3,7 +3,7 @@ import re
 import time
 from typing import List
 from dateutil import parser as date_parser
-from app.layer2.nlp_processing.entity_schemas import (
+from app.layer2.nlp.entity_schemas import (
     Location, Organization, Person, DateEntity,
     AmountEntity, PercentageEntity, ExtractedEntities
 )

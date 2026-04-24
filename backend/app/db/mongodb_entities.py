@@ -2,7 +2,7 @@ from pymongo import MongoClient, ASCENDING
 from typing import Optional, List
 from datetime import datetime
 from app.core.config import settings
-from app.layer2.nlp_processing.entity_schemas import ExtractedEntities
+from app.layer2.nlp.entity_schemas import ExtractedEntities
 
 class MongoDBEntityStorage:
     def __init__(self):

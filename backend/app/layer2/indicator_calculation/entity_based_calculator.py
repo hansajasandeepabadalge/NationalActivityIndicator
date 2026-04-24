@@ -1,6 +1,6 @@
 from typing import Dict
 from collections import Counter
-from app.layer2.nlp_processing.entity_schemas import ExtractedEntities
+from app.layer2.nlp.entity_schemas import ExtractedEntities
 
 class EntityBasedIndicatorCalculator:
 

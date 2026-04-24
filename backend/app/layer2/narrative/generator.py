@@ -1,7 +1,7 @@
 """Narrative generator for indicators"""
 
 from typing import Dict
-from app.layer2.nlp_processing.entity_schemas import ExtractedEntities
+from app.layer2.nlp.entity_schemas import ExtractedEntities
 from app.layer2.narrative.schemas import NarrativeText
 
 
