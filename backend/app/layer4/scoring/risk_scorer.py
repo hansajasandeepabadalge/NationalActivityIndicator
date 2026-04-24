@@ -14,7 +14,7 @@ from decimal import Decimal
 import logging
 
 from app.layer4.schemas.risk_schemas import DetectedRisk, RiskScoreBreakdown
-from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 logger = logging.getLogger(__name__)
 

@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 from decimal import Decimal
 
 from app.layer4.schemas.opportunity_schemas import DetectedOpportunity
-from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 logger = logging.getLogger(__name__)
 

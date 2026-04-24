@@ -11,8 +11,8 @@ import logging
 from math import sqrt
 
 from app.layer4.schemas.risk_schemas import DetectedRisk
-from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
-from app.layer4.mock_data.historical_patterns_mock import MockHistoricalPatterns
+# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+# ARCHIVED: from app.layer4.mock_data.historical_patterns_mock import MockHistoricalPatterns
 
 logger = logging.getLogger(__name__)
 

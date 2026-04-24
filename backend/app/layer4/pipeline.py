@@ -17,16 +17,16 @@ from sqlalchemy.orm import Session
 from pymongo import MongoClient
 from redis import Redis
 
-from app.layer4.risk_detection.rule_based_detector import RuleBasedRiskDetector
-from app.layer4.risk_detection.pattern_detector import PatternBasedRiskDetector
-from app.layer4.opportunity_detection.rule_based_detector import RuleBasedOpportunityDetector
+from app.layer4.risk.rule_based_detector import RuleBasedRiskDetector
+from app.layer4.risk.pattern_detector import PatternBasedRiskDetector
+from app.layer4.opportunity.rule_based_detector import RuleBasedOpportunityDetector
 from app.layer4.scoring.risk_scorer import RiskScorer
 from app.layer4.narrative.generator import NarrativeGenerator
 from app.layer4.recommendation.engine import RecommendationEngine
 from app.layer4.storage.insight_storage import InsightStorageService
 from app.layer4.storage.reasoning_storage import ReasoningStorageService
 from app.layer4.storage.cache_manager import InsightCacheManager
-from app.layer4.mock_data.layer3_mock_generator import MockLayer3Generator, OperationalIndicators
+# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import MockLayer3Generator, OperationalIndicators
 from app.layer4.schemas.risk_schemas import DetectedRisk, RiskScoreBreakdown
 
 logger = logging.getLogger(__name__)

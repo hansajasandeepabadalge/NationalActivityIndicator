@@ -397,7 +397,7 @@ class IntegrationPipeline:
         """
         try:
             # Try to import and use Layer 4 components
-            from app.layer4.integration.layer4_orchestrator import Layer4Orchestrator
+            from app.layer4.pipeline import Layer4Orchestrator
             
             # Convert Layer 3 output to Layer 4 format
             indicators_dict = self.l3_to_l4_adapter.to_layer4_indicators(layer3_output)
@@ -407,12 +407,12 @@ class IntegrationPipeline:
             # If so, use the standalone components instead
             try:
                 # Try using individual Layer 4 engines that don't need DB
-                from app.layer4.risk_detection import RuleBasedRiskDetector
-                from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
+                from app.layer4.risk import RuleBasedRiskDetector
+                from app.layer4.opportunity import RuleBasedOpportunityDetector
                 from app.layer4.recommendation import RecommendationEngine
                 
                 # Create mock operational data structure
-                from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+                # ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
                 
                 # Build operational indicators from Layer 3 output
                 # Using the exact field names expected by OperationalIndicators schema

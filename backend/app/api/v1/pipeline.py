@@ -475,8 +475,8 @@ async def pipeline_health():
     try:
         # Try importing all components
         from app.layer1.orchestrator.pipeline import create_pipeline, MockDataGenerator
-        from app.layer4.risk_detection import RuleBasedRiskDetector
-        from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
+        from app.layer4.risk import RuleBasedRiskDetector
+        from app.layer4.opportunity import RuleBasedOpportunityDetector
         from app.layer4.recommendation import RecommendationEngine
         
         return {
