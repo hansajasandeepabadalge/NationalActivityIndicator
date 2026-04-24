@@ -14,7 +14,7 @@ import os
 from datetime import datetime
 
 # SET API KEYS BEFORE ANY IMPORTS (critical for Groq LLM to work)
-os.environ["GROQ_API_KEYS"] = "YOUR_GROQ_API_KEYS_HERE"
+os.environ["GROQ_API_KEYS"] = "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,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"
 
 # Add backend to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'backend'))
