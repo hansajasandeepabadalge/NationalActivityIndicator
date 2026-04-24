@@ -5,7 +5,7 @@ This package contains cross-cutting services that are used
 across multiple layers of the application.
 """
 
-from app.services.reputation_manager import (
+from app.services.reputation import (
     ReputationManager,
     ReputationConfig,
     ReputationUpdate,

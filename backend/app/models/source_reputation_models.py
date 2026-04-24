@@ -79,8 +79,8 @@ class SourceReputation(Base):
     # Trend indicators
     is_improving = Column(Boolean, default=True)
     is_declining = Column(Boolean, default=False)
-    consecutive_quality_days = Column(Integer, default=0)  # Days above threshold
-    consecutive_poor_days = Column(Integer, default=0)     # Days below threshold
+    consecutive_quality_articles = Column(Integer, default=0)  # Articles above threshold
+    consecutive_poor_articles = Column(Integer, default=0)     # Articles below threshold
     
     # Alerts & status
     is_active = Column(Boolean, default=True)
@@ -294,10 +294,17 @@ DEFAULT_THRESHOLDS = [
         "category": "quality"
     },
     {
-        "threshold_name": "MAX_CONSECUTIVE_POOR_DAYS",
-        "description": "Days of poor performance before auto-disable",
+        "threshold_name": "MAX_CONSECUTIVE_POOR_ARTICLES",
+        "description": "Number of consecutive poor articles before auto-disable",
         "value": 7.0,
         "threshold_type": "max",
+        "category": "reputation"
+    },
+    {
+        "threshold_name": "EMA_SMOOTHING_ALPHA",
+        "description": "Alpha value for Exponential Moving Average",
+        "value": 0.1,
+        "threshold_type": "target",
         "category": "reputation"
     },
     {

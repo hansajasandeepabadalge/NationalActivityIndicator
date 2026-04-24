@@ -67,7 +67,7 @@ class CategoryClassification(BaseModel):
 class LLMClassificationResult(BaseModel):
     """Complete LLM classification response structure."""
     categories: List[CategoryClassification] = Field(default_factory=list, description="All applicable PESTEL categories")
-    primary_category: str = Field(description="The most relevant PESTEL category")
+    primary_category: Optional[str] = Field(default="Economic", description="The most relevant PESTEL category")
     urgency: str = Field(default="standard", description="Urgency level: breaking, urgent, important, standard, low")
     business_relevance: str = Field(default="medium", description="Business relevance: critical, high, medium, low, minimal")
     key_entities: List[str] = Field(default_factory=list, description="Key entities mentioned")

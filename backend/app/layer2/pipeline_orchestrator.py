@@ -39,6 +39,16 @@ from app.layer2.indicators.full_indicator_calculator import (
     create_full_indicator_calculator
 )
 
+# Analysis imports for new features
+from app.layer2.analysis.anomaly_detector import AnomalyDetector
+from app.layer2.narrative.generator import NarrativeGenerator
+
+from app.core.schemas.layer1_to_layer2 import ProcessedArticleContract
+from pydantic import ValidationError
+
+from app.services.filters import create_quality_filter, FilterAction
+from app.db.session import SessionLocal
+
 # Integration contracts
 from app.integration.contracts import (
     Layer2Output,
@@ -123,6 +133,14 @@ class Layer2PipelineOrchestrator:
         
     async def _init_components(self):
         """Initialize all pipeline components."""
+        # Database session for Sync models
+        if getattr(self, '_db_session', None) is None:
+            self._db_session = SessionLocal()
+            
+        # Quality Filter
+        if getattr(self, '_quality_filter', None) is None:
+            self._quality_filter = create_quality_filter(self._db_session)
+            
         # MongoDB Loader
         if not self._mongodb_loader:
             self._mongodb_loader = MongoDBArticleLoader(
@@ -271,17 +289,59 @@ class Layer2PipelineOrchestrator:
             ))
             
             # ================================================================
-            # STAGE 7: Build Layer2Output Contract
+            # STAGE 7: Calculate Real Trends from Historical Data
+            # ================================================================
+            stage_start = datetime.now()
+            trends = self._calculate_real_trends(indicator_values)
+            rising_count = sum(1 for t in trends.values() if t.direction == TrendDirection.RISING)
+            falling_count = sum(1 for t in trends.values() if t.direction == TrendDirection.FALLING)
+            stages.append(PipelineStageResult(
+                stage_name="7_calculate_trends",
+                success=len(trends) > 0,
+                item_count=len(trends),
+                duration_ms=(datetime.now() - stage_start).total_seconds() * 1000,
+                details={
+                    "rising": rising_count,
+                    "falling": falling_count,
+                    "stable": len(trends) - rising_count - falling_count
+                }
+            ))
+            
+            # ================================================================
+            # STAGE 8: Detect Anomalies & Generate Events
+            # ================================================================
+            stage_start = datetime.now()
+            events = self._stage_detect_anomalies_and_events(indicator_values, trends)
+            critical_events = sum(1 for e in events if e.severity == SeverityLevel.CRITICAL)
+            high_events = sum(1 for e in events if e.severity == SeverityLevel.HIGH)
+            stages.append(PipelineStageResult(
+                stage_name="8_detect_anomalies_events",
+                success=True,
+                item_count=len(events),
+                duration_ms=(datetime.now() - stage_start).total_seconds() * 1000,
+                details={
+                    "total_events": len(events),
+                    "critical": critical_events,
+                    "high": high_events,
+                    "medium": sum(1 for e in events if e.severity == SeverityLevel.MEDIUM),
+                    "low": sum(1 for e in events if e.severity == SeverityLevel.LOW)
+                }
+            ))
+            
+            # ================================================================
+            # STAGE 9: Build Layer2Output Contract
             # ================================================================
             stage_start = datetime.now()
             layer2_output = self._build_layer2_output(
                 indicator_values=indicator_values,
                 composites=composites,
                 articles=articles_with_entities,
-                time_window_hours=time_window_hours
+                time_window_hours=time_window_hours,
+                trends=trends,  # Pass calculated trends
+                events=events   # Pass detected events
             )
             stages.append(PipelineStageResult(
-                stage_name="7_build_layer2_output",
+                stage_name="9_build_layer2_output",
                 success=layer2_output is not None,
                 item_count=len(layer2_output.indicators) if layer2_output else 0,
                 duration_ms=(datetime.now() - stage_start).total_seconds() * 1000,
@@ -289,7 +349,7 @@ class Layer2PipelineOrchestrator:
             ))
             
             # ================================================================
-            # STAGE 8: Store Results (Optional)
+            # STAGE 10: Store Results (Optional)
             # ================================================================
             if store_results:
                 stage_start = datetime.now()
@@ -299,7 +359,7 @@ class Layer2PipelineOrchestrator:
                     composites=composites
                 )
                 stages.append(PipelineStageResult(
-                    stage_name="8_store_results",
+                    stage_name="10_store_results",
                     success=stored_count > 0,
                     item_count=stored_count,
                     duration_ms=(datetime.now() - stage_start).total_seconds() * 1000,
@@ -350,11 +410,14 @@ class Layer2PipelineOrchestrator:
                 logger.info("No unprocessed articles, fetching all available...")
                 articles = await self._mongodb_loader.get_all_articles(limit=limit)
             
-            # Convert to dict format
+            # Convert to dict format and VALIDATE AGAINST CONTRACT
             result = []
+            ignored_count = 0
+            
             for article in articles:
+                raw_dict = {}
                 if isinstance(article, Layer2Article):
-                    result.append({
+                    raw_dict = {
                         'article_id': article.article_id,
                         'title': article.title,
                         'body': article.text,
@@ -362,14 +425,39 @@ class Layer2PipelineOrchestrator:
                         'url': article.url,
                         'published_at': article.published_at,
                         'language': article.language,
-                        'layer1_quality_score': article.layer1_quality_score,
-                        'layer1_categories': article.layer1_categories,
-                        'layer1_entities': article.layer1_entities
-                    })
+                        'layer1_quality_score': getattr(article, "layer1_quality_score", 1.0),
+                        'layer1_categories': getattr(article, "layer1_categories", []),
+                        'layer1_entities': getattr(article, "layer1_entities", [])
+                    }
                 else:
-                    result.append(article)
+                    raw_dict = article
+                
+                # Strict Boundary Validation
+                try:
+                    # Enforce the strict Pydantic contract
+                    validated_article = ProcessedArticleContract.model_validate(raw_dict)
                     
-            logger.info(f"Fetched {len(result)} articles from Layer 1")
+                    # PRE-FILTER: Block blacklisted sources immediately
+                    pre_result = await self._quality_filter.pre_filter(
+                        article_id=validated_article.article_id,
+                        source_name=validated_article.source
+                    )
+                    
+                    if pre_result.action == FilterAction.REJECTED:
+                        logger.warning(f"QualityFilter Pre-Rejected: {validated_article.article_id} from {validated_article.source}")
+                        ignored_count += 1
+                        continue
+                        
+                    dumped = validated_article.model_dump()
+                    dumped['_weight_multiplier'] = pre_result.weight_multiplier
+                    
+                    # Convert strictly defined model back to dict for the rest of Layer 2
+                    result.append(dumped)
+                except ValidationError as e:
+                    logger.warning(f"Contract Violation! Dropping article due to invalid Layer 1 output: {e}")
+                    ignored_count += 1
+                    
+            logger.info(f"Fetched {len(result)} valid articles from Layer 1. (Dropped {ignored_count} invalid articles)")
             return result
             
         except Exception as e:
@@ -392,8 +480,8 @@ class Layer2PipelineOrchestrator:
                 try:
                     text = f"{article.get('title', '')} {article.get('body', '')}"
                     result = await asyncio.wait_for(
-                        classifier.classify(text[:2000]),  # Limit text length
-                        timeout=10.0
+                        classifier.classify(text[:2000], force_llm=True),  # Force LLM for better classification
+                        timeout=30.0  # Increased timeout for LLM calls (Groq can be slow)
                     )
                     
                     if result and result.all_categories:
@@ -401,17 +489,20 @@ class Layer2PipelineOrchestrator:
                         article['pestel_categories'] = list(result.all_categories.keys())
                         article['pestel_confidence'] = list(result.all_categories.values())
                         article['primary_category'] = result.primary_category.value if result.primary_category else 'Economic'
+                        logger.debug(f"LLM classified article: {result.classification_source}")
                     else:
+                        logger.warning(f"LLM returned empty result, using fallback")
                         article['pestel_categories'] = self._fallback_classify(text)
                         article['pestel_confidence'] = [0.5]
                         
                 except asyncio.TimeoutError:
+                    logger.warning(f"LLM classification timeout (30s), using fallback")
                     article['pestel_categories'] = self._fallback_classify(
                         f"{article.get('title', '')} {article.get('body', '')}"
                     )
                     article['pestel_confidence'] = [0.5]
                 except Exception as e:
-                    logger.warning(f"Classification failed for article: {e}")
+                    logger.error(f"LLM classification error: {type(e).__name__}: {str(e)}")
                     article['pestel_categories'] = ['Economic']  # Default
                     article['pestel_confidence'] = [0.3]
                     
@@ -527,14 +618,259 @@ class Layer2PipelineOrchestrator:
         
         return self._indicator_calculator.calculate_all_indicators(articles)
     
+    def _calculate_real_trends(
+        self,
+        indicator_values: List[IndicatorValue]
+    ) -> Dict[str, IndicatorTrendOutput]:
+        """Calculate real trends from historical PostgreSQL data."""
+        logger.info("Calculating real trends from historical data...")
+        
+        trends: Dict[str, IndicatorTrendOutput] = {}
+        
+        try:
+            import numpy as np
+            from scipy import stats
+            
+            # Connect to PostgreSQL
+            conn = psycopg2.connect(**self.pg_config)
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            
+            # Calculate trends for each indicator
+            for iv in indicator_values:
+                try:
+                    # Query last 30 days of values
+                    cursor.execute("""
+                        SELECT timestamp, value
+                        FROM indicator_values
+                        WHERE indicator_id = %s
+                          AND timestamp >= NOW() - INTERVAL '30 days'
+                        ORDER BY timestamp ASC
+                    """, (iv.indicator_id,))
+                    
+                    historical = cursor.fetchall()
+                    
+                    if len(historical) < 5:
+                        # Not enough data - mark as stable
+                        indicator_key = iv.indicator_name.replace(' ', '_').upper()
+                        trends[indicator_key] = IndicatorTrendOutput(
+                            indicator_id=iv.indicator_id,
+                            direction=TrendDirection.STABLE,
+                            change_percent=0.0,
+                            period_days=7
+                        )
+                        continue
+                    
+                    # Extract values
+                    values = np.array([float(row['value']) for row in historical])
+                    x = np.arange(len(values))
+                    
+                    # Linear regression
+                    slope, intercept, r_value, p_value, std_err = stats.linregress(x, values)
+                    
+                    # Calculate percentage change
+                    first_val = values[0]
+                    last_val = values[-1]
+                    if first_val != 0:
+                        pct_change = ((last_val - first_val) / first_val) * 100
+                    else:
+                        pct_change = 0.0
+                    
+                    # Determine direction based on slope and percentage change
+                    if slope > 0.5 and pct_change > 5:
+                        direction = TrendDirection.RISING
+                    elif slope < -0.5 and pct_change < -5:
+                        direction = TrendDirection.FALLING
+                    else:
+                        direction = TrendDirection.STABLE
+                    
+                    indicator_key = iv.indicator_name.replace(' ', '_').upper()
+                    trends[indicator_key] = IndicatorTrendOutput(
+                        indicator_id=iv.indicator_id,
+                        direction=direction,
+                        change_percent=round(pct_change, 2),
+                        period_days=len(historical)
+                    )
+                    
+                except Exception as e:
+                    logger.warning(f"Error calculating trend for {iv.indicator_id}: {e}")
+                    # Fallback to stable
+                    indicator_key = iv.indicator_name.replace(' ', '_').upper()
+                    trends[indicator_key] = IndicatorTrendOutput(
+                        indicator_id=iv.indicator_id,
+                        direction=TrendDirection.STABLE,
+                        change_percent=0.0,
+                        period_days=7
+                    )
+            
+            cursor.close()
+            conn.close()
+            
+            logger.info(f"Calculated trends for {len(trends)} indicators")
+            return trends
+            
+        except Exception as e:
+            logger.error(f"Error in trend calculation: {e}")
+            # Return empty trends on error
+            return {}
+    
+    def _stage_detect_anomalies_and_events(
+        self,
+        indicator_values: List[IndicatorValue],
+        trends: Dict[str, IndicatorTrendOutput]
+    ) -> List[IndicatorEventOutput]:
+        """Detect anomalies and generate events from indicator values."""
+        logger.info("Detecting anomalies and generating events...")
+        
+        events: List[IndicatorEventOutput] = []
+        event_id_counter = 1
+        
+        try:
+            # Initialize anomaly detector
+            anomaly_detector = AnomalyDetector()
+            
+            # Connect to PostgreSQL for historical data
+            conn = psycopg2.connect(**self.pg_config)
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            
+            for iv in indicator_values:
+                try:
+                    # Query historical values for anomaly detection
+                    cursor.execute("""
+                        SELECT timestamp, value
+                        FROM indicator_values
+                        WHERE indicator_id = %s
+                          AND timestamp >= NOW() - INTERVAL '30 days'
+                        ORDER BY timestamp ASC
+                    """, (iv.indicator_id,))
+                    
+                    historical = cursor.fetchall()
+                    
+                    if len(historical) < 5:
+                        continue  # Not enough data for anomaly detection
+                    
+                    # Prepare data for anomaly detector
+                    history_data = [
+                        {'time': row['timestamp'], 'value': float(row['value'])}
+                        for row in historical
+                    ]
+                    
+                    # Detect anomalies using Z-score (threshold=2.0 for 95% confidence)
+                    anomalies = anomaly_detector.detect_anomalies(history_data, threshold=2.0)
+                    
+                    # Check if current value is an anomaly
+                    current_is_anomaly = False
+                    for anomaly in anomalies:
+                        # Check if it's recent (within last day)
+                        if isinstance(anomaly['time'], datetime):
+                            time_diff = datetime.now() - anomaly['time']
+                            if time_diff.total_seconds() < 86400:  # 24 hours
+                                current_is_anomaly = True
+                                break
+                    
+                    if current_is_anomaly or (anomalies and len(anomalies) > 0):
+                        # Determine severity based on Z-score
+                        latest_anomaly = anomalies[-1] if anomalies else None
+                        if latest_anomaly:
+                            z_score = abs(latest_anomaly.get('z_score', 0))
+                            
+                            if z_score > 3.0:
+                                severity = SeverityLevel.CRITICAL
+                            elif z_score > 2.5:
+                                severity = SeverityLevel.HIGH
+                            elif z_score > 2.0:
+                                severity = SeverityLevel.MEDIUM
+                            else:
+                                severity = SeverityLevel.LOW
+                            
+                            # Get previous value
+                            prev_value = historical[-2]['value'] if len(historical) > 1 else None
+                            
+                            # Create event
+                            event = IndicatorEventOutput(
+                                event_id=event_id_counter,
+                                indicator_id=iv.indicator_id,
+                                timestamp=datetime.now(),
+                                event_type="anomaly_detected",
+                                severity=severity,
+                                value_before=float(prev_value) if prev_value else None,
+                                value_after=float(iv.value),
+                                description=f"{iv.indicator_name}: {latest_anomaly['type']} detected (Z-score: {z_score:.2f})"
+                            )
+                            events.append(event)
+                            event_id_counter += 1
+                    
+                    # Check for threshold breaches (extreme values)
+                    if iv.value > 90:
+                        event = IndicatorEventOutput(
+                            event_id=event_id_counter,
+                            indicator_id=iv.indicator_id,
+                            timestamp=datetime.now(),
+                            event_type="threshold_breach_high",
+                            severity=SeverityLevel.HIGH if iv.value > 95 else SeverityLevel.MEDIUM,
+                            value_before=None,
+                            value_after=float(iv.value),
+                            description=f"{iv.indicator_name}: High threshold breach (value: {iv.value:.1f})"
+                        )
+                        events.append(event)
+                        event_id_counter += 1
+                    elif iv.value < 10:
+                        event = IndicatorEventOutput(
+                            event_id=event_id_counter,
+                            indicator_id=iv.indicator_id,
+                            timestamp=datetime.now(),
+                            event_type="threshold_breach_low",
+                            severity=SeverityLevel.HIGH if iv.value < 5 else SeverityLevel.MEDIUM,
+                            value_before=None,
+                            value_after=float(iv.value),
+                            description=f"{iv.indicator_name}: Low threshold breach (value: {iv.value:.1f})"
+                        )
+                        events.append(event)
+                        event_id_counter += 1
+                    
+                    # Check for significant trend changes
+                    indicator_key = iv.indicator_name.replace(' ', '_').upper()
+                    trend = trends.get(indicator_key)
+                    if trend and abs(trend.change_percent) > 20:
+                        # trend.direction is already a string value
+                        direction_str = trend.direction if isinstance(trend.direction, str) else trend.direction.value
+                        event = IndicatorEventOutput(
+                            event_id=event_id_counter,
+                            indicator_id=iv.indicator_id,
+                            timestamp=datetime.now(),
+                            event_type="significant_trend_change",
+                            severity=SeverityLevel.MEDIUM if abs(trend.change_percent) < 30 else SeverityLevel.HIGH,
+                            value_before=None,
+                            value_after=float(iv.value),
+                            description=f"{iv.indicator_name}: Significant {direction_str} trend ({trend.change_percent:+.1f}%)"
+                        )
+                        events.append(event)
+                        event_id_counter += 1
+                        
+                except Exception as e:
+                    logger.warning(f"Error detecting anomalies for {iv.indicator_id}: {e}")
+                    continue
+            
+            cursor.close()
+            conn.close()
+            
+            logger.info(f"Detected {len(events)} events/anomalies")
+            return events
+            
+        except Exception as e:
+            logger.error(f"Error in anomaly detection: {e}")
+            return []
+    
+    
     def _build_layer2_output(
         self,
         indicator_values: List[IndicatorValue],
         composites: Dict[str, Any],
         articles: List[Dict[str, Any]],
-        time_window_hours: int
+        time_window_hours: int,
+        trends: Optional[Dict[str, IndicatorTrendOutput]] = None,
+        events: Optional[List[IndicatorEventOutput]] = None
     ) -> Optional[Layer2Output]:
-        """Stage 7: Build the Layer2Output contract for Layer 3."""
+        """Stage 8: Build the Layer2Output contract for Layer 3."""
         logger.info("Building Layer2Output contract...")
         
         try:
@@ -575,15 +911,25 @@ class Layer2PipelineOrchestrator:
                     source_count=max(1, iv.article_count)
                 )
             
-            # Build trends (simplified - showing stable for now)
-            trends: Dict[str, IndicatorTrendOutput] = {}
-            for key, indicator in indicators_output.items():
-                trends[key] = IndicatorTrendOutput(
-                    indicator_id=indicator.indicator_id,
-                    direction=TrendDirection.STABLE,
-                    change_percent=0.0,
-                    period_days=7
-                )
+            # Use provided trends or fallback to stable
+            if trends is None or len(trends) == 0:
+                logger.warning("No trends provided, using stable defaults")
+                trends = {}
+                for key, indicator in indicators_output.items():
+                    trends[key] = IndicatorTrendOutput(
+                        indicator_id=indicator.indicator_id,
+                        direction=TrendDirection.STABLE,
+                        change_percent=0.0,
+                        period_days=7
+                    )
+            
+            # Use provided events or empty list
+            if events is None:
+                events = []
+                logger.info("No events detected")
+            else:
+                logger.info(f"Including {len(events)} events in output")
+            
             
             # Calculate overall metrics
             nai = composites.get('NATIONAL_ACTIVITY_INDEX', {})
@@ -608,7 +954,7 @@ class Layer2PipelineOrchestrator:
                 calculation_window_hours=time_window_hours,
                 indicators=indicators_output,
                 trends=trends,
-                events=[],  # TODO: Implement event detection
+                events=events,  # Now using detected events!
                 overall_sentiment=max(-1, min(1, overall_sentiment)),
                 activity_level=activity_level,
                 article_count=len(articles),
@@ -633,7 +979,7 @@ class Layer2PipelineOrchestrator:
         try:
             db = self._mongo_client[self.mongo_db]
             
-            # Store indicator calculations
+            # Store indicator calculations to MongoDB
             indicator_docs = []
             for iv in indicator_values:
                 indicator_docs.append({
@@ -654,7 +1000,7 @@ class Layer2PipelineOrchestrator:
                 result = db.indicator_calculations.insert_many(indicator_docs)
                 stored_count += len(result.inserted_ids)
                 
-            # Store composite scores
+            # Store composite scores to MongoDB
             nai = composites.get('NATIONAL_ACTIVITY_INDEX', {})
             composite_doc = {
                 'type': 'daily_composite',
@@ -671,14 +1017,51 @@ class Layer2PipelineOrchestrator:
             db.composite_scores.insert_one(composite_doc)
             stored_count += 1
             
-            # Mark articles as processed
+            # ============================================================
+            # STORE TO POSTGRESQL (for dashboard display)
+            # ============================================================
+            try:
+                from app.layer2.storage.indicator_persistence import Layer2IndicatorPersistence
+                
+                # Convert IndicatorValue objects to dicts for storage
+                pg_indicator_values = [
+                    {
+                        'indicator_id': iv.indicator_id,
+                        'indicator_name': iv.indicator_name,
+                        'value': iv.value,
+                        'confidence': iv.confidence,
+                        'article_count': iv.article_count,
+                        'source_count': iv.article_count,
+                        'calculation_type': iv.calculation_type,
+                        'subcategory': iv.subcategory,
+                        'matching_articles': iv.matching_articles[:10] if iv.matching_articles else []
+                    }
+                    for iv in indicator_values
+                ]
+                
+                # Store to PostgreSQL
+                persistence = Layer2IndicatorPersistence()
+                pg_result = persistence.store_indicator_values(
+                    indicator_values=pg_indicator_values,
+                    timestamp=datetime.now()
+                )
+                
+                pg_stored = pg_result.get('stored_count', 0)
+                pg_updated = pg_result.get('updated_count', 0)
+                logger.info(f"PostgreSQL: Stored {pg_stored} new, updated {pg_updated} indicator values")
+                stored_count += pg_stored + pg_updated
+                
+            except Exception as pg_error:
+                logger.error(f"PostgreSQL storage error: {pg_error}")
+            
+            # Mark articles as processed in MongoDB
             for article in articles:
                 await self._mongodb_loader.mark_as_layer2_processed(
                     article.get('article_id', ''),
                     {'processed': True, 'timestamp': datetime.now().isoformat()}
                 )
                 
-            logger.info(f"Stored {stored_count} documents")
+            logger.info(f"Stored {stored_count} documents total")
             return stored_count
             
         except Exception as e:

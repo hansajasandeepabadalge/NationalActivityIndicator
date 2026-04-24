@@ -21,6 +21,8 @@ import { SriLankaTrafficMap } from '@/components/maps/SriLankaTrafficMap';
 import { ColomboStockExchangeWidget } from '@/components/widgets/ColomboStockExchangeWidget';
 import { SystemHealthDashboard } from '@/components/health/SystemHealthDashboard';
 import { IndustryOperationalDashboard } from '@/components/operational/IndustryOperationalDashboard';
+import { NationalIncidentsImpactDashboard } from '@/components/company/NationalIncidentsImpactDashboard';
+import { PredictiveImpactAnalysis } from '@/components/company/PredictiveImpactAnalysis';
 
 // Layer 1 Components
 import { DataSourcesMonitor } from './components/layer1/DataSourcesMonitor';
@@ -35,7 +37,7 @@ import { IndicatorAnalysis } from './components/layer2/IndicatorAnalysis';
 import { OperationalOverview } from './components/layer3/OperationalOverview';
 
 // Tab type
-type DashboardTab = 'overview' | 'layer1' | 'layer2' | 'system';
+type DashboardTab = 'overview' | 'layer1' | 'layer2' | 'impact' | 'predictions' | 'system';
 
 // Main Dashboard Content
 function DashboardContent() {
@@ -70,6 +72,8 @@ function DashboardContent() {
     { id: 'overview' as const, label: 'Overview', icon: '📊' },
     { id: 'layer1' as const, label: 'Data Collection (L1)', icon: '🔄' },
     { id: 'layer2' as const, label: 'Indicators & Analysis (L2-4)', icon: '📈' },
+    { id: 'impact' as const, label: 'Impact Analysis', icon: '💼' },
+    { id: 'predictions' as const, label: 'Predictive Analysis', icon: '🔮' },
     { id: 'system' as const, label: 'System Health', icon: '🏥' },
   ];
 
@@ -518,6 +522,20 @@ function DashboardContent() {
                 pollingInterval={60000}
               />
             </div>
+          </div>
+        )}
+
+        {/* Impact Analysis Tab */}
+        {activeTab === 'impact' && (
+          <div className="space-y-6">
+            <NationalIncidentsImpactDashboard />
+          </div>
+        )}
+
+        {/* Predictive Analysis Tab */}
+        {activeTab === 'predictions' && (
+          <div className="space-y-6">
+            <PredictiveImpactAnalysis />
           </div>
         )}
 

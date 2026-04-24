@@ -57,8 +57,8 @@ def upgrade() -> None:
         # Trend indicators
         sa.Column('is_improving', sa.Boolean(), default=True),
         sa.Column('is_declining', sa.Boolean(), default=False),
-        sa.Column('consecutive_quality_days', sa.Integer(), default=0),
-        sa.Column('consecutive_poor_days', sa.Integer(), default=0),
+        sa.Column('consecutive_quality_articles', sa.Integer(), default=0),
+        sa.Column('consecutive_poor_articles', sa.Integer(), default=0),
         
         # Status & overrides
         sa.Column('is_active', sa.Boolean(), default=True),
@@ -171,7 +171,8 @@ def upgrade() -> None:
         ('MIN_ARTICLE_QUALITY', 'Minimum quality score for article acceptance', 40.0, 'min', 'quality', true, NOW(), NOW(), 'system'),
         ('WARNING_QUALITY', 'Quality score triggering warning flag', 60.0, 'target', 'quality', true, NOW(), NOW(), 'system'),
         ('EXCELLENT_QUALITY', 'Quality score for boosted weight', 85.0, 'target', 'quality', true, NOW(), NOW(), 'system'),
-        ('MAX_CONSECUTIVE_POOR_DAYS', 'Days of poor performance before auto-disable', 7.0, 'max', 'reputation', true, NOW(), NOW(), 'system'),
+        ('MAX_CONSECUTIVE_POOR_ARTICLES', 'Number of consecutive poor articles before auto-disable', 7.0, 'max', 'reputation', true, NOW(), NOW(), 'system'),
+        ('EMA_SMOOTHING_ALPHA', 'Alpha value for Exponential Moving Average', 0.1, 'target', 'reputation', true, NOW(), NOW(), 'system'),
         ('REPUTATION_DECAY_RATE', 'Daily decay rate for reputation (no activity)', 0.001, 'target', 'reputation', true, NOW(), NOW(), 'system'),
         ('REPUTATION_BOOST_RATE', 'Boost rate for quality articles', 0.01, 'target', 'reputation', true, NOW(), NOW(), 'system'),
         ('REPUTATION_PENALTY_RATE', 'Penalty rate for poor quality articles', 0.02, 'target', 'reputation', true, NOW(), NOW(), 'system')

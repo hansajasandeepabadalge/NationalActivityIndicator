@@ -35,7 +35,7 @@ from app.orchestrator.state_manager import (
 # Source Reputation System imports
 try:
     from app.services.quality_filter import QualityFilter
-    from app.services.reputation_manager import ReputationManager
+    from app.services.reputation import ReputationManager
     HAS_REPUTATION = True
 except ImportError:
     HAS_REPUTATION = False
@@ -528,7 +528,7 @@ class MasterOrchestrator:
                                 source_name=source_name
                             )
                             
-                            from app.services.reputation_manager import FilterAction
+                            from app.services.reputation import FilterAction
                             
                             if filter_result.action == FilterAction.REJECTED:
                                 filtered_articles.append({
