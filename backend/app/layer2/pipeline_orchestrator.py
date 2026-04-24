@@ -50,7 +50,7 @@ from app.services.filters import create_quality_filter, FilterAction
 from app.db.session import SessionLocal
 
 # Integration contracts
-from app.integration.contracts import (
+from app.layer1.orchestrator.pipeline.contracts import (
     Layer2Output,
     IndicatorValueOutput,
     IndicatorTrendOutput,

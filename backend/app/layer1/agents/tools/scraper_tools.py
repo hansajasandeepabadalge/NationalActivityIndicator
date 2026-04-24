@@ -19,13 +19,13 @@ from typing import List, Dict, Any, Optional
 
 from langchain_core.tools import Tool
 
-from app.scrapers.base import BaseScraper
-from app.scrapers.news.ada_derana import AdaDeranaScraper
-from app.scrapers.configurable_scraper import ConfigurableScraper, get_configurable_scraper, get_all_configurable_sources
+from app.layer1.scrapers.base import BaseScraper
+from app.layer1.sources.ada_derana import AdaDeranaScraper
+from app.layer1.scrapers.configurable import ConfigurableScraper, get_configurable_scraper, get_all_configurable_sources
 from app.models.raw_article import RawArticle
 from app.models.agent_models import SourceConfig
-from app.agents.tools.database_tools import update_scrape_result
-from app.cache import get_smart_cache, SmartCacheManager
+from app.layer1.agents.tools.database_tools import update_scrape_result
+from app.layer1.cache import get_smart_cache, SmartCacheManager
 from app.db.session import SessionLocal
 
 logger = logging.getLogger(__name__)

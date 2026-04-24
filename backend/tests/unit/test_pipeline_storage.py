@@ -37,7 +37,7 @@ async def test_pipeline_and_store():
     
     # Step 2: Run Integration Pipeline (L2→L3→L4)
     print('\n[2] Running Integration Pipeline...')
-    from app.integration.pipeline import IntegrationPipeline
+    from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
     
     pipeline = IntegrationPipeline()
     

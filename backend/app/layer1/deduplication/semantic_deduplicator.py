@@ -17,9 +17,9 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 
-from app.deduplication.embedding_generator import EmbeddingGenerator, EmbeddingConfig
-from app.deduplication.similarity_engine import SimilarityEngine, SimilarityConfig, SimilarityMatch
-from app.deduplication.duplicate_cluster import DuplicateClusterManager, DuplicateCluster
+from app.layer1.deduplication.embedding_generator import EmbeddingGenerator, EmbeddingConfig
+from app.layer1.deduplication.similarity_engine import SimilarityEngine, SimilarityConfig, SimilarityMatch
+from app.layer1.deduplication.duplicate_cluster import DuplicateClusterManager, DuplicateCluster
 
 logger = logging.getLogger(__name__)
 

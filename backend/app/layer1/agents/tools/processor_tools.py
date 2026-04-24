@@ -20,7 +20,7 @@ from typing import List, Dict, Any, Optional
 
 from langchain_core.tools import Tool
 
-from app.cleaning.cleaner import DataCleaner
+from app.layer1.processing.cleaner import DataCleaner
 from app.models.raw_article import RawArticle
 from app.models.processed_article import ProcessedArticle
 
@@ -284,7 +284,7 @@ async def _check_semantic_duplicate_async(
         Dict with duplicate detection results
     """
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         result = await dedup.check_duplicate(
@@ -366,7 +366,7 @@ async def _get_similar_articles_async(
 ) -> Dict[str, Any]:
     """Find similar articles using semantic search"""
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         similar = await dedup.get_similar_articles(title, body, top_k=top_k)
@@ -423,7 +423,7 @@ def get_deduplication_stats() -> Dict[str, Any]:
         Dict with dedup metrics, index stats, and cluster info
     """
     try:
-        from app.deduplication import get_deduplicator_sync
+        from app.layer1.deduplication import get_deduplicator_sync
         
         dedup = get_deduplicator_sync()
         return dedup.get_metrics()
@@ -813,7 +813,7 @@ def validate_article_trust(
         Dict with trust score, level, and validation details
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         # Parse publish time if provided
         published_at = None
@@ -871,7 +871,7 @@ def get_source_reputation(source_name: str) -> Dict[str, Any]:
         Dict with reputation score and details
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         reputation = validator.get_source_reputation(source_name)
@@ -914,7 +914,7 @@ def extract_article_claims(
         Dict with extracted claims
     """
     try:
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         claims = extractor.extract_claims(
@@ -957,7 +957,7 @@ def get_validation_stats() -> Dict[str, Any]:
         Dict with validation metrics
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         stats = validator.get_statistics()
@@ -987,7 +987,7 @@ def batch_validate_trust(
         Dict with validation results for all articles
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         results = validator.validate_batch(articles)

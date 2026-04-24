@@ -18,7 +18,7 @@ import logging
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.scrapers.configurable_scraper import ConfigurableScraper, get_configurable_scraper, get_all_configurable_sources
+from app.layer1.scrapers.configurable import ConfigurableScraper, get_configurable_scraper, get_all_configurable_sources
 from app.db.session import SessionLocal
 from app.models.agent_models import SourceConfig
 

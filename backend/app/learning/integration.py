@@ -362,7 +362,7 @@ def create_learning_orchestrator(
         LearningOrchestrator instance
     """
     if orchestrator is None:
-        from app.orchestrator import MasterOrchestrator
+        from app.layer1.orchestrator import MasterOrchestrator
         orchestrator = MasterOrchestrator()
     
     mode_enum = {

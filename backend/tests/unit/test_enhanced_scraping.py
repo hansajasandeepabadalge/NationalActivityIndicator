@@ -17,7 +17,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import asyncio
-from app.scrapers.configurable_scraper import ConfigurableScraper
+from app.layer1.scrapers.configurable import ConfigurableScraper
 from app.models.agent_models import SourceConfig
 from app.db.session import SessionLocal
 from datetime import datetime
@@ -160,7 +160,7 @@ async def test_database_storage(source_name: str):
     db = SessionLocal()
     try:
         # Import required models
-        from app.integration.pipeline import IntegrationPipeline
+        from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
         from app.db.models import ProcessedArticle
 
         # Get source config

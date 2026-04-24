@@ -16,14 +16,14 @@ Key Features:
 - Redis caching for performance
 """
 
-from app.deduplication.semantic_deduplicator import (
+from app.layer1.deduplication.semantic_deduplicator import (
     SemanticDeduplicator,
     DuplicateResult,
     DuplicateType
 )
-from app.deduplication.embedding_generator import EmbeddingGenerator
-from app.deduplication.similarity_engine import SimilarityEngine
-from app.deduplication.duplicate_cluster import DuplicateClusterManager
+from app.layer1.deduplication.embedding_generator import EmbeddingGenerator
+from app.layer1.deduplication.similarity_engine import SimilarityEngine
+from app.layer1.deduplication.duplicate_cluster import DuplicateClusterManager
 from typing import Optional
 
 # Global deduplicator instance

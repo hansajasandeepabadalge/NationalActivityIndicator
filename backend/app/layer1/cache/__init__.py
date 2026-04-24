@@ -11,9 +11,9 @@ Features:
 - Metrics tracking for cache performance
 """
 
-from app.cache.smart_cache import SmartCacheManager, get_cache_manager
-from app.cache.change_detector import ChangeDetector
-from app.cache.cache_metrics import CacheMetrics
+from app.layer1.cache.smart_cache import SmartCacheManager, get_cache_manager
+from app.layer1.cache.change_detector import ChangeDetector
+from app.layer1.cache.cache_metrics import CacheMetrics
 from typing import Optional
 
 # Alias for backward compatibility

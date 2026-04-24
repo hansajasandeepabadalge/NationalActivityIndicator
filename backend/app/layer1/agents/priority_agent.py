@@ -16,8 +16,8 @@ import re
 from datetime import datetime
 from typing import Dict, Any, List, Set
 
-from app.agents.base_agent import BaseAgent
-from app.agents.config import TaskComplexity
+from app.layer1.agents.base_agent import BaseAgent
+from app.layer1.agents.config import TaskComplexity
 
 logger = logging.getLogger(__name__)
 

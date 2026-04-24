@@ -576,7 +576,7 @@ class SmartCacheManager:
     def metrics(self):
         """Get metrics tracker for recording hits/misses"""
         if not hasattr(self, '_metrics'):
-            from app.cache.cache_metrics import CacheMetrics
+            from app.layer1.cache.cache_metrics import CacheMetrics
             self._metrics = CacheMetrics(self.redis)
         return self._metrics
 

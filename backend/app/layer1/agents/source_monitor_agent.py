@@ -15,14 +15,14 @@ import logging
 from datetime import datetime
 from typing import Dict, Any, List
 
-from app.agents.base_agent import BaseAgent
-from app.agents.config import TaskComplexity
-from app.agents.tools.database_tools import (
+from app.layer1.agents.base_agent import BaseAgent
+from app.layer1.agents.config import TaskComplexity
+from app.layer1.agents.tools.database_tools import (
     get_database_tools,
     get_all_source_schedules,
     check_last_scrape_time
 )
-from app.agents.tools.scraper_tools import get_scraper_tools, check_breaking_signals
+from app.layer1.agents.tools.scraper_tools import get_scraper_tools, check_breaking_signals
 
 logger = logging.getLogger(__name__)
 

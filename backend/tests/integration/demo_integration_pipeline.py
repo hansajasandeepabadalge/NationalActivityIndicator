@@ -3,7 +3,7 @@ Demo script to run the full integration pipeline with different scenarios
 """
 
 import asyncio
-from app.integration import create_pipeline, MockDataGenerator
+from app.layer1.orchestrator.pipeline import create_pipeline, MockDataGenerator
 
 
 async def run_demo():

@@ -13,7 +13,7 @@ from typing import Optional, Any, Dict
 from datetime import datetime, date
 from dataclasses import dataclass, field
 
-from app.agents.config import (
+from app.layer1.agents.config import (
     AgentConfig, 
     get_agent_config, 
     LLMProvider, 

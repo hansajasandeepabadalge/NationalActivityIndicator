@@ -19,14 +19,14 @@ from enum import Enum
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 
-from app.agents.config import get_agent_config
-from app.agents.source_monitor_agent import SourceMonitorAgent
-from app.agents.processing_agent import ProcessingAgent
-from app.agents.priority_agent import PriorityDetectionAgent
-from app.agents.validation_agent import ValidationAgent
-from app.agents.scheduler_agent import SchedulerAgent
-from app.agents.tools.scraper_tools import ScraperToolManager
-from app.orchestrator.state_manager import (
+from app.layer1.agents.config import get_agent_config
+from app.layer1.agents.source_monitor_agent import SourceMonitorAgent
+from app.layer1.agents.processing_agent import ProcessingAgent
+from app.layer1.agents.priority_agent import PriorityDetectionAgent
+from app.layer1.agents.validation_agent import ValidationAgent
+from app.layer1.agents.scheduler_agent import SchedulerAgent
+from app.layer1.agents.tools.scraper_tools import ScraperToolManager
+from app.layer1.orchestrator.state import (
     StateManager, 
     PipelinePhase, 
     get_state_manager

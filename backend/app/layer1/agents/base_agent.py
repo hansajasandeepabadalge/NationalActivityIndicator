@@ -11,9 +11,9 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 
-from app.agents.config import get_agent_config, TaskComplexity
-from app.agents.llm_manager import get_llm_manager, LLMProvider
-from app.agents.tools.database_tools import log_agent_decision
+from app.layer1.agents.config import get_agent_config, TaskComplexity
+from app.core.llm.manager import get_llm_manager, LLMProvider
+from app.layer1.agents.tools.database_tools import log_agent_decision
 
 logger = logging.getLogger(__name__)
 

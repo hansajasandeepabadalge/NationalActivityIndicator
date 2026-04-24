@@ -9,19 +9,19 @@ Components:
     - StateManager: Distributed state management with Redis
 
 Usage:
-    from app.orchestrator import create_orchestrator
+    from app.layer1.orchestrator import create_orchestrator
     
     orchestrator = create_orchestrator()
     result = await orchestrator.run_cycle()
 """
 
-from app.orchestrator.state_manager import (
+from app.layer1.orchestrator.state import (
     StateManager,
     PipelinePhase,
     PipelineState,
     get_state_manager
 )
-from app.orchestrator.master_orchestrator import (
+from app.layer1.orchestrator.master import (
     MasterOrchestrator,
     create_orchestrator
 )

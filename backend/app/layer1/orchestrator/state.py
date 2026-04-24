@@ -13,7 +13,7 @@ from enum import Enum
 
 import redis.asyncio as redis
 
-from app.agents.config import get_agent_config
+from app.layer1.agents.config import get_agent_config
 
 logger = logging.getLogger(__name__)
 

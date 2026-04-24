@@ -57,7 +57,7 @@ async def test_layer1_pipeline():
     # Test 1: Scraping with available scrapers
     print_section("1. Testing Scrapers (ada_derana, daily_ft, hiru_news)")
     try:
-        from app.agents.tools.scraper_tools import ScraperToolManager
+        from app.layer1.agents.tools.scraper_tools import ScraperToolManager
         
         scraper_manager = ScraperToolManager()
         all_articles = []
@@ -85,7 +85,7 @@ async def test_layer1_pipeline():
     # Test 2: Processing Agent
     print_section("2. Testing Processing Agent")
     try:
-        from app.agents.processing_agent import ProcessingAgent
+        from app.layer1.agents.processing_agent import ProcessingAgent
         
         agent = ProcessingAgent()
         
@@ -119,7 +119,7 @@ async def test_layer1_pipeline():
     # Test 3: Priority Detection Agent
     print_section("3. Testing Priority Detection Agent")
     try:
-        from app.agents.priority_agent import PriorityDetectionAgent
+        from app.layer1.agents.priority_agent import PriorityDetectionAgent
         
         agent = PriorityDetectionAgent()
         
@@ -149,7 +149,7 @@ async def test_layer1_pipeline():
     # Test 4: Validation Agent
     print_section("4. Testing Validation Agent")
     try:
-        from app.agents.validation_agent import ValidationAgent
+        from app.layer1.agents.validation_agent import ValidationAgent
         
         agent = ValidationAgent()
         

@@ -37,8 +37,8 @@ async def test_l2_to_l3():
     
     # Step 2: Transform to Layer 3
     print('\n[2] Transforming to Layer 3 format...')
-    from app.integration.pipeline import IntegrationPipeline
-    from app.integration.contracts import validate_layer2_output
+    from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
+    from app.layer1.orchestrator.pipeline.contracts import validate_layer2_output
     
     pipeline = IntegrationPipeline()
     

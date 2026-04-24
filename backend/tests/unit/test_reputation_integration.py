@@ -256,7 +256,7 @@ async def test_orchestrator_integration():
     print_header("Test 7: MasterOrchestrator Integration")
     
     try:
-        from app.orchestrator.master_orchestrator import MasterOrchestrator, HAS_REPUTATION
+        from app.layer1.orchestrator.master import MasterOrchestrator, HAS_REPUTATION
         
         if HAS_REPUTATION:
             print_success("Source Reputation System integrated into MasterOrchestrator")

@@ -19,7 +19,7 @@ class TestSourceReputationTracker:
     
     def test_get_reputation_known_source(self):
         """Test getting reputation for a known source."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         reputation = tracker.get_reputation("daily_mirror")
@@ -31,7 +31,7 @@ class TestSourceReputationTracker:
     
     def test_get_reputation_unknown_source(self):
         """Test getting reputation for an unknown source."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         reputation = tracker.get_reputation("random_blog_123")
@@ -42,7 +42,7 @@ class TestSourceReputationTracker:
     
     def test_get_reputation_official_source(self):
         """Test getting reputation for an official source."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         reputation = tracker.get_reputation("central_bank")
@@ -52,7 +52,7 @@ class TestSourceReputationTracker:
     
     def test_record_confirmation(self):
         """Test recording a confirmation."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         initial_rep = tracker.get_reputation("test_source").current_reputation
@@ -68,7 +68,7 @@ class TestSourceReputationTracker:
     
     def test_record_contradiction(self):
         """Test recording a contradiction."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         # First get initial reputation
@@ -84,7 +84,7 @@ class TestSourceReputationTracker:
     
     def test_get_stats(self):
         """Test getting tracker statistics."""
-        from app.cross_validation import SourceReputationTracker
+        from app.layer1.cross_validation import SourceReputationTracker
         
         tracker = SourceReputationTracker()
         tracker.get_reputation("source_1")
@@ -101,7 +101,7 @@ class TestClaimExtractor:
     
     def test_extract_numeric_claims(self):
         """Test extracting numeric claims."""
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         content = "Inflation increased by 15.5% last month. The GDP grew by Rs. 500 billion."
@@ -119,7 +119,7 @@ class TestClaimExtractor:
     
     def test_extract_attribution_claims(self):
         """Test extracting statement attribution claims."""
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         content = 'The Finance Minister said that the economy will recover. According to John Smith, growth is expected.'
@@ -136,7 +136,7 @@ class TestClaimExtractor:
     
     def test_extract_event_claims(self):
         """Test extracting event claims."""
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         content = "Floods hit Colombo causing major damage. Protests in Kandy continued today."
@@ -153,7 +153,7 @@ class TestClaimExtractor:
     
     def test_claim_fingerprinting(self):
         """Test that similar claims have similar fingerprints."""
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         
@@ -180,7 +180,7 @@ class TestCorroborationEngine:
     
     def test_add_article_to_cache(self):
         """Test adding articles to cache."""
-        from app.cross_validation import CorroborationEngine
+        from app.layer1.cross_validation import CorroborationEngine
         
         engine = CorroborationEngine()
         
@@ -195,7 +195,7 @@ class TestCorroborationEngine:
     
     def test_find_corroboration_no_matches(self):
         """Test finding corroboration when no matches exist."""
-        from app.cross_validation import CorroborationEngine
+        from app.layer1.cross_validation import CorroborationEngine
         
         engine = CorroborationEngine()
         
@@ -211,7 +211,7 @@ class TestCorroborationEngine:
     
     def test_find_corroboration_with_matches(self):
         """Test finding corroboration with similar articles."""
-        from app.cross_validation import CorroborationEngine
+        from app.layer1.cross_validation import CorroborationEngine
         
         engine = CorroborationEngine()
         
@@ -244,7 +244,7 @@ class TestCorroborationEngine:
     
     def test_get_stats(self):
         """Test getting engine statistics."""
-        from app.cross_validation import CorroborationEngine
+        from app.layer1.cross_validation import CorroborationEngine
         
         engine = CorroborationEngine()
         stats = engine.get_stats()
@@ -258,7 +258,7 @@ class TestTrustCalculator:
     
     def test_calculate_trust_no_corroboration(self):
         """Test trust calculation without corroboration data."""
-        from app.cross_validation import TrustCalculator
+        from app.layer1.cross_validation import TrustCalculator
         
         calculator = TrustCalculator()
         
@@ -275,7 +275,7 @@ class TestTrustCalculator:
     
     def test_calculate_trust_high_reputation_source(self):
         """Test trust calculation for high reputation source."""
-        from app.cross_validation import TrustCalculator
+        from app.layer1.cross_validation import TrustCalculator
         
         calculator = TrustCalculator()
         
@@ -298,7 +298,7 @@ class TestTrustCalculator:
     
     def test_trust_levels(self):
         """Test trust level thresholds."""
-        from app.cross_validation import TrustLevel
+        from app.layer1.cross_validation import TrustLevel
         
         # Check all levels exist
         assert TrustLevel.VERIFIED.value == "verified"
@@ -313,7 +313,7 @@ class TestCrossSourceValidator:
     
     def test_validate_article(self):
         """Test full article validation."""
-        from app.cross_validation import CrossSourceValidator
+        from app.layer1.cross_validation import CrossSourceValidator
         
         validator = CrossSourceValidator()
         
@@ -333,7 +333,7 @@ class TestCrossSourceValidator:
     
     def test_validate_batch(self):
         """Test batch validation."""
-        from app.cross_validation import CrossSourceValidator
+        from app.layer1.cross_validation import CrossSourceValidator
         
         validator = CrossSourceValidator()
         
@@ -359,7 +359,7 @@ class TestCrossSourceValidator:
     
     def test_get_statistics(self):
         """Test getting validator statistics."""
-        from app.cross_validation import CrossSourceValidator
+        from app.layer1.cross_validation import CrossSourceValidator
         
         validator = CrossSourceValidator()
         
@@ -379,7 +379,7 @@ class TestCrossSourceValidator:
     
     def test_claims_extraction_in_validation(self):
         """Test that claims are extracted during validation."""
-        from app.cross_validation import CrossSourceValidator
+        from app.layer1.cross_validation import CrossSourceValidator
         
         validator = CrossSourceValidator()
         
@@ -400,7 +400,7 @@ class TestModuleInitialization:
     
     def test_get_validator_singleton(self):
         """Test that get_validator returns singleton."""
-        from app.cross_validation import get_validator, reset_validator
+        from app.layer1.cross_validation import get_validator, reset_validator
         
         reset_validator()  # Reset first
         
@@ -411,7 +411,7 @@ class TestModuleInitialization:
     
     def test_all_exports_available(self):
         """Test that all expected exports are available."""
-        from app.cross_validation import (
+        from app.layer1.cross_validation import (
             CrossSourceValidator,
             CrossValidationResult,
             TrustLevel,
@@ -440,7 +440,7 @@ class TestPerformance:
     def test_validation_speed(self):
         """Test that validation is fast enough."""
         import time
-        from app.cross_validation import CrossSourceValidator
+        from app.layer1.cross_validation import CrossSourceValidator
         
         validator = CrossSourceValidator()
         
@@ -463,7 +463,7 @@ class TestPerformance:
     def test_claim_extraction_speed(self):
         """Test claim extraction performance."""
         import time
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         content = """

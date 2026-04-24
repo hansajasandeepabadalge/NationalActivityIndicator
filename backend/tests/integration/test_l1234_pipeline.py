@@ -22,7 +22,7 @@ def test_all_layers_importable():
     
     # Layer 1: AI Agents
     try:
-        from app.agents import (
+        from app.layer1.agents import (
             SourceMonitorAgent,
             PriorityDetectionAgent,  # Renamed from PriorityAgent
             ProcessingAgent,
@@ -34,11 +34,11 @@ def test_all_layers_importable():
     
     # Layer 1: Supporting modules
     try:
-        from app.cache import SmartCache
-        from app.deduplication import SemanticDeduplicator
-        from app.cross_validation import CrossSourceValidator  # Renamed from ValidationNetwork
+        from app.layer1.cache import SmartCache
+        from app.layer1.deduplication import SemanticDeduplicator
+        from app.layer1.cross_validation import CrossSourceValidator  # Renamed from ValidationNetwork
         from app.impact_scorer import BusinessImpactScorer
-        from app.orchestrator import MasterOrchestrator
+        from app.layer1.orchestrator import MasterOrchestrator
     except ImportError as e:
         errors.append(f"Layer 1 support modules: {e}")
     
@@ -72,8 +72,8 @@ def test_all_layers_importable():
     
     # Integration Pipeline
     try:
-        from app.integration.pipeline import IntegrationPipeline
-        from app.integration.adapters import Layer2ToLayer3Adapter, Layer3ToLayer4Adapter
+        from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
+        from app.layer1.orchestrator.pipeline.adapters import Layer2ToLayer3Adapter, Layer3ToLayer4Adapter
     except ImportError as e:
         errors.append(f"Integration pipeline: {e}")
     
@@ -188,7 +188,7 @@ def test_layer2_feature_flags_available():
 
 def test_integration_adapters_exist():
     """Test that L2→L3 and L3→L4 adapters work."""
-    from app.integration.adapters import Layer2ToLayer3Adapter, Layer3ToLayer4Adapter
+    from app.layer1.orchestrator.pipeline.adapters import Layer2ToLayer3Adapter, Layer3ToLayer4Adapter
     
     l2_to_l3 = Layer2ToLayer3Adapter()
     l3_to_l4 = Layer3ToLayer4Adapter()
@@ -200,7 +200,7 @@ def test_integration_adapters_exist():
 
 def test_integration_pipeline_initialization():
     """Test that the integration pipeline can be initialized."""
-    from app.integration.pipeline import IntegrationPipeline
+    from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
     
     pipeline = IntegrationPipeline()
     
@@ -293,8 +293,8 @@ class TestEndToEndDataFlow:
     
     def test_layer3_receives_layer2_output(self, sample_article, sample_company_profile):
         """Test that Layer 3 can receive Layer 2 output."""
-        from app.integration.adapters import Layer2ToLayer3Adapter
-        from app.integration.contracts import Layer2Output, IndicatorValueOutput, PESTELCategory
+        from app.layer1.orchestrator.pipeline.adapters import Layer2ToLayer3Adapter
+        from app.layer1.orchestrator.pipeline.contracts import Layer2Output, IndicatorValueOutput, PESTELCategory
         
         # Create mock Layer 2 output with all required fields
         indicator_value = IndicatorValueOutput(
@@ -331,7 +331,7 @@ class TestEndToEndDataFlow:
     
     def test_full_pipeline_mock_run(self, sample_article, sample_company_profile):
         """Test a mock run through the full pipeline."""
-        from app.integration.pipeline import IntegrationPipeline
+        from app.layer1.orchestrator.pipeline.integration import IntegrationPipeline
         
         pipeline = IntegrationPipeline()
         

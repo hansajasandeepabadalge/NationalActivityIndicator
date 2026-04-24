@@ -11,7 +11,7 @@ from datetime import datetime
 from enum import Enum
 import logging
 
-from app.integration import (
+from app.layer1.orchestrator.pipeline import (
     create_pipeline,
     MockDataGenerator,
     validate_layer2_output,
@@ -474,7 +474,7 @@ async def pipeline_health():
     """Check pipeline component availability"""
     try:
         # Try importing all components
-        from app.integration import create_pipeline, MockDataGenerator
+        from app.layer1.orchestrator.pipeline import create_pipeline, MockDataGenerator
         from app.layer4.risk_detection import RuleBasedRiskDetector
         from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
         from app.layer4.recommendation import RecommendationEngine

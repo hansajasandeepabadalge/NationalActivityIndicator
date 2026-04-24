@@ -32,7 +32,7 @@ from datetime import datetime
 import re
 import asyncio
 
-from app.scrapers.base import BaseScraper
+from app.layer1.scrapers.base import BaseScraper
 from app.models.raw_article import RawArticle
 from app.models.agent_models import SourceConfig
 from app.db.session import SessionLocal

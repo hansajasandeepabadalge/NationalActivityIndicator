@@ -7,8 +7,8 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import asyncio
-from app.scrapers.configurable_scraper import ConfigurableScraper
-from app.scrapers.news.ada_derana import AdaDeranaScraper
+from app.layer1.scrapers.configurable import ConfigurableScraper
+from app.layer1.sources.ada_derana import AdaDeranaScraper
 from app.models.agent_models import SourceConfig
 from app.db.session import SessionLocal
 

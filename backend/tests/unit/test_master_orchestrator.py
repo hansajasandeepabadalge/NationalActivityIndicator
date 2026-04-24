@@ -55,7 +55,7 @@ async def test_orchestrator():
     # Test 1: Import and initialize
     print_section("1. Importing MasterOrchestrator")
     try:
-        from app.orchestrator.master_orchestrator import MasterOrchestrator
+        from app.layer1.orchestrator.master import MasterOrchestrator
         print("✅ MasterOrchestrator imported successfully")
     except ImportError as e:
         print(f"❌ Import failed: {e}")

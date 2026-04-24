@@ -35,8 +35,8 @@ async def test_config_and_llm():
     print("="*60)
     
     try:
-        from app.agents.config import get_agent_config
-        from app.agents.llm_manager import LLMManager
+        from app.layer1.agents.config import get_agent_config
+        from app.core.llm.manager import LLMManager
         
         config = get_agent_config()
         
@@ -67,7 +67,7 @@ async def test_source_monitor_agent():
     print("="*60)
     
     try:
-        from app.agents.source_monitor_agent import SourceMonitorAgent
+        from app.layer1.agents.source_monitor_agent import SourceMonitorAgent
         
         agent = SourceMonitorAgent()
         print(f"✅ Source Monitor Agent created")
@@ -101,7 +101,7 @@ async def test_scheduler_agent():
     print("="*60)
     
     try:
-        from app.agents.scheduler_agent import SchedulerAgent
+        from app.layer1.agents.scheduler_agent import SchedulerAgent
         
         agent = SchedulerAgent()
         print(f"✅ Scheduler Agent created")
@@ -142,7 +142,7 @@ async def test_priority_agent():
     print("="*60)
     
     try:
-        from app.agents.priority_agent import PriorityDetectionAgent
+        from app.layer1.agents.priority_agent import PriorityDetectionAgent
         
         agent = PriorityDetectionAgent()
         print(f"✅ Priority Agent created")
@@ -190,7 +190,7 @@ async def test_validation_agent():
     print("="*60)
     
     try:
-        from app.agents.validation_agent import ValidationAgent
+        from app.layer1.agents.validation_agent import ValidationAgent
         
         agent = ValidationAgent()
         print(f"✅ Validation Agent created")
@@ -230,8 +230,8 @@ async def test_llm_call():
     print("="*60)
     
     try:
-        from app.agents.config import get_agent_config, TaskComplexity
-        from app.agents.llm_manager import LLMManager
+        from app.layer1.agents.config import get_agent_config, TaskComplexity
+        from app.core.llm.manager import LLMManager
         
         config = get_agent_config()
         llm_manager = LLMManager(config)

@@ -15,9 +15,9 @@ import logging
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 
-from app.agents.base_agent import BaseAgent
-from app.agents.config import TaskComplexity
-from app.agents.tools.database_tools import (
+from app.layer1.agents.base_agent import BaseAgent
+from app.layer1.agents.config import TaskComplexity
+from app.layer1.agents.tools.database_tools import (
     get_all_source_schedules,
     update_scraping_schedule,
     get_source_reliability
