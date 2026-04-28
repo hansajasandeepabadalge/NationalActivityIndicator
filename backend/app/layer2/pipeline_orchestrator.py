@@ -130,6 +130,7 @@ class Layer2PipelineOrchestrator:
         self._enhanced_pipeline: Optional[EnhancedPipeline] = None
         self._indicator_calculator: Optional[FullIndicatorCalculator] = None
         self._mongo_client: Optional[MongoClient] = None
+        self._hybrid_classifier = None
         
     async def _init_components(self):
         """Initialize all pipeline components."""
@@ -153,17 +154,38 @@ class Layer2PipelineOrchestrator:
         if not self._mongo_client:
             self._mongo_client = MongoClient(self.mongo_url)
             
-        # Enhanced processing pipeline
-        if not self._enhanced_pipeline:
-            try:
-                from app.layer2.services.enhanced_pipeline import create_enhanced_pipeline
-                self._enhanced_pipeline = create_enhanced_pipeline(PipelineConfig())
-            except Exception as e:
-                logger.warning(f"Enhanced pipeline not available: {e}")
-                
         # Full indicator calculator
         if not self._indicator_calculator:
             self._indicator_calculator = create_full_indicator_calculator(self.pg_config)
+
+        # Hybrid classifier (Rule-based + ML, falls back to rule-only until ML is trained)
+        # MUST initialize before enhanced_pipeline so we can wire it as the fallback.
+        if self._hybrid_classifier is None:
+            try:
+                from app.layer2.ml_classification.hybrid_classifier import HybridClassifier
+                self._hybrid_classifier = HybridClassifier()
+                logger.info("HybridClassifier initialized (rule-based mode until ML model is trained)")
+            except Exception as e:
+                logger.warning(f"HybridClassifier unavailable: {e}")
+
+        # Enhanced processing pipeline — wire up the real fallbacks so that
+        # services/llm_classifier._run_hybrid_classifier and
+        # services/smart_entity_extractor._run_basic_extractor have something
+        # to fall back to when the LLM is rate-limited/unavailable.
+        if not self._enhanced_pipeline:
+            try:
+                from app.layer2.services.enhanced_pipeline import create_enhanced_pipeline
+                from app.layer2.nlp.entity_extractor import EntityExtractor
+                from app.layer2.nlp.sentiment_analyzer import SentimentAnalyzer
+
+                self._enhanced_pipeline = create_enhanced_pipeline(
+                    PipelineConfig(),
+                    fallback_classifier=self._hybrid_classifier,
+                    fallback_sentiment=SentimentAnalyzer(backend='vader'),
+                    fallback_entities=EntityExtractor(),
+                )
+            except Exception as e:
+                logger.warning(f"Enhanced pipeline not available: {e}")
             
     async def run_full_pipeline(
         self,
@@ -219,12 +241,18 @@ class Layer2PipelineOrchestrator:
             # ================================================================
             stage_start = datetime.now()
             classified_articles = await self._stage_classify_articles(articles)
+            hybrid_covered = sum(
+                1 for a in classified_articles if a.get('hybrid_indicator_assignments')
+            )
             stages.append(PipelineStageResult(
                 stage_name="2_pestel_classification",
                 success=len(classified_articles) > 0,
                 item_count=len(classified_articles),
                 duration_ms=(datetime.now() - stage_start).total_seconds() * 1000,
-                details={"method": "LLM + fallback"}
+                details={
+                    "method": "LLM + fallback (PESTEL) + HybridClassifier (indicators)",
+                    "hybrid_articles_with_indicator_assignments": hybrid_covered
+                }
             ))
             
             # ================================================================
@@ -427,7 +455,7 @@ class Layer2PipelineOrchestrator:
                         'language': article.language,
                         'layer1_quality_score': getattr(article, "layer1_quality_score", 1.0),
                         'layer1_categories': getattr(article, "layer1_categories", []),
-                        'layer1_entities': getattr(article, "layer1_entities", [])
+                        'layer1_entities': getattr(article, "layer1_entities", {})
                     }
                 else:
                     raw_dict = article
@@ -505,7 +533,7 @@ class Layer2PipelineOrchestrator:
                     logger.error(f"LLM classification error: {type(e).__name__}: {str(e)}")
                     article['pestel_categories'] = ['Economic']  # Default
                     article['pestel_confidence'] = [0.3]
-                    
+
         except ImportError:
             logger.warning("LLM classifier not available, using fallback")
             for article in articles:
@@ -513,7 +541,28 @@ class Layer2PipelineOrchestrator:
                     f"{article.get('title', '')} {article.get('body', '')}"
                 )
                 article['pestel_confidence'] = [0.5]
-                
+
+        # Pass 2: Run HybridClassifier for indicator-level assignment on each article.
+        # This is independent of PESTEL category assignment above — it assigns specific
+        # indicator IDs (e.g. ECO_INFLATION) using rule-based + ML weights.
+        if self._hybrid_classifier is not None:
+            hybrid_hits = 0
+            for article in articles:
+                try:
+                    assignments = self._hybrid_classifier.classify(
+                        article_text=article.get('body', ''),
+                        article_title=article.get('title', ''),
+                        article_category=article.get('primary_category', ''),
+                        min_confidence=0.3
+                    )
+                    article['hybrid_indicator_assignments'] = assignments
+                    if assignments:
+                        hybrid_hits += 1
+                except Exception as e:
+                    logger.debug(f"Hybrid classify error for {article.get('article_id', '?')}: {e}")
+                    article['hybrid_indicator_assignments'] = []
+            logger.info(f"HybridClassifier: {hybrid_hits}/{len(articles)} articles had indicator matches")
+
         return articles
     
     def _fallback_classify(self, text: str) -> List[str]:
@@ -549,8 +598,9 @@ class Layer2PipelineOrchestrator:
             
             for article in articles:
                 try:
-                    text = f"{article.get('title', '')} {article.get('body', '')}"
-                    result = analyzer.analyze(text)
+                    # Layer2Article uses 'text' (combined title+body), not 'body'
+                    full_text = article.get('text', '') or f"{article.get('title', '')} {article.get('body', '')}"
+                    result = analyzer.analyze(full_text)
                     
                     # SentimentResult has: score (-1 to 1), label, confidence, compound
                     article['sentiment'] = {
@@ -574,49 +624,144 @@ class Layer2PipelineOrchestrator:
         return articles
     
     async def _stage_entity_extraction(
-        self, 
+        self,
         articles: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        """Stage 4: Extract named entities from articles."""
+        """Stage 4: Extract named entities from articles via EntityExtractor."""
         logger.info(f"Extracting entities from {len(articles)} articles...")
-        
+
         try:
-            import spacy
-            nlp = spacy.load("en_core_web_sm")
-            
+            from app.layer2.nlp.entity_extractor import EntityExtractor
+            extractor = EntityExtractor()  # singleton — spaCy model loaded once
+
             for article in articles:
                 try:
-                    text = f"{article.get('title', '')} {article.get('body', '')}"[:5000]
-                    doc = nlp(text)
-                    
-                    entities = []
-                    for ent in doc.ents:
-                        entities.append({
-                            'text': ent.text,
-                            'label': ent.label_,
-                            'start': ent.start_char,
-                            'end': ent.end_char
-                        })
-                    article['entities'] = entities
-                    
+                    # Layer2Article uses 'text' (combined), not 'body'
+                    full_text = article.get('text', '') or f"{article.get('title', '')} {article.get('body', '')}"
+                    title = article.get('title', '')
+                    article_id = article.get('article_id', '')
+
+                    extracted = extractor.extract_entities(article_id, title, full_text)
+
+                    # Store structured result AND a flat list for backward-compat
+                    article['extracted_entities'] = extracted  # ExtractedEntities model
+                    article['entities'] = [
+                        {'text': e.text, 'label': 'GPE', 'start': e.start_char, 'end': e.end_char}
+                        for e in extracted.locations
+                    ] + [
+                        {'text': e.text, 'label': 'ORG', 'start': e.start_char, 'end': e.end_char}
+                        for e in extracted.organizations
+                    ] + [
+                        {'text': e.text, 'label': 'PERSON', 'start': e.start_char, 'end': e.end_char}
+                        for e in extracted.persons
+                    ] + [
+                        {'text': e.text, 'label': 'DATE', 'start': e.start_char, 'end': e.end_char}
+                        for e in extracted.dates
+                    ] + [
+                        {'text': e.text, 'label': 'MONEY', 'start': e.start_char, 'end': e.end_char}
+                        for e in extracted.amounts
+                    ]
+
                 except Exception as e:
+                    logger.warning(f"Entity extraction error for {article.get('article_id')}: {e}")
+                    article['extracted_entities'] = None
                     article['entities'] = []
-                    
+
         except Exception as e:
-            logger.warning(f"Entity extraction not available: {e}")
+            logger.warning(f"EntityExtractor not available: {e}")
             for article in articles:
+                article['extracted_entities'] = None
                 article['entities'] = []
-                
+
         return articles
     
+    def _build_indicator_values_from_hybrid(
+        self,
+        articles: List[Dict[str, Any]]
+    ) -> Dict[str, IndicatorValue]:
+        """
+        Build IndicatorValue objects from HybridClassifier per-article assignments.
+
+        The hybrid classifier assigns specific indicator IDs (e.g. ECO_INFLATION) to
+        articles with a confidence score. Here we aggregate across all articles to
+        produce a frequency-based indicator value (0-100 scale), matching the same
+        calculation logic as FullIndicatorCalculator._calculate_frequency_indicator.
+        """
+        from collections import defaultdict
+
+        indicator_article_confs: Dict[str, List] = defaultdict(list)
+        for article in articles:
+            for assignment in article.get('hybrid_indicator_assignments', []):
+                indicator_article_confs[assignment['indicator_id']].append(
+                    (article, float(assignment['confidence']))
+                )
+
+        # Build lookup from FullIndicatorCalculator's loaded definitions
+        indicator_meta = {
+            ind.indicator_id: ind
+            for ind in self._indicator_calculator.indicators
+        }
+
+        result: Dict[str, IndicatorValue] = {}
+        for indicator_id, article_confs in indicator_article_confs.items():
+            meta = indicator_meta.get(indicator_id)
+            if not meta:
+                continue
+
+            count = len(article_confs)
+            confidences = [c for _, c in article_confs]
+            avg_conf = sum(confidences) / len(confidences)
+
+            # Frequency-based 0-100 value (same formula as FullIndicatorCalculator)
+            value = min(100.0, 50.0 + (count * 5)) if count >= 10 else 50.0 + (count * 5)
+
+            result[indicator_id] = IndicatorValue(
+                indicator_id=indicator_id,
+                indicator_name=meta.indicator_name,
+                pestel_category=meta.pestel_category,
+                subcategory=meta.subcategory,
+                value=round(value, 1),
+                confidence=round(min(1.0, (count / 5) * avg_conf), 2),
+                article_count=count,
+                matching_articles=[a.get('article_id', '') for a, _ in article_confs[:5]],
+                calculation_type='hybrid_classification'
+            )
+
+        return result
+
     def _stage_calculate_indicators(
-        self, 
+        self,
         articles: List[Dict[str, Any]]
     ) -> List[IndicatorValue]:
-        """Stage 5: Calculate all 105 indicators."""
+        """Stage 5: Calculate all 105 indicators.
+
+        FullIndicatorCalculator covers all 105 via keyword matching.
+        HybridClassifier covers the 10 blueprint-priority indicators with higher
+        accuracy (rule-based + ML weights). Hybrid results override keyword-match
+        results for those 10 indicators; the remaining 95 come from FullIndicatorCalculator.
+        """
         logger.info(f"Calculating indicators from {len(articles)} articles...")
-        
-        return self._indicator_calculator.calculate_all_indicators(articles)
+
+        full_results: List[IndicatorValue] = self._indicator_calculator.calculate_all_indicators(articles)
+
+        hybrid_overrides = self._build_indicator_values_from_hybrid(articles)
+        if not hybrid_overrides:
+            return full_results
+
+        merged = []
+        override_count = 0
+        for iv in full_results:
+            if iv.indicator_id in hybrid_overrides:
+                merged.append(hybrid_overrides[iv.indicator_id])
+                override_count += 1
+            else:
+                merged.append(iv)
+
+        logger.info(
+            f"Indicator calc: {len(full_results)} total, "
+            f"{override_count} overridden by HybridClassifier"
+        )
+        return merged
     
     def _calculate_real_trends(
         self,

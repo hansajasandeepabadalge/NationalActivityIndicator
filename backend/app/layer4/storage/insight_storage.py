@@ -8,7 +8,7 @@ Handles persistence of:
 - Score history (TimescaleDB)
 """
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
 from decimal import Decimal
@@ -80,7 +80,7 @@ class InsightStorageService:
             confidence=risk.confidence,
             final_score=risk.final_score,
             severity_level=risk.severity_level,
-            detected_at=datetime.now(),
+            detected_at=datetime.now(timezone.utc),
             expected_impact_time=risk.expected_impact_time,
             expected_duration_hours=risk.expected_duration_hours,
             status='active',
@@ -138,7 +138,7 @@ class InsightStorageService:
             confidence=Decimal(str(opportunity.strategic_fit)),
             final_score=opportunity.final_score,
             severity_level=opportunity.priority,  # Map priority to severity_level
-            detected_at=datetime.now(),
+            detected_at=datetime.now(timezone.utc),
             expected_duration_hours=opportunity.window_days * 24 if opportunity.window_days else None,
             status='active',
             triggering_indicators=opportunity.triggering_factors if isinstance(opportunity.triggering_factors, dict) else {},
@@ -272,7 +272,7 @@ class InsightStorageService:
             return False
 
         insight.status = 'acknowledged'
-        insight.acknowledged_at = datetime.now()
+        insight.acknowledged_at = datetime.now(timezone.utc)
         insight.acknowledged_by = acknowledged_by
 
         self.db.commit()
@@ -304,7 +304,7 @@ class InsightStorageService:
             return False
 
         insight.status = 'resolved'
-        insight.resolved_at = datetime.now()
+        insight.resolved_at = datetime.now(timezone.utc)
         insight.resolution_notes = resolution_notes
         insight.actual_impact = actual_impact
 
@@ -329,7 +329,7 @@ class InsightStorageService:
             True if successful
         """
         tracking = InsightTracking(
-            time=datetime.now(),
+            time=datetime.now(timezone.utc),
             company_id=company_id,
             total_active_risks=metrics.get('total_active_risks', 0),
             total_active_opportunities=metrics.get('total_active_opportunities', 0),
@@ -376,7 +376,7 @@ class InsightStorageService:
         Returns:
             Existing BusinessInsight or None
         """
-        today = datetime.now().date()
+        today = datetime.now(timezone.utc).date()
 
         return self.db.query(BusinessInsight).filter(
             and_(
@@ -409,7 +409,7 @@ class InsightStorageService:
             existing.confidence = new_risk.confidence
             existing.final_score = new_risk.final_score
             existing.severity_level = new_risk.severity_level
-            existing.updated_at = datetime.now()
+            existing.updated_at = datetime.now(timezone.utc)
             existing.triggering_indicators = new_risk.triggering_indicators if isinstance(new_risk.triggering_indicators, dict) else {}
 
             self.db.commit()
@@ -444,7 +444,7 @@ class InsightStorageService:
             existing.confidence = Decimal(str(new_opportunity.strategic_fit))
             existing.final_score = new_opportunity.final_score
             existing.severity_level = new_opportunity.priority
-            existing.updated_at = datetime.now()
+            existing.updated_at = datetime.now(timezone.utc)
             existing.triggering_indicators = new_opportunity.triggering_factors if isinstance(new_opportunity.triggering_factors, dict) else {}
 
             self.db.commit()
@@ -464,7 +464,7 @@ class InsightStorageService:
             insight: BusinessInsight to track
         """
         history = InsightScoreHistory(
-            time=datetime.now(),
+            time=datetime.now(timezone.utc),
             insight_id=insight.insight_id,
             probability=insight.probability,
             impact=insight.impact,

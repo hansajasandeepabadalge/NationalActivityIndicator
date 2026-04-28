@@ -27,8 +27,10 @@ async def test_l2_to_l3():
     l2_result = await l2_orchestrator.run_full_pipeline(article_limit=50, store_results=False)
     
     if not l2_result.success or not l2_result.layer2_output:
-        print('   ERROR: Layer 2 failed')
-        return
+        raise RuntimeError(
+            f"Layer 2 pipeline failed — success={l2_result.success}, "
+            f"output present={l2_result.layer2_output is not None}"
+        )
     
     l2_output = l2_result.layer2_output
     print(f'   Layer 2 Output: {len(l2_output.indicators)} indicators')

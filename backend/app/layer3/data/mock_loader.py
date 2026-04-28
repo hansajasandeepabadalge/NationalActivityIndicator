@@ -30,7 +30,7 @@ class MockDataLoader:
 
         for filename in os.listdir(company_dir):
             if filename.endswith('.json'):
-                with open(os.path.join(company_dir, filename), 'r') as f:
+                with open(os.path.join(company_dir, filename), 'r', encoding='utf-8') as f:
                     company = json.load(f)
                     companies[company['company_id']] = company
         
@@ -42,7 +42,7 @@ class MockDataLoader:
         if not os.path.exists(path):
             return {}
             
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             return json.load(f)
     
     def _load_historical_data(self) -> Dict[str, List[Any]]:
@@ -55,7 +55,7 @@ class MockDataLoader:
 
         for filename in os.listdir(ts_dir):
             if filename.endswith('.json'):
-                with open(os.path.join(ts_dir, filename), 'r') as f:
+                with open(os.path.join(ts_dir, filename), 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     historical[data['indicator_code']] = data['time_series']
         

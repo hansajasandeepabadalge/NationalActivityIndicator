@@ -617,11 +617,32 @@ Provide evidence-based assessments with supporting quotes."""
     
     async def _run_basic_analyzer(self, text: str) -> AdvancedSentimentResult:
         """
-        Run the existing basic SentimentAnalyzer.
+        Run the existing basic SentimentAnalyzer (VADER) as a real fallback.
         """
-        # Integration with existing SentimentAnalyzer would go here
-        # For now, return keyword-based analysis
-        return self._keyword_based_analysis(text)
+        from app.layer2.nlp.sentiment_analyzer import SentimentAnalyzer
+        vader = SentimentAnalyzer(backend='vader')
+        basic = vader.analyze(text)
+
+        level = SentimentLevel.NEUTRAL
+        if basic.score >= 0.5:
+            level = SentimentLevel.VERY_POSITIVE
+        elif basic.score >= 0.05:
+            level = SentimentLevel.POSITIVE
+        elif basic.score <= -0.5:
+            level = SentimentLevel.VERY_NEGATIVE
+        elif basic.score <= -0.05:
+            level = SentimentLevel.NEGATIVE
+
+        return AdvancedSentimentResult(
+            overall_score=basic.score,
+            overall_level=level,
+            overall_confidence=basic.confidence,
+            business_confidence_score=basic.score,
+            public_mood_score=basic.score,
+            economic_outlook_score=basic.score,
+            analysis_source="vader_fallback",
+            processing_time_ms=basic.processing_time_ms,
+        )
     
     def _keyword_based_analysis(self, text: str) -> AdvancedSentimentResult:
         """

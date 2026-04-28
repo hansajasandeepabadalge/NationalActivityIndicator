@@ -7,7 +7,7 @@ to the PostgreSQL database for dashboard display.
 
 import logging
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, desc
@@ -103,7 +103,7 @@ class InsightPersistenceService:
         
         if existing:
             # Update existing instead of creating duplicate
-            existing.updated_at = datetime.now()
+            existing.updated_at = datetime.now(timezone.utc)
             existing.final_score = self._to_decimal(risk.get("final_score", 5.0))
             return None
         
@@ -120,7 +120,7 @@ class InsightPersistenceService:
             confidence=self._to_decimal(risk.get("confidence", 0.8)),
             final_score=self._to_decimal(risk.get("final_score", 5.0)),
             severity_level=risk.get("severity_level", "medium"),
-            detected_at=datetime.now(),
+            detected_at=datetime.now(timezone.utc),
             status="active",
             triggering_indicators=risk.get("triggering_indicators", {}),
             is_urgent=risk.get("is_urgent", False),
@@ -137,7 +137,7 @@ class InsightPersistenceService:
         existing = self._find_recent_insight(company_id, opp_code, "opportunity")
         
         if existing:
-            existing.updated_at = datetime.now()
+            existing.updated_at = datetime.now(timezone.utc)
             existing.final_score = self._to_decimal(opp.get("final_score", 5.0))
             return None
         
@@ -153,7 +153,7 @@ class InsightPersistenceService:
             confidence=self._to_decimal(opp.get("confidence", 0.8)),
             final_score=self._to_decimal(opp.get("final_score", 6.0)),
             severity_level=opp.get("priority_level", "medium"),
-            detected_at=datetime.now(),
+            detected_at=datetime.now(timezone.utc),
             status="active",
             triggering_indicators=opp.get("triggering_indicators", {}),
             is_urgent=False,
@@ -204,7 +204,7 @@ class InsightPersistenceService:
         """Find a recent insight with the same code to avoid duplicates."""
         from datetime import timedelta
         
-        cutoff = datetime.now() - timedelta(hours=hours)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
         
         # Look for insights with matching title (which contains the code)
         result = self.db.execute(
@@ -283,7 +283,7 @@ class InsightPersistenceService:
         """Archive old resolved insights."""
         from datetime import timedelta
         
-        cutoff = datetime.now() - timedelta(days=days)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
         
         result = self.db.execute(
             select(BusinessInsight)

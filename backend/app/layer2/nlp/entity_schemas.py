@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Location(BaseModel):
     text: str
@@ -46,8 +46,10 @@ class PercentageEntity(BaseModel):
     confidence: float = 1.0
 
 class ExtractedEntities(BaseModel):
+    model_config = ConfigDict(extra='ignore')  # tolerate MongoDB _id and future extra fields
+
     article_id: str
-    extraction_timestamp: datetime = Field(default_factory=datetime.utcnow)
+    extraction_timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     locations: List[Location] = []
     organizations: List[Organization] = []
     persons: List[Person] = []

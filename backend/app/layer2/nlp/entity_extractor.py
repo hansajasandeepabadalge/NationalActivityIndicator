@@ -28,7 +28,8 @@ class EntityExtractor:
         """Extract all entities from article"""
         start_time = time.time()
 
-        full_text = f"{title}\n\n{content}"[:1_000_000]
+        # 50k chars keeps spaCy en_core_web_sm well within memory limits
+        full_text = f"{title}\n\n{content}"[:50_000]
 
         doc = self._nlp(full_text)
 
@@ -37,7 +38,8 @@ class EntityExtractor:
         persons = self._extract_persons(doc)
         dates = self._extract_dates(doc)
 
-        amounts = self._extract_amounts(full_text)
+        # Extract amounts: spaCy MONEY entities + regex (deduplicated)
+        amounts = self._extract_amounts(full_text, doc)
         percentages = self._extract_percentages(full_text)
 
         processing_time = (time.time() - start_time) * 1000
@@ -121,7 +123,7 @@ class EntityExtractor:
                     parsed_date = None
                     try:
                         parsed_date = date_parser.parse(ent.text, fuzzy=True)
-                    except:
+                    except Exception:
                         pass
 
                     dates.append(DateEntity(
@@ -133,17 +135,26 @@ class EntityExtractor:
 
         return dates
 
-    def _extract_amounts(self, text: str) -> List[AmountEntity]:
-        """Extract currency amounts using regex"""
+    def _extract_amounts(self, text: str, doc=None) -> List[AmountEntity]:
+        """Extract currency amounts from spaCy MONEY entities and regex, deduplicated."""
         amounts = []
+        seen_spans: set = set()  # (start_char, end_char) dedup
 
-        for match in self.CURRENCY_PATTERN.finditer(text):
+        def _add_amount(text_fragment: str, start: int, end: int) -> None:
+            span_key = (start, end)
+            if span_key in seen_spans:
+                return
+            seen_spans.add(span_key)
             try:
-                currency_text = match.group(0)
+                currency_text = text_fragment
                 if "USD" in currency_text or "$" in currency_text:
                     currency = "USD"
                 else:
                     currency = "LKR"
+
+                match = self.CURRENCY_PATTERN.search(currency_text)
+                if not match:
+                    return
 
                 amount_str = match.group(1).replace(",", "")
                 amount = float(amount_str)
@@ -157,22 +168,37 @@ class EntityExtractor:
                         amount *= 1_000_000_000
 
                 amounts.append(AmountEntity(
-                    text=match.group(0),
-                    start_char=match.start(),
-                    end_char=match.end(),
+                    text=text_fragment,
+                    start_char=start,
+                    end_char=end,
                     currency=currency,
                     amount=amount
                 ))
             except Exception:
-                continue
+                pass
+
+        # Pass 1: spaCy MONEY entities (blueprint §2.6 requirement)
+        if doc is not None:
+            for ent in doc.ents:
+                if ent.label_ == "MONEY":
+                    _add_amount(ent.text, ent.start_char, ent.end_char)
+
+        # Pass 2: regex for currency patterns not caught by spaCy NER
+        for match in self.CURRENCY_PATTERN.finditer(text):
+            _add_amount(match.group(0), match.start(), match.end())
 
         return amounts
 
     def _extract_percentages(self, text: str) -> List[PercentageEntity]:
-        """Extract percentage values using regex"""
+        """Extract percentage values using regex, deduplicated."""
         percentages = []
+        seen_spans: set = set()
 
         for match in self.PERCENTAGE_PATTERN.finditer(text):
+            span_key = (match.start(), match.end())
+            if span_key in seen_spans:
+                continue
+            seen_spans.add(span_key)
             try:
                 value = float(match.group(1))
                 percentages.append(PercentageEntity(

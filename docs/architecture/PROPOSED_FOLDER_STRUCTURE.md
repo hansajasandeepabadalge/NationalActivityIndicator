@@ -168,17 +168,65 @@ NationalActivityIndicator_MAIN/
 │   │   │           ├── adapters.py              ← Layer-to-layer data adapters
 │   │   │           └── contracts.py             ← Pydantic inter-layer contracts
 │   │   │
-│   │   ├── 📁 layer2/                           ← LAYER 2: NLP Processing & Classification
-│   │   │   │          (Text cleaning, NER, ML classification, indicator extraction)
-│   │   │   │          [Current: app/layer2/ — rename subfolders only]
+│   │   ├── 📁 layer2/                           ← LAYER 2: NLP Processing & National Indicators
+│   │   │   │          (Classification, sentiment, entity extraction, 105 indicator pipeline)
 │   │   │   │
-│   │   │   ├── 📁 cleaning/                     ← Text normalization, dedup
-│   │   │   ├── 📁 nlp/                          ← NER, spaCy (merge nlp + nlp_processing)
-│   │   │   ├── 📁 classification/               ← ML classifiers
-│   │   │   ├── 📁 indicators/                   ← Indicator extraction from text
-│   │   │   ├── 📁 data_ingestion/               ← Keep as-is
-│   │   │   ├── 📁 storage/                      ← Keep as-is
-│   │   │   └── pipeline.py                      ← Layer 2 pipeline entry point
+│   │   │   ├── pipeline_orchestrator.py         ← ★ MAIN ENTRY POINT: 10-stage async pipeline
+│   │   │   │                                       Stages: fetch → classify → sentiment → NER →
+│   │   │   │                                               indicators → composites → trends →
+│   │   │   │                                               anomalies → Layer2Output → store
+│   │   │   │
+│   │   │   ├── 📁 ml_classification/            ← ★ Three-Pass Classification System (Blueprint)
+│   │   │   │   ├── rule_based_classifier.py     ← Pass 1: RuleBasedClassifier — precompiled regex
+│   │   │   │   │                                   keyword matching with LRU cache (10 indicators)
+│   │   │   │   ├── ml_classifier.py             ← Pass 2: MLClassifier — XGBoost + TF-IDF
+│   │   │   │   │                                   multi-label (Iteration 1, before BERT)
+│   │   │   │   ├── hybrid_classifier.py         ← ★ HybridClassifier — 0.7 rule + 0.3 ML weights
+│   │   │   │   │                                   context-aware conflict resolution; per-indicator
+│   │   │   │   │                                   weight tuning via grid search on validation set
+│   │   │   │   │                                   [WIRED INTO pipeline_orchestrator Stage 2 + 5]
+│   │   │   │   ├── classification_pipeline.py   ← Standalone pipeline: load → classify → store
+│   │   │   │   │                                   (parallel ThreadPoolExecutor, batch storage)
+│   │   │   │   ├── feature_extractor.py         ← Feature engineering: TF-IDF for XGBoost
+│   │   │   │   ├── ml_training_pipeline.py      ← Training: manual → semi-auto → weak supervision
+│   │   │   │   ├── training_data_generator.py   ← ★ Two modes:
+│   │   │   │   │                                   select_stratified_articles() — dev bootstrap
+│   │   │   │   │                                   generate_from_real_articles() — PRODUCTION:
+│   │   │   │   │                                     real MongoDB articles + LLM oracle labeling
+│   │   │   │   ├── training_data_schema.py      ← TrainingArticle, TrainingDataset, split schemas
+│   │   │   │   ├── storage_service.py           ← Model persistence: save/load XGBoost models
+│   │   │   │   └── keyword_config.py            ← INDICATOR_KEYWORDS + KEYWORD_WEIGHTS config
+│   │   │   │
+│   │   │   ├── 📁 indicators/                   ← Indicator Calculation (all 105)
+│   │   │   │   └── 📁 full_indicator_calculator/
+│   │   │   │       └── full_calculator.py       ← FullIndicatorCalculator: loads 105 from
+│   │   │   │                                       PostgreSQL, keyword matching, frequency/
+│   │   │   │                                       sentiment calculation, PESTEL composites, NAI
+│   │   │   │                                       [Stage 5 fallback for 95 non-hybrid indicators]
+│   │   │   │
+│   │   │   ├── 📁 data_ingestion/               ← Layer 1 → Layer 2 data bridge
+│   │   │   │   ├── mongodb_loader.py            ← MongoDBArticleLoader + Layer2Article schema
+│   │   │   │   │                                   Excludes permanently rejected articles,
+│   │   │   │   │                                   applies quality score filter in query
+│   │   │   │   └── article_loader.py            ← ArticleLoader (dev/static training source)
+│   │   │   │
+│   │   │   ├── 📁 storage/                      ← Result persistence
+│   │   │   │   └── indicator_persistence.py     ← ★ Layer2IndicatorPersistence:
+│   │   │   │                                       batch INSERT…ON CONFLICT to TimescaleDB
+│   │   │   │                                       (2 bulk queries total, not 105 per-row)
+│   │   │   │
+│   │   │   ├── 📁 services/                     ← Processing services
+│   │   │   │   ├── enhanced_pipeline.py         ← EnhancedPipeline (LLM-enhanced NLP)
+│   │   │   │   └── llm_classifier.py            ← LLMClassifier (Groq Llama 3.1 70B, PESTEL)
+│   │   │   │
+│   │   │   ├── 📁 nlp/                          ← NLP utilities
+│   │   │   │   └── sentiment_analyzer.py        ← SentimentAnalyzer (VADER backend)
+│   │   │   │
+│   │   │   ├── 📁 analysis/                     ← Statistical analysis
+│   │   │   │   └── anomaly_detector.py          ← Z-score detection (threshold=2.0, 95% CI)
+│   │   │   │
+│   │   │   └── 📁 narrative/                    ← Report generation
+│   │   │       └── generator.py                 ← NarrativeGenerator
 │   │   │
 │   │   ├── 📁 layer3/                           ← LAYER 3: Operational Analysis
 │   │   │   │          (Indicator scoring, trend analysis, forecasting)

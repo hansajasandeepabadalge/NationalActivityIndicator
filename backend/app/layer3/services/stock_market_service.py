@@ -62,12 +62,101 @@ class StockMarketService:
     @staticmethod
     def _transform_cse_data(api_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Transform CSE API response to our standard format
-        Note: Actual transformation depends on CSE API structure
+        Transform CSE /tradeSummary response into our standard format.
+
+        The CSE tradeSummary endpoint returns a list of per-symbol
+        objects (symbol, name, price, change, volume, turnover, trades).
+        We compute aggregate stats and pick top movers/most-active from it.
+
+        If the response shape is unrecognised, we fall back to mock data
+        rather than returning a half-built payload.
         """
-        # For now, return structured mock data
-        # TODO: Update this when we understand the actual CSE API response format
-        return StockMarketService._get_mock_data()
+        # CSE tradeSummary returns either {"reqTradeSummery": [...]} or a bare list
+        if isinstance(api_data, dict):
+            rows = (
+                api_data.get("reqTradeSummery")
+                or api_data.get("tradeSummary")
+                or api_data.get("data")
+                or []
+            )
+        elif isinstance(api_data, list):
+            rows = api_data
+        else:
+            rows = []
+
+        if not rows:
+            logger.warning("CSE response empty/unrecognised — returning mock data")
+            return StockMarketService._get_mock_data()
+
+        def _f(v, default=0.0):
+            try:
+                return float(v) if v is not None else default
+            except (TypeError, ValueError):
+                return default
+
+        def _i(v, default=0):
+            try:
+                return int(v) if v is not None else default
+            except (TypeError, ValueError):
+                return default
+
+        normalised = []
+        advancers = decliners = unchanged = 0
+        total_turnover = 0.0
+        total_volume = 0
+        total_trades = 0
+
+        for r in rows:
+            change = _f(r.get("change") or r.get("priceChange"))
+            price = _f(r.get("price") or r.get("lastTradedPrice"))
+            volume = _i(r.get("tradeVolume") or r.get("volume"))
+            turnover = _f(r.get("turnover"))
+            trades = _i(r.get("trades") or r.get("tradeCount"))
+
+            if change > 0:
+                advancers += 1
+            elif change < 0:
+                decliners += 1
+            else:
+                unchanged += 1
+
+            total_turnover += turnover
+            total_volume += volume
+            total_trades += trades
+
+            normalised.append({
+                "symbol": r.get("symbol") or r.get("name") or "?",
+                "name": r.get("name") or r.get("companyName") or "",
+                "price": round(price, 2),
+                "change": round(change, 2),
+                "changePercent": round(_f(r.get("changePercentage") or r.get("percentageChange")), 2),
+                "volume": volume,
+                "turnover": int(turnover),
+                "trades": trades,
+            })
+
+        top_gainers = sorted(normalised, key=lambda x: x["changePercent"], reverse=True)[:5]
+        top_losers = sorted(normalised, key=lambda x: x["changePercent"])[:5]
+        most_active = sorted(normalised, key=lambda x: x["volume"], reverse=True)[:5]
+
+        return {
+            "indices": [],  # tradeSummary doesn't include index values
+            "marketSummary": {
+                "date": datetime.now().strftime("%Y-%m-%d"),
+                "totalTurnover": int(total_turnover),
+                "totalVolume": int(total_volume),
+                "totalTrades": int(total_trades),
+                "advancers": advancers,
+                "decliners": decliners,
+                "unchanged": unchanged,
+                "marketCap": None,
+            },
+            "topGainers": top_gainers,
+            "topLosers": top_losers,
+            "mostActive": most_active,
+            "lastUpdate": int(datetime.now().timestamp() * 1000),
+            "source": "cse_live",
+        }
 
     @staticmethod
     def _get_mock_data() -> Dict[str, Any]:

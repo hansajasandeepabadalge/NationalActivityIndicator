@@ -29,8 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-# Set API keys
-os.environ.setdefault("GROQ_API_KEY", "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")
+# GROQ_API_KEY must be set in .env or environment before running this test
 
 
 @dataclass

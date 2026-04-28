@@ -5,7 +5,12 @@ Manages historical time-series data for operational indicators.
 Stores daily snapshots and provides trend analysis.
 """
 from typing import List, Optional, Dict, Any
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
+
+def _utcnow() -> datetime:
+    """Tz-aware UTC now (datetime.utcnow is deprecated in Python 3.12+)."""
+    return datetime.now(timezone.utc)
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from pymongo.database import Database
 from pydantic import BaseModel
@@ -74,7 +79,7 @@ class IndicatorHistoryService:
         snapshot = {
             "indicator_id": indicator_id,
             "company_id": company_id,
-            "timestamp": timestamp or datetime.utcnow(),
+            "timestamp": timestamp or _utcnow(),
             "value": value,
             "baseline_value": baseline_value,
             "deviation": deviation,
@@ -105,7 +110,7 @@ class IndicatorHistoryService:
             List of historical snapshots, ordered by timestamp (newest first)
         """
         # Calculate start date
-        end_date = datetime.utcnow()
+        end_date = _utcnow()
         start_date = end_date - timedelta(days=days)
         
         # Build query
@@ -214,6 +219,6 @@ class IndicatorHistoryService:
         Returns:
             Number of documents deleted
         """
-        cutoff_date = datetime.utcnow() - timedelta(days=days_to_keep)
+        cutoff_date = _utcnow() - timedelta(days=days_to_keep)
         result = self.collection.delete_many({"timestamp": {"$lt": cutoff_date}})
         return result.deleted_count

@@ -6,9 +6,10 @@ Stores to PostgreSQL (TimescaleDB) and MongoDB
 """
 
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
+import json
 import psycopg2
-from psycopg2.extras import execute_values
+from psycopg2.extras import execute_values, Json
 from pymongo import MongoClient
 import logging
 
@@ -56,40 +57,50 @@ class Layer3Storage:
         Returns:
             Number of indicators stored
         """
+        # TimescaleDB column is TIMESTAMPTZ — must be tz-aware
         if timestamp is None:
-            timestamp = datetime.now()
-        
+            timestamp = datetime.now(timezone.utc)
+        elif timestamp.tzinfo is None:
+            timestamp = timestamp.replace(tzinfo=timezone.utc)
+
         try:
             conn = psycopg2.connect(**self.pg_config)
             cursor = conn.cursor()
-            
-            # Prepare data for batch insert
+
+            confidence = (metadata or {}).get('confidence', 0.8)
+            calc_method = (metadata or {}).get('calculation_method', 'calculated')
+            source_indicators = (metadata or {}).get('source_indicators', {})
+            location_id = (metadata or {}).get('location_id') or None  # NULL = company-wide
+
+            # Prepare data — column names MUST match OperationalIndicatorValue model:
+            # (time, company_id, operational_indicator_code, location_id, value,
+            #  confidence_score, calculation_method, input_national_indicators)
             values = []
             for indicator_code, value in indicators.items():
                 values.append((
+                    timestamp,
                     company_id,
                     indicator_code,
-                    timestamp,
-                    value,
-                    metadata.get('confidence', 0.8) if metadata else 0.8,
-                    metadata.get('calculation_method', 'calculated') if metadata else 'calculated',
-                    metadata.get('source_indicators', []) if metadata else [],
-                    metadata if metadata else {}
+                    location_id,
+                    float(value),
+                    float(confidence),
+                    calc_method,
+                    Json(source_indicators) if not isinstance(source_indicators, str) else source_indicators,
                 ))
-            
-            # Batch insert
+
+            # Batch upsert — ON CONFLICT must match the actual PK
             execute_values(
                 cursor,
                 """
-                INSERT INTO operational_indicator_values 
-                (company_id, indicator_code, timestamp, value, confidence, 
-                 calculation_method, source_indicators, metadata)
+                INSERT INTO operational_indicator_values
+                (time, company_id, operational_indicator_code, location_id, value,
+                 confidence_score, calculation_method, input_national_indicators)
                 VALUES %s
-                ON CONFLICT (company_id, indicator_code, timestamp) 
-                DO UPDATE SET 
+                ON CONFLICT (time, company_id, operational_indicator_code, COALESCE(location_id, ''))
+                DO UPDATE SET
                     value = EXCLUDED.value,
-                    confidence = EXCLUDED.confidence,
-                    metadata = EXCLUDED.metadata
+                    confidence_score = EXCLUDED.confidence_score,
+                    input_national_indicators = EXCLUDED.input_national_indicators
                 """,
                 values
             )
@@ -126,8 +137,8 @@ class Layer3Storage:
             
             # Add metadata
             calculation_data['company_id'] = company_id
-            calculation_data['timestamp'] = datetime.now()
-            calculation_data['stored_at'] = datetime.now()
+            calculation_data['timestamp'] = datetime.now(timezone.utc)
+            calculation_data['stored_at'] = datetime.now(timezone.utc)
             
             # Insert to operational_calculations collection
             result = db.operational_calculations.insert_one(calculation_data)
@@ -162,7 +173,7 @@ class Layer3Storage:
             
             # Add metadata
             snapshot['company_id'] = company_id
-            snapshot['snapshot_time'] = datetime.now()
+            snapshot['snapshot_time'] = datetime.now(timezone.utc)
             
             # Insert to company_snapshots collection
             result = db.company_snapshots.insert_one(snapshot)
@@ -195,31 +206,31 @@ class Layer3Storage:
             conn = psycopg2.connect(**self.pg_config)
             cursor = conn.cursor()
             
-            # Get latest value for each indicator
+            # Get latest value for each indicator — column names match the model
             cursor.execute("""
-                SELECT DISTINCT ON (indicator_code)
-                    indicator_code,
-                    timestamp,
+                SELECT DISTINCT ON (operational_indicator_code)
+                    operational_indicator_code,
+                    time,
                     value,
-                    confidence,
+                    confidence_score,
                     calculation_method,
-                    metadata
+                    input_national_indicators
                 FROM operational_indicator_values
                 WHERE company_id = %s
-                ORDER BY indicator_code, timestamp DESC
+                ORDER BY operational_indicator_code, time DESC
                 LIMIT %s
             """, (company_id, limit))
-            
+
             rows = cursor.fetchall()
-            
+
             indicators = {}
             for row in rows:
                 indicators[row[0]] = {
                     'value': float(row[2]),
                     'timestamp': row[1].isoformat(),
-                    'confidence': float(row[3]),
+                    'confidence': float(row[3]) if row[3] is not None else None,
                     'calculation_method': row[4],
-                    'metadata': row[5]
+                    'input_national_indicators': row[5]
                 }
             
             cursor.close()
@@ -292,22 +303,28 @@ class Layer3Storage:
             conn = psycopg2.connect(**self.pg_config)
             cursor = conn.cursor()
             
-            cursor.execute("""
-                SELECT timestamp, value, confidence
+            # NOTE: psycopg2 does NOT substitute %s inside a quoted string literal.
+            # Build the INTERVAL with a sanitized integer instead of binding.
+            days_int = max(0, int(days))
+            cursor.execute(
+                f"""
+                SELECT time, value, confidence_score
                 FROM operational_indicator_values
                 WHERE company_id = %s
-                  AND indicator_code = %s
-                  AND timestamp >= NOW() - INTERVAL '%s days'
-                ORDER BY timestamp ASC
-            """, (company_id, indicator_code, days))
-            
+                  AND operational_indicator_code = %s
+                  AND time >= NOW() - INTERVAL '{days_int} days'
+                ORDER BY time ASC
+                """,
+                (company_id, indicator_code),
+            )
+
             rows = cursor.fetchall()
-            
+
             history = [
                 {
                     'timestamp': row[0].isoformat(),
                     'value': float(row[1]),
-                    'confidence': float(row[2])
+                    'confidence': float(row[2]) if row[2] is not None else None,
                 }
                 for row in rows
             ]

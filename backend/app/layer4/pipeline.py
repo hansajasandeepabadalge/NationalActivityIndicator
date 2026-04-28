@@ -11,7 +11,7 @@ Complete pipeline coordinating:
 7. Cache management
 """
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 from sqlalchemy.orm import Session
 from pymongo import MongoClient
@@ -26,7 +26,6 @@ from app.layer4.recommendation.engine import RecommendationEngine
 from app.layer4.storage.insight_storage import InsightStorageService
 from app.layer4.storage.reasoning_storage import ReasoningStorageService
 from app.layer4.storage.cache_manager import InsightCacheManager
-# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import MockLayer3Generator, OperationalIndicators
 from app.layer4.schemas.risk_schemas import DetectedRisk, RiskScoreBreakdown
 
 logger = logging.getLogger(__name__)
@@ -78,15 +77,12 @@ class Layer4Orchestrator:
         self.reasoning_storage = ReasoningStorageService(mongo_client, mongo_db_name)
         self.cache_manager = InsightCacheManager(redis_client)
 
-        # Mock data generator (for testing)
-        self.mock_layer3 = MockLayer3Generator()
-
         logger.info("Layer4Orchestrator initialized successfully")
 
     def process_company(
         self,
         company_id: str,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         company_profile: Dict[str, Any],
         use_cache: bool = True
     ) -> Dict[str, Any]:
@@ -294,7 +290,7 @@ class Layer4Orchestrator:
         # Compile final output
         output = {
             "company_id": company_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "risk_insights": risk_insights,
             "opportunity_insights": opportunity_insights,
             "portfolio_metrics": portfolio_metrics,
@@ -525,7 +521,7 @@ class Layer4Orchestrator:
             "high_priority_opportunities": sum(
                 1 for o in opportunities if o.severity_level == "high"  # Using severity_level for priority
             ),
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
 
         # Cache the result

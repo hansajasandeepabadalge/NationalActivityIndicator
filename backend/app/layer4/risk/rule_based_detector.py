@@ -10,7 +10,6 @@ from decimal import Decimal
 import logging
 
 from app.layer4.schemas.risk_schemas import DetectedRisk
-# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 logger = logging.getLogger(__name__)
 
@@ -281,10 +280,27 @@ class RuleBasedRiskDetector:
 
         return operators[operator](value, threshold)
 
+    def _get_scalar_indicators(self, indicators: Dict[str, Any]) -> Dict[str, float]:
+        """
+        Extract a {code: float_value} dict from the Layer 4 flat indicator format:
+          {code: {'value': float, 'trend': str, 'confidence': float, 'name': str}}
+        Also accepts a plain {code: float} dict for backwards compat.
+        """
+        out: Dict[str, float] = {}
+        for code, data in indicators.items():
+            if isinstance(data, dict):
+                out[code] = float(data.get('value', 0.0))
+            else:
+                try:
+                    out[code] = float(data)
+                except (TypeError, ValueError):
+                    out[code] = 0.0
+        return out
+
     def _evaluate_conditions(
         self,
         trigger_logic: Dict[str, Any],
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> tuple[bool, float, Dict[str, Any]]:
         """
         Evaluate trigger conditions
@@ -299,8 +315,8 @@ class RuleBasedRiskDetector:
         if not conditions:
             return False, 0.0, {}
 
-        # Get indicator values as dict
-        indicator_dict = indicators.dict()
+        # Get indicator values as {code: float}
+        indicator_dict = self._get_scalar_indicators(indicators)
 
         # Track which conditions passed
         passed_conditions = []
@@ -375,7 +391,7 @@ class RuleBasedRiskDetector:
         self,
         company_id: str,
         industry: str,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         company_profile: Optional[Dict[str, Any]] = None
     ) -> List[DetectedRisk]:
         """
@@ -441,12 +457,12 @@ class RuleBasedRiskDetector:
     def _generate_description(
         self,
         rule: RiskDefinitionRule,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         context: Dict[str, Any]
     ) -> str:
         """Generate risk description from template"""
         template = rule.description_template
-        indicator_dict = indicators.dict()
+        indicator_dict = self._get_scalar_indicators(indicators)
 
         # Replace placeholders with actual values
         for indicator_name, indicator_value in indicator_dict.items():

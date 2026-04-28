@@ -22,7 +22,12 @@ class AnomalyDetector:
             return []
             
         df = pd.DataFrame(history)
-        df['value'] = pd.to_numeric(df['value'])
+        if 'value' not in df.columns or 'time' not in df.columns:
+            return []
+        df['value'] = pd.to_numeric(df['value'], errors='coerce')
+        df = df.dropna(subset=['value'])
+        if len(df) < 5:
+            return []
         
         # Calculate Z-score
         mean = df['value'].mean()

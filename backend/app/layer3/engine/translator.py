@@ -1,5 +1,7 @@
 from typing import Dict, List, Any, Optional
+import ast
 import math
+import operator as op
 
 class ImpactTranslator:
     
@@ -161,21 +163,75 @@ class ImpactTranslator:
                 return threshold['output']
         return 0.0
     
-    def _evaluate_formula(self, expression: str, national_value: float, sensitivity: Dict[str, float], company_factor: float) -> float:
-        """Safely evaluate formula expression"""
-        variables = {
-            'national_value': national_value,
-            'sensitivity': sensitivity['impact_multiplier'],
-            'company_factor': company_factor
-        }
-        
+    # ---------------------------------------------------------------- safe AST eval
+    # eval() with a stripped __builtins__ is still escapable via dunder
+    # access on literals (e.g. ().__class__.__bases__). We restrict the AST
+    # to numeric literals, named variables, +-*/%**, unary neg, and a
+    # whitelist of safe functions instead.
+
+    _ALLOWED_BIN_OPS = {
+        ast.Add: op.add, ast.Sub: op.sub,
+        ast.Mult: op.mul, ast.Div: op.truediv, ast.FloorDiv: op.floordiv,
+        ast.Mod: op.mod, ast.Pow: op.pow,
+    }
+    _ALLOWED_UNARY_OPS = {ast.UAdd: op.pos, ast.USub: op.neg}
+    _ALLOWED_FUNCS = {
+        "min": min, "max": max, "round": round, "abs": abs,
+        "sqrt": math.sqrt, "log": math.log, "exp": math.exp,
+    }
+
+    def _safe_eval(self, expression: str, variables: Dict[str, float]) -> float:
         try:
-            # Basic safe eval for demo purposes. In prod, use a parser.
-            # We only allow basic math
-            allowed_names = {"min": min, "max": max, "round": round}
-            allowed_names.update(variables)
-            result = eval(expression, {"__builtins__": {}}, allowed_names)
+            tree = ast.parse(expression, mode="eval")
+        except SyntaxError as e:
+            raise ValueError(f"Invalid formula syntax: {e}") from e
+
+        def _eval(node):
+            if isinstance(node, ast.Expression):
+                return _eval(node.body)
+            if isinstance(node, ast.Constant):  # numbers only
+                if isinstance(node.value, (int, float)):
+                    return node.value
+                raise ValueError(f"Disallowed constant: {node.value!r}")
+            if isinstance(node, ast.Name):
+                if node.id in variables:
+                    return variables[node.id]
+                raise ValueError(f"Unknown variable: {node.id}")
+            if isinstance(node, ast.BinOp):
+                opcls = type(node.op)
+                if opcls not in self._ALLOWED_BIN_OPS:
+                    raise ValueError(f"Disallowed operator: {opcls.__name__}")
+                return self._ALLOWED_BIN_OPS[opcls](_eval(node.left), _eval(node.right))
+            if isinstance(node, ast.UnaryOp):
+                opcls = type(node.op)
+                if opcls not in self._ALLOWED_UNARY_OPS:
+                    raise ValueError(f"Disallowed unary op: {opcls.__name__}")
+                return self._ALLOWED_UNARY_OPS[opcls](_eval(node.operand))
+            if isinstance(node, ast.Call):
+                if not isinstance(node.func, ast.Name) or node.func.id not in self._ALLOWED_FUNCS:
+                    raise ValueError("Only whitelisted functions are allowed")
+                if node.keywords:
+                    raise ValueError("Keyword arguments not allowed")
+                args = [_eval(a) for a in node.args]
+                return self._ALLOWED_FUNCS[node.func.id](*args)
+            raise ValueError(f"Disallowed AST node: {type(node).__name__}")
+
+        return float(_eval(tree))
+
+    def _evaluate_formula(self, expression: str, national_value: float, sensitivity: Dict[str, float], company_factor: float) -> float:
+        """Safely evaluate formula expression via restricted AST."""
+        variables = {
+            'national_value': float(national_value),
+            'sensitivity': float(sensitivity['impact_multiplier']),
+            'company_factor': float(company_factor),
+        }
+        try:
+            result = self._safe_eval(expression, variables)
             return float(max(0, min(100, result)))
         except Exception as e:
-            print(f"Formula evaluation error: {e}")
+            # Use logging instead of print so failures show up properly
+            import logging
+            logging.getLogger(__name__).warning(
+                f"Formula evaluation error for {expression!r}: {e}"
+            )
             return 0.0

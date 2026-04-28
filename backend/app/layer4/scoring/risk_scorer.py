@@ -14,7 +14,6 @@ from decimal import Decimal
 import logging
 
 from app.layer4.schemas.risk_schemas import DetectedRisk, RiskScoreBreakdown
-# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +29,25 @@ class RiskScorer:
     - Confidence (0-1): How certain we are
     """
 
+    @staticmethod
+    def _count_deteriorating(indicators: Dict[str, Any]) -> int:
+        """
+        Count indicators with a deteriorating/falling trend.
+        Handles Layer 4 flat format {code: {'value': float, 'trend': str, ...}}
+        and plain {code: float} (trend unknown = not deteriorating).
+        """
+        count = 0
+        for data in indicators.values():
+            if isinstance(data, dict):
+                trend = data.get('trend', 'stable')
+                if trend in ('deteriorating', 'falling'):
+                    count += 1
+        return count
+
     def calculate_risk_score(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         company_profile: Optional[Dict[str, Any]] = None
     ) -> RiskScoreBreakdown:
         """
@@ -88,7 +102,7 @@ class RiskScorer:
     def _calculate_probability(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> float:
         """
         Calculate probability that risk will materialize (0-1)
@@ -133,12 +147,9 @@ class RiskScorer:
                 base_probability += severity_adjustment
 
         # Check for negative trends
-        indicator_dict = indicators.dict()
-        trends = indicator_dict.get('trends', {})
-        if isinstance(trends, dict):
-            falling_trends = sum(1 for trend in trends.values() if trend == 'falling')
-            if falling_trends > 3:  # Multiple falling indicators
-                base_probability += 0.05
+        falling_trends = self._count_deteriorating(indicators)
+        if falling_trends > 3:
+            base_probability += 0.05
 
         # Cap at 1.0
         return min(1.0, base_probability)
@@ -214,7 +225,7 @@ class RiskScorer:
     def _calculate_urgency(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> int:
         """
         Calculate time sensitivity (1-5)
@@ -227,18 +238,14 @@ class RiskScorer:
         # Start with base urgency
         base_urgency = risk.urgency
 
-        # Check if indicators are rapidly deteriorating
-        indicator_dict = indicators.dict()
-        trends = indicator_dict.get('trends', {})
-
-        if isinstance(trends, dict):
+        # Check if triggering indicators are rapidly deteriorating
+        if risk.triggering_indicators:
             rapid_decline = sum(
-                1 for indicator_name, trend in trends.items()
-                if trend == 'falling' and
-                risk.triggering_indicators and
-                indicator_name in risk.triggering_indicators
+                1 for code, data in indicators.items()
+                if code in risk.triggering_indicators
+                and isinstance(data, dict)
+                and data.get('trend') in ('deteriorating', 'falling')
             )
-
             if rapid_decline >= 2:
                 base_urgency = min(5, base_urgency + 1)
 
@@ -299,7 +306,7 @@ class RiskScorer:
     def _explain_probability(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> str:
         """Generate explanation for probability score"""
         base_prob = float(risk.probability)
@@ -312,12 +319,9 @@ class RiskScorer:
             explanation += f"{num_indicators} indicators triggered. "
 
         # Check trends
-        indicator_dict = indicators.dict()
-        trends = indicator_dict.get('trends', {})
-        if isinstance(trends, dict):
-            falling = sum(1 for t in trends.values() if t == 'falling')
-            if falling > 3:
-                explanation += f"{falling} indicators show negative trends. "
+        falling = self._count_deteriorating(indicators)
+        if falling > 3:
+            explanation += f"{falling} indicators show negative trends. "
 
         return explanation
 
@@ -349,7 +353,7 @@ class RiskScorer:
     def _explain_urgency(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> str:
         """Generate explanation for urgency score"""
         urgency = risk.urgency
@@ -362,12 +366,9 @@ class RiskScorer:
             explanation = "Lower urgency - monitoring and planning phase. "
 
         # Check trends
-        indicator_dict = indicators.dict()
-        trends = indicator_dict.get('trends', {})
-        if isinstance(trends, dict):
-            falling = sum(1 for t in trends.values() if t == 'falling')
-            if falling >= 2:
-                explanation += "Rapid deterioration increases urgency. "
+        falling = self._count_deteriorating(indicators)
+        if falling >= 2:
+            explanation += "Rapid deterioration increases urgency. "
 
         return explanation
 
@@ -396,7 +397,7 @@ class RiskScorer:
     def update_risk_score(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         company_profile: Optional[Dict[str, Any]] = None
     ) -> DetectedRisk:
         """

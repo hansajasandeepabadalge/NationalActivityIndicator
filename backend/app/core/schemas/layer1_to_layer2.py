@@ -29,7 +29,7 @@ class ProcessedArticleContract(BaseModel):
     # Layer 1 Metrics explicitly carried over
     layer1_quality_score: float = Field(default=1.0, ge=0.0, le=1.0)
     layer1_categories: List[str] = Field(default_factory=list)
-    layer1_entities: List[str] = Field(default_factory=list)
+    layer1_entities: Dict[str, List[str]] = Field(default_factory=dict)
 
     model_config = ConfigDict(
         # We can accept extra fields without crashing, but only explicitly defined ones

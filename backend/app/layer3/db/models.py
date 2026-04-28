@@ -1,14 +1,19 @@
-from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey, Text, Float
+from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey, Text, Float, Index
 from sqlalchemy.dialects.postgresql import JSONB, ARRAY
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from datetime import datetime, timezone
+
+
+def _utcnow():
+    """Tz-aware UTC now (datetime.utcnow is deprecated in 3.12+)."""
+    return datetime.now(timezone.utc)
 
 Base = declarative_base()
 
 class IndustryTemplate(Base):
     __tablename__ = "industry_templates"
-    
+
     industry_id = Column(String(50), primary_key=True)
     industry_name = Column(String(200), nullable=False)
     display_name = Column(String(200))
@@ -16,13 +21,13 @@ class IndustryTemplate(Base):
     sensitivity_config = Column(JSONB, nullable=False)
     impact_lags = Column(JSONB)
     description = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
     version = Column(Integer, default=1)
 
 class CompanyProfile(Base):
     __tablename__ = "company_profiles"
-    
+
     company_id = Column(String(50), primary_key=True)
     company_name = Column(String(200), nullable=False)
     industry_id = Column(String(50), ForeignKey("industry_templates.industry_id"))
@@ -38,14 +43,19 @@ class CompanyProfile(Base):
     alert_thresholds = Column(JSONB)
     is_active = Column(Boolean, default=True)
     subscription_tier = Column(String(50))
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
     locations = relationship("CompanyLocation", back_populates="company")
 
+    __table_args__ = (
+        Index('idx_company_industry', 'industry_id'),
+        Index('idx_company_active', 'is_active'),
+    )
+
 class CompanyLocation(Base):
     __tablename__ = "company_locations"
-    
+
     location_id = Column(String(50), primary_key=True)
     company_id = Column(String(50), ForeignKey("company_profiles.company_id"))
     location_name = Column(String(200), nullable=False)
@@ -61,13 +71,19 @@ class CompanyLocation(Base):
     operating_hours = Column(JSONB)
     critical_services = Column(ARRAY(Text))
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)
 
     company = relationship("CompanyProfile", back_populates="locations")
 
+    __table_args__ = (
+        Index('idx_location_company', 'company_id'),
+        Index('idx_location_geography', 'province', 'district', 'city'),
+        Index('idx_location_coords', 'latitude', 'longitude'),
+    )
+
 class OperationalIndicatorDefinition(Base):
     __tablename__ = "operational_indicator_definitions"
-    
+
     operational_indicator_id = Column(Integer, primary_key=True, autoincrement=True)
     indicator_code = Column(String(100), unique=True, nullable=False)
     indicator_name = Column(String(200), nullable=False)
@@ -86,11 +102,11 @@ class OperationalIndicatorDefinition(Base):
     business_relevance = Column(Text)
     recommended_actions = Column(JSONB)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)
 
 class TranslationRule(Base):
     __tablename__ = "translation_rules"
-    
+
     rule_id = Column(Integer, primary_key=True, autoincrement=True)
     national_indicator_code = Column(String(100), nullable=False)
     operational_indicator_code = Column(String(100), ForeignKey("operational_indicator_definitions.indicator_code"))
@@ -104,11 +120,16 @@ class TranslationRule(Base):
     description = Column(Text)
     validation_notes = Column(Text)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)
+
+    __table_args__ = (
+        Index('idx_translation_national', 'national_indicator_code'),
+        Index('idx_translation_operational', 'operational_indicator_code'),
+    )
 
 class RecommendationTemplate(Base):
     __tablename__ = "recommendation_templates"
-    
+
     template_id = Column(Integer, primary_key=True, autoincrement=True)
     operational_indicator_code = Column(String(100))
     severity_level = Column(String(20))
@@ -122,4 +143,4 @@ class RecommendationTemplate(Base):
     related_templates = Column(ARRAY(Integer))
     external_resources = Column(ARRAY(Text))
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=_utcnow)

@@ -10,7 +10,6 @@ from typing import List, Dict, Any, Optional
 from decimal import Decimal
 
 from app.layer4.schemas.opportunity_schemas import DetectedOpportunity
-# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 logger = logging.getLogger(__name__)
 
@@ -566,23 +565,27 @@ class RuleBasedOpportunityDetector:
         self,
         company_id: str,
         industry: str,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         business_scale: str = "medium"
     ) -> List[DetectedOpportunity]:
         """
         Detect opportunities for a company based on their operational indicators.
-        
+
         Args:
             company_id: Unique company identifier
             industry: Company's industry sector
-            indicators: Current operational indicators
+            indicators: Layer 4 flat format {code: {'value': float, 'trend': str, ...}}
             business_scale: Company size (small, medium, large)
-            
+
         Returns:
             List of detected opportunities
         """
         opportunities = []
-        indicator_dict = indicators.model_dump()
+        # Extract scalar values for condition evaluation
+        indicator_dict = {
+            code: (data.get('value', 0.0) if isinstance(data, dict) else float(data or 0))
+            for code, data in indicators.items()
+        }
         
         for rule in self.rules:
             # Check industry/scale applicability

@@ -550,11 +550,64 @@ Provide concise but informative reasoning."""
     
     async def _run_hybrid_classifier(self, text: str) -> ClassificationResult:
         """
-        Run the existing HybridClassifier.
+        Run the existing HybridClassifier (rule + ML).
+
+        HybridClassifier.classify_article() returns a list of
+        {indicator_id, category, confidence, ...} dicts ranked by score.
+        We pick the top match and lift it into a ClassificationResult.
         """
-        # This would integrate with existing HybridClassifier
-        # For now, return rule-based as placeholder
-        return self._rule_based_classify(text)
+        if not self.fallback_classifier:
+            return self._rule_based_classify(text)
+
+        try:
+            # HybridClassifier is sync — call it directly
+            predictions = self.fallback_classifier.classify_article(
+                article_text=text,
+                article_title=""
+            )
+        except Exception as e:
+            logger.warning(f"HybridClassifier raised: {e}")
+            return self._rule_based_classify(text)
+
+        if not predictions:
+            return self._rule_based_classify(text)
+
+        top = predictions[0]
+        indicator_id = top.get("indicator_id", "ECO_GENERAL")
+        confidence = float(top.get("confidence", 0.5))
+
+        # Map indicator prefix → PESTELCategory
+        prefix_to_cat = {
+            "POL": PESTELCategory.POLITICAL,
+            "ECO": PESTELCategory.ECONOMIC,
+            "SOC": PESTELCategory.SOCIAL,
+            "TECH": PESTELCategory.TECHNOLOGICAL,
+            "ENV": PESTELCategory.ENVIRONMENTAL,
+            "LEG": PESTELCategory.LEGAL,
+        }
+        prefix = indicator_id.split("_")[0]
+        category = prefix_to_cat.get(prefix, PESTELCategory.ECONOMIC)
+
+        all_categories = {category.value: confidence}
+        for pred in predictions[1:5]:  # capture next 4 as multi-label
+            other_id = pred.get("indicator_id", "")
+            other_cat = prefix_to_cat.get(other_id.split("_")[0])
+            if other_cat and other_cat.value not in all_categories:
+                all_categories[other_cat.value] = float(pred.get("confidence", 0.0))
+
+        return ClassificationResult(
+            primary_indicator_id=indicator_id,
+            primary_category=category,
+            primary_confidence=confidence,
+            all_categories=all_categories,
+            sub_themes={},
+            urgency=UrgencyLevel.STANDARD,
+            business_relevance=BusinessRelevance.MEDIUM,
+            key_entities=[],
+            summary="",
+            reasoning="HybridClassifier (rule + ML) fallback",
+            classification_source="hybrid_fallback",
+        )
     
     def _rule_based_classify(self, text: str) -> ClassificationResult:
         """

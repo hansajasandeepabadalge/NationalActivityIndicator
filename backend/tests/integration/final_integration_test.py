@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from app.models.indicator_models import IndicatorDefinition, IndicatorValue
 from app.layer2.data_ingestion.article_loader import ArticleLoader
 from app.layer2.ml_classification.rule_based_classifier import RuleBasedClassifier
-from app.layer2.nlp_processing.entity_extractor import EntityExtractor
+from app.layer2.nlp.entity_extractor import EntityExtractor
 from app.layer2.narrative.generator import NarrativeGenerator
 from app.db.mongodb_entities import MongoDBEntityStorage
 from datetime import datetime
@@ -50,8 +50,7 @@ def main():
         print(f"✅ Classified article: {sample_article.article_id}")
         print(f"  Found {len(predictions)} indicators")
         for pred in predictions[:3]:
-            pred_dict = dict(pred)
-            print(f"    - {pred_dict['indicator_id']}: {pred_dict['confidence']:.2f}")
+            print(f"    - {pred['indicator_id']}: {pred['confidence']:.2f}")
 
         # Test 4: Entity Extraction
         print_header("Test 4: Entity Extraction")

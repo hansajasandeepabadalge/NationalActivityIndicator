@@ -322,12 +322,20 @@ class QualityScorer:
         
         # Source quality (20%)
         source = result.get("classification_source", "unknown")
-        source_scores = {"llm": 100, "hybrid": 80, "rule_fallback": 50, "unknown": 30}
+        source_scores = {
+            "llm": 100,
+            "hybrid": 80,
+            "hybrid_fallback": 75,         # real string returned by LLMClassifier fallback
+            "ml_classification": 75,        # HybridClassifier ml-only path
+            "rule_based": 60,
+            "rule_fallback": 50,
+            "unknown": 30,
+        }
         source_score = source_scores.get(source, 30)
         components["source_quality"] = source_score
         score += source_score * 0.2
-        
-        if source == "rule_fallback":
+
+        if source in ("rule_fallback", "rule_based"):
             issues.append("Classification used rule-based fallback")
             recommendations.append("LLM classification recommended for better accuracy")
         
@@ -393,7 +401,14 @@ class QualityScorer:
         
         # Source quality (20%)
         source = result.get("analysis_source", "unknown")
-        source_scores = {"llm": 100, "basic_fallback": 60, "keyword_fallback": 40, "quick_check": 50}
+        source_scores = {
+            "llm": 100,
+            "basic_fallback": 70,      # real VADER fallback now wired
+            "vader_fallback": 70,      # alias for basic_fallback
+            "keyword_fallback": 40,
+            "quick_check": 60,         # neutral skip is intentional, not a failure
+            "short_text": 50,          # neutral result for short input
+        }
         source_score = source_scores.get(source, 40)
         components["source_quality"] = source_score
         score += source_score * 0.2
@@ -469,7 +484,12 @@ class QualityScorer:
         
         # Source quality (20%)
         source = result.get("extraction_source", "unknown")
-        source_scores = {"llm": 100, "basic_fallback": 60, "regex_fallback": 40}
+        source_scores = {
+            "llm": 100,
+            "basic_fallback": 70,    # spaCy NER fallback now wired
+            "regex_fallback": 40,
+            "skipped": 50,           # neutral score for short articles intentionally skipped
+        }
         source_score = source_scores.get(source, 40)
         components["source_quality"] = source_score
         score += source_score * 0.2

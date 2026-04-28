@@ -10,7 +10,7 @@ class OperationalIndicatorValue(Base):
     time = Column(DateTime(timezone=True), nullable=False)
     company_id = Column(String(50), nullable=False)
     operational_indicator_code = Column(String(100), nullable=False)
-    location_id = Column(String(50), default='')
+    location_id = Column(String(50), nullable=True)  # NULL = company-wide
     
     value = Column(Float, nullable=False)
     normalized_value = Column(Float)

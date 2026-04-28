@@ -234,13 +234,77 @@ docker-compose down -v
 
 **⚠️ Warning:** `-v` flag deletes all database data!
 
+## ML Classification System Setup
+
+Layer 2 includes a three-pass classification system (`app/layer2/ml_classification/`):
+
+- **Pass 1 — Rule-Based** (`rule_based_classifier.py`): Works immediately, no training needed.
+- **Pass 2 — XGBoost ML** (`ml_classifier.py`): Requires training before it contributes.
+- **Hybrid** (`hybrid_classifier.py`): Combines both. Falls back to rule-only until ML is trained.
+
+The `HybridClassifier` is automatically initialized by `pipeline_orchestrator.py` and runs
+alongside the LLM PESTEL classifier in Stage 2. No manual wiring is needed.
+
+### Step 1 (Bootstrap): Generate Training Data
+
+**Development (static articles):**
+```python
+from app.layer2.ml_classification.training_data_generator import TrainingDataGenerator
+gen = TrainingDataGenerator()
+articles = gen.select_stratified_articles(target_count=100)
+gen.export_for_manual_review(articles, "backend/data/training/training_articles_raw.json")
+```
+
+**Production (real MongoDB articles + LLM oracle):**
+```python
+from app.layer2.data_ingestion.mongodb_loader import MongoDBArticleLoader
+import asyncio
+
+async def label_from_mongo():
+    loader = MongoDBArticleLoader()
+    await loader.connect()
+    articles = await loader.get_all_articles(limit=500)
+    article_dicts = [a.model_dump() for a in articles]
+    await loader.disconnect()
+
+    from app.layer2.ml_classification.training_data_generator import TrainingDataGenerator
+    gen = TrainingDataGenerator()
+    # Pass LLM labeling function as oracle for low-confidence articles
+    gen.generate_from_real_articles(
+        mongodb_articles=article_dicts,
+        llm_label_fn=None,  # Replace with Groq LLM callable for active learning
+        output_path="backend/data/training/training_articles_raw.json"
+    )
+
+asyncio.run(label_from_mongo())
+```
+
+### Step 2: Manual Review + Label
+
+Open `backend/data/training/training_articles_raw.json`, review rule-based predictions,
+add your labels to `manual_labels` field, save as `training_articles_labeled.json`.
+
+### Step 3: Train the XGBoost Model
+
+```python
+from app.layer2.ml_classification.ml_training_pipeline import MLTrainingPipeline
+pipeline = MLTrainingPipeline()
+pipeline.run(labeled_file="backend/data/training/training_articles_labeled.json")
+```
+
+Once trained, `HybridClassifier` automatically uses the model (ML weight = 0.3 initially,
+tunable via `hybrid_classifier.tune_weights()`).
+
+---
+
 ## Next Steps
 
 After successful setup:
 
 1. **Review Documentation**: Check `LAYER2_TASK_DISTRIBUTION.md` for development tasks
 2. **Populate Indicators**: Run indicator definition scripts
-3. **Test APIs**: Use http://localhost:8000/api/docs
+3. **Train ML Classifier**: Follow ML Classification System Setup section above
+4. **Test APIs**: Use http://localhost:8000/api/docs
 4. **Start Development**: Follow Day 2-7 tasks in task distribution
 
 ## Support

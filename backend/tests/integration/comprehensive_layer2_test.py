@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.layer2.data_ingestion.article_loader import ArticleLoader
 from app.layer2.ml_classification.rule_based_classifier import RuleBasedClassifier
-from app.layer2.nlp_processing.entity_extractor import EntityExtractor
+from app.layer2.nlp.entity_extractor import EntityExtractor
 from app.layer2.narrative.generator import NarrativeGenerator
 from app.db.mongodb_entities import MongoDBEntityStorage
 
@@ -75,8 +75,7 @@ def main():
         print(f"  Title: {sample_article.title[:60]}...")
         print(f"  Indicators found: {len(sample_preds)}")
         for pred in sample_preds[:3]:
-            pred_dict = dict(pred)  # Convert tuple to dict
-            print(f"    - {pred_dict['indicator_id']}: {pred_dict['confidence']:.2f}")
+            print(f"    - {pred['indicator_id']}: {pred['confidence']:.2f}")
 
     except Exception as e:
         print_error(f"Classification failed: {e}")

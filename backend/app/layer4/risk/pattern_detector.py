@@ -11,10 +11,16 @@ import logging
 from math import sqrt
 
 from app.layer4.schemas.risk_schemas import DetectedRisk
-# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
-# ARCHIVED: from app.layer4.mock_data.historical_patterns_mock import MockHistoricalPatterns
 
 logger = logging.getLogger(__name__)
+
+
+class _EmptyPatternStore:
+    """Stub pattern store used when historical patterns data is unavailable."""
+    def get_all_patterns(self) -> List[Dict[str, Any]]:
+        return []
+    def get_patterns_by_industry(self, industry: str) -> List[Dict[str, Any]]:
+        return []
 
 
 class PatternBasedRiskDetector:
@@ -27,7 +33,13 @@ class PatternBasedRiskDetector:
 
     def __init__(self, similarity_threshold: float = 0.75):
         self.similarity_threshold = similarity_threshold
-        self.historical_patterns = MockHistoricalPatterns()
+        # Try to load real historical patterns; fall back to empty stub so the
+        # detector never crashes when pattern data is unavailable.
+        try:
+            from app.layer4.mock_data.historical_patterns_mock import MockHistoricalPatterns
+            self.historical_patterns = MockHistoricalPatterns()
+        except (ImportError, Exception):
+            self.historical_patterns = _EmptyPatternStore()
         logger.info(f"Loaded {len(self.historical_patterns.get_all_patterns())} historical patterns")
 
     def calculate_similarity(
@@ -79,13 +91,27 @@ class PatternBasedRiskDetector:
 
         return similarity
 
+    @staticmethod
+    def _to_scalar_dict(indicators: Dict[str, Any]) -> Dict[str, float]:
+        """Extract {code: float} from Layer 4 flat format or plain {code: float}."""
+        out: Dict[str, float] = {}
+        for code, data in indicators.items():
+            if isinstance(data, dict):
+                out[code] = float(data.get('value', 0.0))
+            else:
+                try:
+                    out[code] = float(data)
+                except (TypeError, ValueError):
+                    out[code] = 0.0
+        return out
+
     def _generate_risk_from_pattern(
         self,
         company_id: str,
         industry: str,
         pattern: Dict[str, Any],
         similarity: float,
-        current_indicators: OperationalIndicators
+        current_indicators: Dict[str, Any]
     ) -> Optional[DetectedRisk]:
         """Generate a risk from a matched pattern"""
 
@@ -183,7 +209,7 @@ class PatternBasedRiskDetector:
         pattern: Dict[str, Any],
         industry_outcome: Dict[str, Any],
         similarity: float,
-        current_indicators: OperationalIndicators
+        current_indicators: Dict[str, Any]
     ) -> str:
         """Generate descriptive text for pattern-matched risk"""
 
@@ -222,7 +248,7 @@ class PatternBasedRiskDetector:
         self,
         company_id: str,
         industry: str,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         company_profile: Optional[Dict[str, Any]] = None
     ) -> List[DetectedRisk]:
         """
@@ -231,7 +257,7 @@ class PatternBasedRiskDetector:
         Args:
             company_id: Company identifier
             industry: Company industry
-            indicators: Current operational indicators
+            indicators: Current operational indicators (Layer 4 flat format)
             company_profile: Optional company profile
 
         Returns:
@@ -239,8 +265,8 @@ class PatternBasedRiskDetector:
         """
         detected_risks = []
 
-        # Convert indicators to dict
-        current_indicators = indicators.dict()
+        # Convert to scalar {code: float} for cosine similarity
+        current_indicators = self._to_scalar_dict(indicators)
 
         # Get patterns relevant to industry
         relevant_patterns = self.historical_patterns.get_patterns_by_industry(industry)
@@ -284,7 +310,7 @@ class PatternBasedRiskDetector:
 
     def find_similar_historical_events(
         self,
-        indicators: OperationalIndicators,
+        indicators: Dict[str, Any],
         industry: str,
         top_n: int = 3
     ) -> List[Tuple[Dict[str, Any], float]]:
@@ -292,14 +318,14 @@ class PatternBasedRiskDetector:
         Find top N most similar historical events
 
         Args:
-            indicators: Current operational indicators
+            indicators: Current operational indicators (Layer 4 flat format)
             industry: Company industry
             top_n: Number of top matches to return
 
         Returns:
             List of (pattern, similarity_score) tuples
         """
-        current_indicators = indicators.dict()
+        current_indicators = self._to_scalar_dict(indicators)
         relevant_patterns = self.historical_patterns.get_patterns_by_industry(industry)
 
         matches = []
@@ -323,7 +349,7 @@ class PatternBasedRiskDetector:
     def enrich_risk_with_context(
         self,
         risk: DetectedRisk,
-        indicators: OperationalIndicators
+        indicators: Dict[str, Any]
     ) -> DetectedRisk:
         """
         Enrich a risk with historical context

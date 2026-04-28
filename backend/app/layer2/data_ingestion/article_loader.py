@@ -1,12 +1,15 @@
 """Article loading and preprocessing module"""
 
 import json
+import logging
 from pathlib import Path
 from typing import List, Optional
 from datetime import datetime
 import re
 
 from .schemas import Article, ProcessedArticle
+
+logger = logging.getLogger(__name__)
 
 
 class ArticleLoader:
@@ -34,11 +37,17 @@ class ArticleLoader:
         Returns:
             List of validated Article objects
         """
+        if not self.mock_data_path.exists():
+            raise FileNotFoundError(
+                f"Mock article data not found at {self.mock_data_path}. "
+                "Run the mock data generation script or point mock_data_path to the correct file."
+            )
+
         with open(self.mock_data_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
         articles_data = data.get('articles', [])
-        if limit:
+        if limit is not None:
             articles_data = articles_data[:limit]
 
         validated_articles = []
@@ -47,7 +56,7 @@ class ArticleLoader:
                 article = Article(**article_data)
                 validated_articles.append(article)
             except Exception as e:
-                print(f"Validation error for article {article_data.get('article_id')}: {e}")
+                logger.warning(f"Validation error for article {article_data.get('article_id')}: {e}")
                 continue
 
         return validated_articles
@@ -66,7 +75,7 @@ class ArticleLoader:
         word_count = len(cleaned.split())
 
         return ProcessedArticle(
-            **article.dict(),
+            **article.model_dump(),
             cleaned_content=cleaned,
             word_count=word_count
         )

@@ -6,7 +6,7 @@ Replaces MockDataLoader with real data integration
 """
 
 from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from pymongo import MongoClient
@@ -80,50 +80,68 @@ class Layer2Connector:
             """)
             
             indicator_values = cursor.fetchall()
-            
+
             # Get indicator metadata from MongoDB
             mongo_client = MongoClient(self.mongo_uri)
             db = mongo_client[self.mongo_db]
-            
+
+            # ---- Fix N+1: bulk-load latest calculation per indicator_id in ONE pass.
+            # Layer 2 stores `calculation_timestamp` (NOT `timestamp`) per the blueprint.
+            indicator_ids = [iv['indicator_id'] for iv in indicator_values]
+            calc_by_id: Dict[str, Dict[str, Any]] = {}
+            if indicator_ids:
+                pipeline = [
+                    {"$match": {"indicator_id": {"$in": indicator_ids}}},
+                    {"$sort": {"calculation_timestamp": -1}},
+                    {"$group": {"_id": "$indicator_id", "doc": {"$first": "$$ROOT"}}},
+                ]
+                for row in db.indicator_calculations.aggregate(pipeline):
+                    calc_by_id[row["_id"]] = row["doc"]
+
             # Build indicators list
             indicators = []
-            
+
             for iv in indicator_values:
-                # Extract metadata
                 metadata = iv.get('extra_metadata', {}) or {}
                 pestel_category = metadata.get('pestel_category', 'Economic')
                 subcategory = metadata.get('subcategory', 'General')
-                
-                # Get calculation details from MongoDB
-                calc = db.indicator_calculations.find_one({
-                    'indicator_id': iv['indicator_id']
-                }, sort=[('timestamp', -1)])
-                
-                # Map to expected format
+
+                calc = calc_by_id.get(iv['indicator_id'])
+
                 indicator_code = self._generate_indicator_code(pestel_category, subcategory)
-                
+
+                # Normalization respects the indicator's actual range when known.
+                # Sentiment indicators are -1..1; frequency/index typically 0..100.
+                raw_value = float(iv['value'])
+                value_range = metadata.get('value_range')  # e.g. {"min": -1, "max": 1}
+                if value_range and 'min' in value_range and 'max' in value_range:
+                    vmin = float(value_range['min'])
+                    vmax = float(value_range['max'])
+                    span = vmax - vmin if vmax != vmin else 1.0
+                    normalized = max(0.0, min(1.0, (raw_value - vmin) / span))
+                else:
+                    # Default: treat as 0-100 scale, but clamp instead of dividing blindly
+                    normalized = max(0.0, min(1.0, raw_value / 100.0))
+
                 indicator = {
                     'indicator_code': indicator_code,
                     'indicator_id': iv['indicator_id'],
-                    'indicator_name': calc.get('indicator_name', 'Unknown') if calc else 'Unknown',
+                    'indicator_name': (calc.get('indicator_name', 'Unknown') if calc else 'Unknown'),
                     'pestel_category': pestel_category,
                     'subcategory': subcategory,
-                    'current_value': float(iv['value']),
-                    'normalized_value': float(iv['value']) / 100.0,  # Assuming 0-100 scale
+                    'current_value': raw_value,
+                    'normalized_value': normalized,
                     'confidence': float(iv['confidence']),
                     'article_count': iv.get('raw_count', 0),
                     'source_count': iv.get('source_count', 0),
-                    'timestamp': iv['timestamp'].isoformat()
+                    'timestamp': iv['timestamp'].isoformat(),
                 }
-                
-                # Add trend if available (from Layer 2 trends)
+
                 if calc and 'trend' in calc:
                     indicator['trend'] = calc['trend']
-                
-                # Add geographic distribution if available
                 if calc and 'geographic_distribution' in calc:
                     indicator['geographic_distribution'] = calc['geographic_distribution']
-                
+
                 indicators.append(indicator)
             
             cursor.close()
@@ -131,7 +149,7 @@ class Layer2Connector:
             mongo_client.close()
             
             result = {
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': datetime.now(timezone.utc).isoformat(),
                 'indicators': indicators,
                 'total_count': len(indicators)
             }
@@ -162,13 +180,19 @@ class Layer2Connector:
             conn = psycopg2.connect(**self.pg_config)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             
-            cursor.execute("""
+            # psycopg2 does NOT bind %s inside string literals.
+            # INTERVAL must be built with a sanitized integer instead.
+            days_int = max(0, int(days))
+            cursor.execute(
+                f"""
                 SELECT timestamp, value
                 FROM indicator_values
                 WHERE indicator_id = %s
-                  AND timestamp >= NOW() - INTERVAL '%s days'
+                  AND timestamp >= NOW() - INTERVAL '{days_int} days'
                 ORDER BY timestamp ASC
-            """, (indicator_id, days))
+                """,
+                (indicator_id,),
+            )
             
             history = cursor.fetchall()
             
@@ -212,7 +236,7 @@ class Layer2Connector:
             calculations = db.indicator_calculations.find(
                 query,
                 {'indicator_id': 1, 'geographic_distribution': 1}
-            ).sort('timestamp', -1).limit(100)
+            ).sort('calculation_timestamp', -1).limit(100)
             
             geo_data = {}
             for calc in calculations:

@@ -6,7 +6,7 @@ Developer B: DataFrame-based with Prophet placeholder
 """
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from datetime import timedelta
+from datetime import datetime, timedelta
 import numpy as np
 
 try:
@@ -141,19 +141,25 @@ class Forecaster:
         return forecasts
     
     def _forecast_simple(self, history: List[Dict], days_ahead: int) -> List[Dict]:
-        """Simple forecast without pandas."""
+        """Simple forecast without pandas. Returns same {time, value, type} format as forecast()."""
         values = [h['value'] for h in history]
         x = np.arange(len(values))
         y = np.array(values)
-        
+
         slope, intercept = np.polyfit(x, y, 1)
-        
+
+        # Determine last timestamp to produce real future dates
+        try:
+            last_time = datetime.fromisoformat(str(history[-1].get('time', '')))
+        except (ValueError, TypeError):
+            last_time = datetime.now()
+
         forecasts = []
         for i in range(1, days_ahead + 1):
             future_value = slope * (len(values) + i) + intercept
             future_value = max(0.0, min(100.0, future_value))
             forecasts.append({
-                "days_ahead": i,
+                "time": (last_time + timedelta(days=i)).isoformat(),
                 "value": float(future_value),
                 "type": "forecast"
             })

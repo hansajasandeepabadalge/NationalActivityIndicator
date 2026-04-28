@@ -6,7 +6,7 @@ context packages for LLM-based insight generation.
 """
 
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,13 +15,33 @@ logger = logging.getLogger(__name__)
 class Layer3Connector:
     """
     Connects to Layer 3 to fetch operational indicators.
-    
-    In production, this will use the actual Layer 3 services.
-    Currently provides mock data for development.
+
+    Layer 3 `calculate_indicators_for_company()` returns:
+      {
+        'universal_indicators': {'transport_availability': float, ...},
+        'industry_specific_indicators': {'footfall_impact': dict|float, ...},
+        ...
+      }
+
+    This class adapts that output to the flat code-keyed format Layer 4 detectors use:
+      { 'OPS_TRANSPORT_AVAIL': {'value': float, 'trend': str, 'confidence': float, 'name': str}, ... }
     """
 
+    # Maps Layer 3 internal keys → Layer 4 indicator codes + human names
+    _UNIV_CODE_MAP = {
+        'transport_availability':  ('OPS_TRANSPORT_AVAIL',  'Transportation Availability'),
+        'workforce_availability':  ('OPS_WORKFORCE_AVAIL',  'Workforce Availability'),
+        'supply_chain_integrity':  ('OPS_SUPPLY_CHAIN',     'Supply Chain Integrity'),
+        'cost_pressure':           ('OPS_COST_PRESSURE',    'Operational Cost Pressure'),
+        'compliance_status':       ('OPS_COMPLIANCE',       'Regulatory Compliance Status'),
+    }
+    _IND_CODE_MAP = {
+        'footfall_impact':         ('OPS_FOOTFALL_IMPACT',      'Expected Foot Traffic Impact'),
+        'production_capacity':     ('OPS_PRODUCTION_CAPACITY',  'Production Capacity Utilization'),
+        'fleet_availability':      ('OPS_FLEET_AVAIL',          'Fleet Availability'),
+    }
+
     def __init__(self):
-        # Try to import Layer 3 service if available
         self._op_service = None
         try:
             from app.layer3.services.operational_service import OperationalService
@@ -30,50 +50,52 @@ class Layer3Connector:
         except ImportError:
             logger.info("Layer3Connector using mock data (OperationalService not available)")
 
+    def _adapt_layer3_output(self, layer3_result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Convert Layer 3 calculation output to the flat indicator dict Layer 4 expects.
+        Each entry: { code: {'value': float, 'trend': 'stable', 'confidence': float, 'name': str} }
+        """
+        flat: Dict[str, Any] = {}
+
+        univ = layer3_result.get('universal_indicators', {})
+        for key, (code, name) in self._UNIV_CODE_MAP.items():
+            raw = univ.get(key, 0.0)
+            value = float(raw) if isinstance(raw, (int, float)) else 0.0
+            flat[code] = {'value': value, 'trend': 'stable', 'confidence': 0.80, 'name': name}
+
+        ind = layer3_result.get('industry_specific_indicators', {})
+        for key, (code, name) in self._IND_CODE_MAP.items():
+            raw = ind.get(key)
+            if raw is None:
+                continue
+            if isinstance(raw, dict):
+                value = float(raw.get('value', 0.0))
+            else:
+                value = float(raw)
+            flat[code] = {'value': value, 'trend': 'stable', 'confidence': 0.80, 'name': name}
+
+        return flat
+
     async def fetch_current_indicators(self, company_id: str) -> Dict[str, Any]:
-        """
-        Fetch latest operational indicators for a company
-        """
+        """Fetch latest operational indicators for a company."""
         if self._op_service:
             try:
-                # Use real service if available
-                result = await self._op_service.get_current_indicators(company_id)
-                return result
+                # calculate_indicators_for_company is sync — run in thread to stay non-blocking
+                import asyncio
+                result = await asyncio.to_thread(
+                    self._op_service.calculate_indicators_for_company, company_id
+                )
+                return self._adapt_layer3_output(result)
             except Exception as e:
                 logger.warning(f"Failed to fetch from Layer 3, using mock: {e}")
-        
-        # Mock data for development
+
+        # Mock fallback — codes match what Layer 4 rule detectors reference
         return {
-            "OP_SUPPLY_001": {
-                "value": 78,
-                "trend": "stable",
-                "confidence": 0.88,
-                "name": "Supply Chain Health"
-            },
-            "OP_FUEL_002": {
-                "value": 85,
-                "trend": "improving",
-                "confidence": 0.92,
-                "name": "Fuel Availability"
-            },
-            "OP_LABOR_003": {
-                "value": 65,
-                "trend": "stable",
-                "confidence": 0.85,
-                "name": "Labor Availability"
-            },
-            "OP_COST_004": {
-                "value": 45,
-                "trend": "deteriorating",
-                "confidence": 0.80,
-                "name": "Cost Pressure Index"
-            },
-            "OP_DEMAND_005": {
-                "value": 72,
-                "trend": "improving",
-                "confidence": 0.87,
-                "name": "Market Demand"
-            }
+            "OPS_SUPPLY_CHAIN":      {"value": 78, "trend": "stable",       "confidence": 0.88, "name": "Supply Chain Integrity"},
+            "OPS_TRANSPORT_AVAIL":   {"value": 85, "trend": "improving",     "confidence": 0.92, "name": "Transportation Availability"},
+            "OPS_WORKFORCE_AVAIL":   {"value": 65, "trend": "stable",        "confidence": 0.85, "name": "Workforce Availability"},
+            "OPS_COST_PRESSURE":     {"value": 45, "trend": "deteriorating", "confidence": 0.80, "name": "Operational Cost Pressure"},
+            "OPS_FOOTFALL_IMPACT":   {"value": 72, "trend": "improving",     "confidence": 0.87, "name": "Expected Foot Traffic Impact"},
         }
 
     async def fetch_company_profile(self, company_id: str) -> Dict[str, Any]:
@@ -108,7 +130,7 @@ class Layer3Connector:
         Fetch historical indicator data for trend analysis
         """
         # Mock historical data
-        base_date = datetime.now()
+        base_date = datetime.now(timezone.utc)
         
         return {
             "OP_SUPPLY_001": [
@@ -188,7 +210,7 @@ class DataAggregator:
                 'areas_of_strength': strengths
             },
             'trends': trends,
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'data_quality': self._assess_data_quality(current_indicators)
         }
 

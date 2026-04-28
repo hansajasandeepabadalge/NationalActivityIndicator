@@ -212,7 +212,7 @@ class ArticleBatchProcessor(AsyncBatchProcessor):
     def sentiment_analyzer(self):
         if self._sentiment_analyzer is None:
             from app.layer2.nlp.sentiment_analyzer import SentimentAnalyzer
-            self._sentiment_analyzer = SentimentAnalyzer(use_transformers=False)
+            self._sentiment_analyzer = SentimentAnalyzer(backend='vader')
         return self._sentiment_analyzer
     
     @property
@@ -230,11 +230,9 @@ class ArticleBatchProcessor(AsyncBatchProcessor):
         """Batch analyze article sentiments"""
         
         def analyze(article: Dict) -> Dict:
-            result = self.sentiment_analyzer.analyze_article(
-                article_id=article.get("article_id", ""),
-                title=article.get("title", ""),
-                content=article.get("content", "")
-            )
+            # analyze_article() takes a single dict; use article directly so
+            # the body-key fallback chain (text → body → content) works correctly
+            result = self.sentiment_analyzer.analyze_article(article)
             return {
                 "article_id": article.get("article_id"),
                 "sentiment": result

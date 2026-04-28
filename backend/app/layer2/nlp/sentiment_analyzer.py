@@ -414,7 +414,14 @@ class SentimentAnalyzer:
             title = article.get('title', '')
         else:
             title = content.get('title', article.get('title', ''))
-            body = content.get('body', content.get('text', ''))
+            # 'body' for mock/Layer1 format; 'text' for Layer2Article format
+            body = (
+                content.get('body')
+                or content.get('text')
+                or article.get('text')   # Layer2Article: combined title+body at root
+                or article.get('body')
+                or ''
+            )
         
         results = {}
         
@@ -495,8 +502,14 @@ class SentimentAnalyzer:
             result = self.analyze_article(article)['overall']
             
             if weight_by_credibility:
-                metadata = article.get('metadata', {})
-                weight = metadata.get('source_credibility', 0.5)
+                # Layer2Article stores credibility as layer1_quality_score at root level.
+                # Legacy mock/Layer1 format stores it under metadata.source_credibility.
+                weight = (
+                    article.get('layer1_quality_score')
+                    or article.get('metadata', {}).get('source_credibility')
+                    or article.get('quality', {}).get('credibility_score')
+                    or 0.5
+                )
             else:
                 weight = 1.0
             

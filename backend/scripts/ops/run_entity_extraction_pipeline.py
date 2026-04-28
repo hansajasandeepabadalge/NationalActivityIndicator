@@ -6,7 +6,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 from tqdm import tqdm
 from app.layer2.data_ingestion.article_loader import ArticleLoader
-from app.layer2.nlp_processing.entity_extractor import EntityExtractor
+from app.layer2.nlp.entity_extractor import EntityExtractor
 from app.layer2.indicator_calculation.entity_based_calculator import EntityBasedIndicatorCalculator
 from app.db.mongodb_entities import MongoDBEntityStorage
 

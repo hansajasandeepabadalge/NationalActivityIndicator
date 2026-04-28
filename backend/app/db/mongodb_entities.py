@@ -1,6 +1,6 @@
 from pymongo import MongoClient, ASCENDING
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 from app.core.config import settings
 from app.layer2.nlp.entity_schemas import ExtractedEntities
 
@@ -60,7 +60,7 @@ class MongoDBEntityStorage:
         try:
             self.entity_extractions.replace_one(
                 {"article_id": entities.article_id},
-                entities.dict(),
+                entities.model_dump(mode='json'),
                 upsert=True
             )
             return True
@@ -85,7 +85,7 @@ class MongoDBEntityStorage:
                 "indicator_id": indicator_id,
                 "confidence": confidence,
                 "method": method,
-                "calculation_timestamp": datetime.utcnow()
+                "calculation_timestamp": datetime.now(timezone.utc)
             }
             self.indicator_calculations.insert_one(doc)
             return True
@@ -100,6 +100,7 @@ class MongoDBEntityStorage:
             return None
         doc = self.entity_extractions.find_one({"article_id": article_id})
         if doc:
+            doc.pop("_id", None)  # MongoDB _id is not in the Pydantic schema
             return ExtractedEntities(**doc)
         return None
 
@@ -130,7 +131,7 @@ class MongoDBEntityStorage:
                     "article_id": narrative.article_id,
                     "indicator_id": narrative.indicator_id
                 },
-                narrative.dict(),
+                narrative.model_dump(mode='json'),
                 upsert=True
             )
             return True

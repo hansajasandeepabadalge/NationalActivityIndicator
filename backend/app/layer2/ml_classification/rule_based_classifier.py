@@ -60,8 +60,10 @@ class RuleBasedClassifier:
         # Use caching if enabled
         if self.enable_cache:
             cache_key = self._generate_cache_key(article_text, article_title)
+            # _classify_cached returns tuple-of-tuples for lru_cache hashability;
+            # convert back to List[Dict] before returning to callers.
             result = self._classify_cached(cache_key, article_text, article_title)
-            return result
+            return [dict(r) for r in result]
         else:
             return self._classify_uncached(article_text, article_title)
 
