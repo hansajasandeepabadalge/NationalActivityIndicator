@@ -4,10 +4,22 @@ from .universal_indicators import get_indicator_value, calculate_transportation_
 def calculate_retail_footfall_impact(national_indicators: Dict[str, Any], company_profile: Dict[str, Any]) -> Dict[str, Any]:
     """
     For retail businesses: How will store foot traffic be affected?
+
+    Sums daily_footfall_avg across all locations in company_profile['locations'].
+    Falls back to top-level 'avg_daily_footfall' or a sensible default.
     """
-    base_footfall = 1000  # Default if not in profile
-    # In a real scenario, we'd sum up footfall from all locations
-    
+    # Sum across locations — blueprint §3.3 stores per-location daily_footfall_avg
+    locations = company_profile.get('locations') or []
+    summed = sum(
+        float(loc.get('daily_footfall_avg', 0) or 0)
+        for loc in locations
+    )
+    base_footfall = (
+        summed
+        or float(company_profile.get('avg_daily_footfall', 0) or 0)
+        or 1000.0  # last-resort default
+    )
+
     adjustment = 1.0
     
     weather = get_indicator_value('ENV_WEATHER_SEV', national_indicators)

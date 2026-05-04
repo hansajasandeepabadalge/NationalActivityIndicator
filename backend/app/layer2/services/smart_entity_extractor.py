@@ -635,10 +635,75 @@ Be precise with importance scores - primary subjects should score highest."""
     
     async def _run_basic_extractor(self, text: str) -> SmartEntityResult:
         """
-        Run the existing basic EntityExtractor.
+        Run the existing basic EntityExtractor (spaCy-based) and adapt
+        its ExtractedEntities output into a SmartEntityResult.
         """
-        # Integration with existing EntityExtractor would go here
-        return self._regex_based_extraction(text)
+        if not self.fallback_extractor:
+            return self._regex_based_extraction(text)
+
+        try:
+            extracted = self.fallback_extractor.extract_entities(
+                article_id="fallback",
+                title="",
+                content=text
+            )
+        except Exception as e:
+            logger.warning(f"Basic EntityExtractor raised: {e}")
+            return self._regex_based_extraction(text)
+
+        entities: List[Entity] = []
+
+        for loc in extracted.locations:
+            entities.append(Entity(
+                text=loc.text, normalized=loc.text,
+                entity_type=EntityType.LOCATION, role=EntityRole.REFERENCE,
+                importance=0.5,
+            ))
+        for org in extracted.organizations:
+            entities.append(Entity(
+                text=org.text, normalized=org.text,
+                entity_type=EntityType.ORGANIZATION, role=EntityRole.REFERENCE,
+                importance=0.5,
+            ))
+        for person in extracted.persons:
+            entities.append(Entity(
+                text=person.text, normalized=person.text,
+                entity_type=EntityType.PERSON, role=EntityRole.REFERENCE,
+                importance=0.5,
+            ))
+        for date in extracted.dates:
+            entities.append(Entity(
+                text=date.text, normalized=date.text,
+                entity_type=EntityType.DATE, role=EntityRole.REFERENCE,
+                importance=0.4,
+            ))
+        for amount in extracted.amounts:
+            entities.append(Entity(
+                text=amount.text, normalized=amount.text,
+                entity_type=EntityType.MONEY, role=EntityRole.REFERENCE,
+                importance=0.5,
+            ))
+        for pct in extracted.percentages:
+            entities.append(Entity(
+                text=pct.text, normalized=pct.text,
+                entity_type=EntityType.PERCENTAGE, role=EntityRole.REFERENCE,
+                importance=0.4,
+            ))
+
+        # Group by type
+        entities_by_type: Dict[str, List[Entity]] = {}
+        for entity in entities:
+            entities_by_type.setdefault(entity.entity_type.value, []).append(entity)
+
+        return SmartEntityResult(
+            entities=entities,
+            primary_entities=entities[:5],
+            relationships=[],  # spaCy fallback doesn't extract relationships
+            entities_by_type=entities_by_type,
+            entity_count=len(entities),
+            relationship_count=0,
+            extraction_source="basic_fallback",
+        )
     
     def _regex_based_extraction(self, text: str) -> SmartEntityResult:
         """

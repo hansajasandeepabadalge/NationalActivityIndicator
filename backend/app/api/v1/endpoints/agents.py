@@ -15,7 +15,7 @@ from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 
-from app.orchestrator import create_orchestrator, get_state_manager
+from app.layer1.orchestrator import create_orchestrator, get_state_manager
 
 logger = logging.getLogger(__name__)
 
@@ -236,7 +236,7 @@ async def get_agent_metrics():
     """
     try:
         # Get LLM usage stats
-        from app.agents.llm_manager import get_llm_manager
+        from app.core.llm.manager import get_llm_manager
         llm_manager = get_llm_manager()
         llm_stats = llm_manager.get_daily_stats()
         
@@ -292,7 +292,7 @@ async def agent_health_check():
     
     # Check LLM
     try:
-        from app.agents.llm_manager import get_llm_manager
+        from app.core.llm.manager import get_llm_manager
         llm_manager = get_llm_manager()
         llm = llm_manager.get_llm()
         health["components"]["llm"] = {
@@ -354,7 +354,7 @@ async def get_cache_statistics():
         Cache performance metrics
     """
     try:
-        from app.cache import get_smart_cache
+        from app.layer1.cache import get_smart_cache
         
         cache = await get_smart_cache()
         stats = cache.get_cache_stats()
@@ -392,7 +392,7 @@ async def clear_source_cache(source_name: str):
         Confirmation of cache clearance
     """
     try:
-        from app.cache import get_smart_cache
+        from app.layer1.cache import get_smart_cache
         
         cache = await get_smart_cache()
         await cache.invalidate_source(source_name)
@@ -452,7 +452,7 @@ async def check_article_duplicate(request: DeduplicationCheckRequest):
         Duplicate detection results with confidence and similar articles
     """
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         result = await dedup.check_duplicate(
@@ -505,7 +505,7 @@ async def find_similar_articles(request: SimilarArticlesRequest):
         List of similar articles with similarity scores
     """
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         similar = await dedup.get_similar_articles(
@@ -542,7 +542,7 @@ async def get_deduplication_statistics():
     Use this to monitor deduplication effectiveness.
     """
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         metrics = dedup.get_metrics()
@@ -576,7 +576,7 @@ async def get_duplicate_clusters(hours: int = 24, limit: int = 50):
         List of duplicate clusters with member articles
     """
     try:
-        from app.deduplication import get_deduplicator
+        from app.layer1.deduplication import get_deduplicator
         
         dedup = await get_deduplicator()
         clusters = await dedup.cluster_manager.get_recent_clusters(
@@ -986,7 +986,7 @@ async def validate_article_trust(request: ValidationRequest):
     Returns trust level: VERIFIED, HIGH_TRUST, MODERATE, LOW_TRUST, UNVERIFIED
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         from datetime import datetime
         
         # Parse publish time
@@ -1065,7 +1065,7 @@ async def batch_validate_trust(request: BatchValidationRequest):
     cross-referenced against each other.
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         results = validator.validate_batch(request.articles)
@@ -1105,7 +1105,7 @@ async def get_source_reputation(source_name: str):
     tier classification, and tracking metrics.
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         reputation = validator.get_source_reputation(source_name)
@@ -1146,7 +1146,7 @@ async def extract_claims(request: ValidationRequest):
     that can be cross-referenced with other sources.
     """
     try:
-        from app.cross_validation import ClaimExtractor
+        from app.layer1.cross_validation import ClaimExtractor
         
         extractor = ClaimExtractor()
         claims = extractor.extract_claims(
@@ -1203,7 +1203,7 @@ async def get_validation_stats():
     and corroboration engine stats.
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         stats = validator.get_statistics()
@@ -1234,7 +1234,7 @@ async def get_top_sources(limit: int = 10):
     Returns the most reputable sources tracked by the system.
     """
     try:
-        from app.cross_validation import get_validator
+        from app.layer1.cross_validation import get_validator
         
         validator = get_validator()
         top_sources = validator._reputation_tracker.get_top_sources(limit)

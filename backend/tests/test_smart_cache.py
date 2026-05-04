@@ -12,9 +12,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import json
 
 # Import cache components
-from app.cache.smart_cache import SmartCacheManager, CacheConfig, CacheEntry
-from app.cache.change_detector import ChangeDetector, DetectionStrategy
-from app.cache.cache_metrics import CacheMetrics, CacheStats
+from app.layer1.cache.smart_cache import SmartCacheManager, CacheConfig, CacheEntry
+from app.layer1.cache.change_detector import ChangeDetector, DetectionStrategy
+from app.layer1.cache.cache_metrics import CacheMetrics, CacheStats
 
 
 # ============================================

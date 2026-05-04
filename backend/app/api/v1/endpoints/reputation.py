@@ -24,13 +24,13 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.services.reputation_manager import (
+from app.services.reputation import (
     ReputationManager,
     ReputationConfig,
     ReputationTier,
     create_reputation_manager
 )
-from app.services.quality_filter import (
+from app.services.filters import (
     QualityFilter,
     FilterConfig,
     create_quality_filter

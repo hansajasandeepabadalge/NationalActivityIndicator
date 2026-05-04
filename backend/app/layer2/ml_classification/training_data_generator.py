@@ -471,6 +471,94 @@ class TrainingDataGenerator:
 
         return train_dataset, val_dataset, split_info
 
+    def generate_from_real_articles(
+        self,
+        mongodb_articles: List[Dict],
+        llm_label_fn=None,
+        output_path: str = "backend/data/training/training_articles_raw.json"
+    ) -> List[Dict]:
+        """
+        Generate production training data from real MongoDB articles.
+
+        In production this replaces select_stratified_articles() which used a static
+        ArticleLoader.  Instead:
+          1. Real articles already fetched from MongoDB are passed in.
+          2. Rule-based classifier provides initial predictions (free, fast).
+          3. LLM oracle (llm_label_fn) provides ground-truth labels for articles
+             where rule-based confidence is low or ambiguous — this is the
+             "semi-automated / active learning" phase from Blueprint Part 2.
+          4. Output is saved in the same JSON format as export_for_manual_review().
+
+        Args:
+            mongodb_articles: Real articles from processed_articles collection.
+                Each dict must have 'article_id', 'title', and 'body' or 'content'.
+            llm_label_fn: Optional async/sync callable(title, body) -> List[str]
+                that returns indicator_ids.  When None, falls back to rule-based only.
+            output_path: Destination JSON file for the labeled dataset.
+
+        Returns:
+            List of article dicts with 'rule_based_predictions' and optionally
+            'llm_labels' attached.
+        """
+        print(f"Generating training data from {len(mongodb_articles)} real MongoDB articles...")
+
+        final_articles = []
+        llm_labeled = 0
+
+        for article in mongodb_articles:
+            # Normalize field names (MongoDB loader uses 'body', ArticleLoader used 'content')
+            body = article.get('body') or article.get('content', '')
+            title = article.get('title', '')
+
+            rule_preds = self.rule_classifier.classify_article(
+                article_text=body,
+                article_title=title
+            )
+
+            article_out = {
+                **article,
+                'content': body,
+                'rule_based_predictions': [p['indicator_id'] for p in rule_preds],
+                'rule_based_confidences': {p['indicator_id']: p['confidence'] for p in rule_preds},
+                'llm_labels': [],
+                'manual_labels': [],
+                'manual_confidences': {},
+            }
+
+            # Use LLM when confidence is low (< 0.5) or no rule match found
+            needs_llm = (
+                llm_label_fn is not None
+                and (
+                    not rule_preds
+                    or max((p['confidence'] for p in rule_preds), default=0) < 0.5
+                )
+            )
+            if needs_llm:
+                try:
+                    import asyncio
+                    import inspect
+                    if inspect.iscoroutinefunction(llm_label_fn):
+                        labels = asyncio.get_event_loop().run_until_complete(
+                            llm_label_fn(title, body)
+                        )
+                    else:
+                        labels = llm_label_fn(title, body)
+                    article_out['llm_labels'] = labels or []
+                    # Treat LLM labels as ground truth for training
+                    article_out['manual_labels'] = article_out['llm_labels']
+                    llm_labeled += 1
+                except Exception as e:
+                    print(f"  LLM labeling failed for {article.get('article_id', '?')}: {e}")
+
+            final_articles.append(article_out)
+
+        print(f"  Rule-based labeled: {len(final_articles) - llm_labeled}")
+        print(f"  LLM oracle labeled: {llm_labeled}")
+
+        # Export using same format as export_for_manual_review
+        self.export_for_manual_review(final_articles, output_path)
+        return final_articles
+
     def save_split(
         self,
         train_dataset: TrainingDataset,

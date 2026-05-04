@@ -25,11 +25,11 @@ from app.layer4.schemas import (
     InsightPriority,
     TopPriorities,
 )
-from app.layer4.risk_detection import RuleBasedRiskDetector, PatternBasedRiskDetector
-from app.layer4.opportunity_detection import RuleBasedOpportunityDetector
+from app.layer4.risk import RuleBasedRiskDetector, PatternBasedRiskDetector
+from app.layer4.opportunity import RuleBasedOpportunityDetector
 from app.layer4.recommendation import RecommendationEngine
 from app.layer4.scoring import RiskScorer
-from app.layer4.prioritization import InsightPrioritizer
+from app.layer4.scoring import InsightPrioritizer
 from app.layer4.context import (
     IndustryContextProvider,
     HistoricalContextAnalyzer,
@@ -37,7 +37,7 @@ from app.layer4.context import (
     CascadingImpactAnalyzer,
     CompetitiveIntelligenceAnalyzer,
 )
-from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
+# ARCHIVED: from app.layer4.mock_data.layer3_mock_generator import OperationalIndicators
 
 router = APIRouter()
 

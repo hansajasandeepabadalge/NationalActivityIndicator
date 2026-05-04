@@ -17,6 +17,7 @@ import json
 import hashlib
 import logging
 import time
+import asyncio
 from typing import Dict, Any, Optional, List, Type, TypeVar
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -499,9 +500,14 @@ class BaseLLMService(ABC):
         # Apply rate limiting
         self._rate_limit()
         
-        # Call LLM with retries
+        # Call LLM with retries — use while loop so we can reset attempt
+        # count after a successful key rotation (otherwise rotating keys
+        # eats from the same retry budget and gives up early).
         last_error = None
-        for attempt in range(self.config.max_retries):
+        attempt = 0
+        max_rotations = max(1, len(api_key_manager._keys))
+        rotations = 0
+        while attempt < self.config.max_retries:
             try:
                 self._stats["llm_calls"] += 1
                 
@@ -532,6 +538,18 @@ class BaseLLMService(ABC):
                 processing_time = (time.time() - start_time) * 1000
                 self._stats["total_processing_time_ms"] += processing_time
                 
+                # Token usage: ChatGroq exposes usage via either `usage_metadata`
+                # (langchain >=0.2) or `response_metadata['token_usage']` (older).
+                # Fall back to 0 if neither is available.
+                tokens_used = 0
+                usage_meta = getattr(response, 'usage_metadata', None)
+                if isinstance(usage_meta, dict):
+                    tokens_used = usage_meta.get('total_tokens', 0)
+                else:
+                    resp_meta = getattr(response, 'response_metadata', None)
+                    if isinstance(resp_meta, dict):
+                        tokens_used = resp_meta.get('token_usage', {}).get('total_tokens', 0)
+
                 result = LLMResponse(
                     content=content,
                     parsed=parsed,
@@ -539,7 +557,7 @@ class BaseLLMService(ABC):
                     provider=self.config.provider.value,
                     cached=False,
                     processing_time_ms=processing_time,
-                    tokens_used=getattr(response, 'usage', {}).get('total_tokens', 0)
+                    tokens_used=tokens_used
                 )
                 
                 # Cache successful response
@@ -566,22 +584,25 @@ class BaseLLMService(ABC):
                     "daily limit", "tokens per day"
                 ])
                 
-                if is_rate_limit:
+                if is_rate_limit and rotations < max_rotations:
                     logger.warning(f"Rate limit hit on API key: {api_key_manager._get_key_id(self._current_api_key) if self._current_api_key else 'unknown'}")
-                    
+
                     # Try to rotate to next key
                     if self._rotate_api_key():
-                        logger.info("Successfully rotated to new API key, retrying...")
-                        # Reset attempt counter to give new key a fresh start
+                        rotations += 1
+                        logger.info(f"Successfully rotated to new API key (rotation {rotations}), retrying...")
+                        # Actually reset attempt counter so the new key gets a fresh budget
+                        attempt = 0
                         continue
                     else:
                         logger.error("No more API keys available. All keys are rate limited.")
                         break
-                
+
                 logger.warning(f"LLM call attempt {attempt + 1} failed: {e}")
-                
-                if attempt < self.config.max_retries - 1:
-                    time.sleep(self.config.retry_delay_seconds * (attempt + 1))
+                attempt += 1
+
+                if attempt < self.config.max_retries:
+                    time.sleep(self.config.retry_delay_seconds * attempt)
         
         # All retries failed
         self._stats["errors"] += 1
@@ -679,28 +700,35 @@ class GroqLLMClient(BaseLLMService):
         **kwargs
     ) -> Optional[Any]:
         """
-        Generate a structured response from the LLM.
-        
+        Generate a structured response from the LLM (async-safe).
+
+        Runs the blocking LLM call in a thread pool so that
+        ``asyncio.gather(...)`` over multiple articles actually parallelises
+        instead of serialising behind ``self._llm.invoke()`` and
+        ``time.sleep()``.
+
         Args:
             prompt: User prompt
             system_prompt: System prompt
             response_model: Pydantic model for structured output
-            
+
         Returns:
             Parsed response or None on failure
         """
-        response = self._call_llm(prompt, system_prompt, use_cache=True)
-        
+        response = await asyncio.to_thread(
+            self._call_llm, prompt, system_prompt, True
+        )
+
         if not response.success or not response.parsed:
             return None
-        
+
         if response_model:
             try:
                 return response_model(**response.parsed)
             except Exception as e:
                 logger.warning(f"Failed to parse into model {response_model}: {e}")
                 return None
-        
+
         return response.parsed
     
     def generate(

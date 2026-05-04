@@ -556,8 +556,10 @@ class EnhancedPipeline:
         
         async def process_with_limit(article: Dict[str, Any]) -> EnhancedProcessingResult:
             async with semaphore:
+                # Accept both 'article_id' (canonical) and 'id' (legacy)
+                article_id = article.get("article_id") or article.get("id", "")
                 return await self.process(
-                    article_id=article.get("id", ""),
+                    article_id=article_id,
                     text=article.get("text", ""),
                     title=article.get("title", ""),
                     source=article.get("source", ""),

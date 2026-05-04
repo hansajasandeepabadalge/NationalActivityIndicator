@@ -4,8 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 from datetime import datetime
 from app.main import app
-from app.layer2.nlp_processing.entity_extractor import EntityExtractor
-from app.layer2.indicator_calculation.entity_based_calculator import EntityBasedIndicatorCalculator
+from app.layer2.nlp.entity_extractor import EntityExtractor
+from app.layer2.indicators.full_indicator_calculator import FullIndicatorCalculator as EntityBasedIndicatorCalculator
 from app.layer2.narrative.generator import NarrativeGenerator
 from app.db.mongodb_entities import MongoDBEntityStorage
 

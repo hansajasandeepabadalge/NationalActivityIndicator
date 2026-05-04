@@ -16,8 +16,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
-from app.services.quality_filter import QualityFilter
-from app.services.reputation_manager import ReputationManager
+from app.services.filters import QualityFilter
+from app.services.reputation import ReputationManager
 from app.models.source_reputation_models import (
     SourceReputation,
     SourceReputationHistory,

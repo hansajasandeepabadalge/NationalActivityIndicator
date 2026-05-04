@@ -26,48 +26,48 @@ class TestReputationManager:
     @pytest.fixture
     def manager(self, mock_db):
         """Create ReputationManager instance with mock DB."""
-        from app.services.reputation_manager import ReputationManager, ReputationConfig
+        from app.services.reputation import ReputationManager, ReputationConfig
         return ReputationManager(db=mock_db, config=ReputationConfig())
     
     def test_score_to_tier_platinum(self, manager):
         """Test tier classification for platinum."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.95) == ReputationTier.PLATINUM
         assert manager._score_to_tier(0.90) == ReputationTier.PLATINUM
     
     def test_score_to_tier_gold(self, manager):
         """Test tier classification for gold."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.85) == ReputationTier.GOLD
         assert manager._score_to_tier(0.75) == ReputationTier.GOLD
     
     def test_score_to_tier_silver(self, manager):
         """Test tier classification for silver."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.70) == ReputationTier.SILVER
         assert manager._score_to_tier(0.60) == ReputationTier.SILVER
     
     def test_score_to_tier_bronze(self, manager):
         """Test tier classification for bronze."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.55) == ReputationTier.BRONZE
         assert manager._score_to_tier(0.45) == ReputationTier.BRONZE
     
     def test_score_to_tier_probation(self, manager):
         """Test tier classification for probation."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.40) == ReputationTier.PROBATION
         assert manager._score_to_tier(0.30) == ReputationTier.PROBATION
     
     def test_score_to_tier_blacklisted(self, manager):
         """Test tier classification for blacklisted."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         assert manager._score_to_tier(0.25) == ReputationTier.BLACKLISTED
         assert manager._score_to_tier(0.0) == ReputationTier.BLACKLISTED
     
     def test_tier_to_weight_multiplier(self, manager):
         """Test weight multipliers by tier."""
-        from app.services.reputation_manager import ReputationTier
+        from app.services.reputation import ReputationTier
         
         assert manager._tier_to_weight_multiplier(ReputationTier.PLATINUM) == 1.3
         assert manager._tier_to_weight_multiplier(ReputationTier.GOLD) == 1.15
@@ -181,7 +181,7 @@ class TestFilterResult:
     
     def test_filter_result_to_dict(self):
         """Test FilterResult serialization."""
-        from app.services.reputation_manager import FilterResult, FilterAction
+        from app.services.reputation import FilterResult, FilterAction
         
         result = FilterResult(
             action=FilterAction.ACCEPTED,
@@ -208,7 +208,7 @@ class TestReputationUpdate:
     
     def test_reputation_update_to_dict(self):
         """Test ReputationUpdate serialization."""
-        from app.services.reputation_manager import ReputationUpdate
+        from app.services.reputation import ReputationUpdate
         
         update = ReputationUpdate(
             source_name="Test Source",
@@ -237,7 +237,7 @@ class TestReputationIntegration:
     @pytest.mark.asyncio
     async def test_create_source_reputation(self):
         """Test creating a new source reputation."""
-        from app.services.reputation_manager import create_reputation_manager
+        from app.services.reputation import create_reputation_manager
         from app.db.session import get_db_session
         
         async with get_db_session() as db:
@@ -257,7 +257,7 @@ class TestReputationIntegration:
     @pytest.mark.asyncio
     async def test_record_article_result(self):
         """Test recording article processing result."""
-        from app.services.reputation_manager import create_reputation_manager
+        from app.services.reputation import create_reputation_manager
         from app.db.session import get_db_session
         
         async with get_db_session() as db:

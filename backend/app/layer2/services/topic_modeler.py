@@ -319,8 +319,9 @@ Be concise and focus on the essence of the topic cluster."""
             full_text = full_text[:max_length]
         
         try:
-            # Add to ChromaDB
-            self.collection.add(
+            # Upsert (not add) so re-processing the same article_id is safe.
+            # Plain add() raises chromadb errors.IDAlreadyExistsError on duplicates.
+            self.collection.upsert(
                 documents=[full_text],
                 ids=[article_id],
                 metadatas=[{

@@ -9,7 +9,7 @@ import asyncio
 from datetime import datetime
 from typing import Dict, Any
 
-from app.integration import (
+from app.layer1.orchestrator.pipeline import (
     # Contracts
     Layer2Output,
     Layer3Input,

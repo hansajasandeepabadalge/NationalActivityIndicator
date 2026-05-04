@@ -306,7 +306,7 @@ class MongoDBArticleLoader:
             url=doc.get("source_url") or "",      # Handle None
             published_at=extraction.get("publish_timestamp"),
             language=content.get("language_detected") or content.get("language_original") or "en",
-            layer1_quality_score=quality.get("credibility_score", 1.0) or 1.0,
+            layer1_quality_score=quality.get("credibility_score") if quality.get("credibility_score") is not None else 1.0,
             layer1_word_count=quality.get("word_count"),
             layer1_categories=extraction.get("categories") or [],
             layer1_entities=extraction.get("entities") or {},

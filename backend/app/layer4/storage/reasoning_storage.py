@@ -8,7 +8,7 @@ Handles persistence of:
 - Contextual information
 """
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 from pymongo import MongoClient, DESCENDING
 from bson import ObjectId
 import logging
@@ -74,7 +74,7 @@ class ReasoningStorageService:
         """
         document = {
             "insight_id": insight_id,
-            "timestamp": datetime.now(),
+            "timestamp": datetime.now(timezone.utc),
             "detection_method": risk.detection_method,
             "risk_code": risk.risk_code,
             "reasoning": risk.reasoning,
@@ -122,7 +122,7 @@ class ReasoningStorageService:
         """
         document = {
             "insight_id": insight_id,
-            "timestamp": datetime.now(),
+            "timestamp": datetime.now(timezone.utc),
             "detection_method": opportunity.detection_method,
             "opportunity_code": opportunity.opportunity_code,
             "reasoning": opportunity.reasoning,
@@ -169,7 +169,7 @@ class ReasoningStorageService:
         document = {
             "insight_id": insight_id,
             "company_id": company_id,
-            "timestamp": datetime.now(),
+            "timestamp": datetime.now(timezone.utc),
             **narrative  # emoji, headline, summary, detailed_explanation, etc.
         }
 
@@ -199,7 +199,7 @@ class ReasoningStorageService:
         document = {
             "insight_id": insight_id,
             "recommendation_id": recommendation_id,
-            "timestamp": datetime.now(),
+            "timestamp": datetime.now(timezone.utc),
             **details
         }
 
@@ -357,7 +357,7 @@ class ReasoningStorageService:
             {
                 "$set": {
                     **updates,
-                    "updated_at": datetime.now()
+                    "updated_at": datetime.now(timezone.utc)
                 }
             },
             upsert=False

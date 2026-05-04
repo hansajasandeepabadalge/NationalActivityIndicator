@@ -28,10 +28,16 @@ class TrendAnalyzer:
             
         # Convert to DataFrame
         df = pd.DataFrame(history)
-        df['time'] = pd.to_datetime(df['time'])
+        if 'value' not in df.columns or 'time' not in df.columns:
+            return {"direction": "stable", "strength": 0.0, "ma_7d": None, "ma_30d": None}
+        df['time'] = pd.to_datetime(df['time'], errors='coerce')
+        df = df.dropna(subset=['time', 'value'])
         df = df.sort_values('time')
         df.set_index('time', inplace=True)
-        
+
+        if df.empty:
+            return {"direction": "stable", "strength": 0.0, "ma_7d": None, "ma_30d": None}
+
         # Calculate Moving Averages
         ma_7d = df['value'].rolling(window=7, min_periods=1).mean().iloc[-1]
         ma_30d = df['value'].rolling(window=30, min_periods=1).mean().iloc[-1]

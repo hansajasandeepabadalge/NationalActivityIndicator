@@ -10,12 +10,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime
 
 # Import agents
-from app.agents.config import AgentConfig, get_agent_config
-from app.agents.source_monitor_agent import SourceMonitorAgent
-from app.agents.processing_agent import ProcessingAgent
-from app.agents.priority_agent import PriorityDetectionAgent
-from app.agents.validation_agent import ValidationAgent
-from app.agents.scheduler_agent import SchedulerAgent
+from app.layer1.agents.config import AgentConfig, get_agent_config
+from app.layer1.agents.source_monitor_agent import SourceMonitorAgent
+from app.layer1.agents.processing_agent import ProcessingAgent
+from app.layer1.agents.priority_agent import PriorityDetectionAgent
+from app.layer1.agents.validation_agent import ValidationAgent
+from app.layer1.agents.scheduler_agent import SchedulerAgent
 
 
 class TestAgentConfig:
@@ -235,7 +235,7 @@ class TestLLMManager:
     
     def test_manager_initialization(self):
         """Test that LLM manager initializes."""
-        from app.agents.llm_manager import LLMManager
+        from app.core.llm.manager import LLMManager
         
         manager = LLMManager()
         assert manager is not None
@@ -243,7 +243,7 @@ class TestLLMManager:
     
     def test_daily_stats(self):
         """Test that stats tracking works."""
-        from app.agents.llm_manager import get_llm_manager
+        from app.core.llm.manager import get_llm_manager
         
         manager = get_llm_manager()
         stats = manager.get_daily_stats()
@@ -260,7 +260,7 @@ class TestOrchestratorMocked:
     @pytest.mark.asyncio
     async def test_orchestrator_initialization(self):
         """Test that orchestrator initializes."""
-        from app.orchestrator import create_orchestrator
+        from app.layer1.orchestrator import create_orchestrator
         
         orchestrator = create_orchestrator()
         assert orchestrator is not None
