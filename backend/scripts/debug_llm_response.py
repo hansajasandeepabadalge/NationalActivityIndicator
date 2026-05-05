@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set up API key
-os.environ.setdefault("GROQ_API_KEY", "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")
+os.environ.setdefault("GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE")
 
 
 def test_llm_with_classifier_prompt():

@@ -30,7 +30,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set API keys
-os.environ.setdefault("GROQ_API_KEY", "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")
+os.environ.setdefault("GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE")
 
 
 @dataclass
